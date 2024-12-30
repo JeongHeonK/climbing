@@ -1,3 +1,5 @@
+"use client";
+
 import {
   createContext,
   PropsWithChildren,
@@ -26,7 +28,7 @@ export default function PopupProvider({ children }: PropsWithChildren) {
 const usePopupState = () => {
   const isOpen = useContext(PopupContext);
 
-  if (!isOpen)
+  if (isOpen === undefined)
     throw new Error("useToggle은 provider 내부에서 사용가능 합니다.");
 
   return isOpen;
@@ -35,7 +37,7 @@ const usePopupState = () => {
 const useToggle = () => {
   const toggle = useContext(ToggleContext);
 
-  if (!toggle)
+  if (toggle === undefined)
     throw new Error("useToggle은 provider 내부에서 사용가능 합니다.");
 
   return toggle;

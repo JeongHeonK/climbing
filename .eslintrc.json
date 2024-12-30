@@ -21,7 +21,7 @@
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": ["warn", { "extensions": [".ts", ".tsx"] }],
     "@typescript-eslint/camelcase": "off",
-    "import/extensions": ["error", "ignorePackages"],
+    "import/extensions": "off",
     "no-console": "error",
     "@typescript-eslint/lines-between-class-members": "off",
     "@typescript-eslint/no-throw-literal": "off"

@@ -1,4 +1,3 @@
-import LogInButton from "./LogInButton";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -7,7 +6,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import Link from "next/link";
+import LogInButton from "./LogInButton";
 
 export default function Header() {
   return (
@@ -15,9 +14,7 @@ export default function Header() {
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
-            <Link href="/">
-              <NavigationMenuLink>logo</NavigationMenuLink>
-            </Link>
+            <NavigationMenuLink href="/123">logo</NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <NavigationMenuTrigger>Menu</NavigationMenuTrigger>

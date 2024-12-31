@@ -9,7 +9,7 @@ export default function Authentication() {
   if (isOpen) {
     return (
       <div
-        className="w-full absolute top-0 right-0 bottom-0 bg-slate-900/75"
+        className="w-full absolute top-0 right-0 bottom-0 bg-slate-900/75 z-50"
         onClick={toggle}
       >
         <p className="text-white text-lg" onClick={(e) => e.stopPropagation()}>

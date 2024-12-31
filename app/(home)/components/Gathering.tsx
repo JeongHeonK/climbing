@@ -34,9 +34,7 @@ export default function Gathering({
         <CardDescription>{newDate}</CardDescription>
       </CardHeader>
       <CardContent className="align-middle">
-        {image || (
-          <div className="size-32 mx-auto bg-slate-600 rounded-md"></div>
-        )}
+        {image || <div className="size-32 mx-auto bg-slate-600 rounded-md" />}
         <p className="mt-2">{location}</p>
       </CardContent>
     </Card>

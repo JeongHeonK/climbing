@@ -1,10 +1,14 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, ReactNode, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
 
-export default function Login() {
+interface LogInProps {
+  header: ReactNode;
+  button: ReactNode;
+}
+
+export default function Login({ header, button }: LogInProps) {
   const [userInput, setUserInput] = useState({
     email: "",
     password: "",
@@ -18,9 +22,7 @@ export default function Login() {
 
   return (
     <>
-      <CardHeader>
-        <CardTitle className="text-center">Welcome Back</CardTitle>
-      </CardHeader>
+      {header}
       <CardContent>
         <form className="grid gap-3">
           <Label htmlFor="email">Email</Label>
@@ -43,9 +45,7 @@ export default function Login() {
             placeholder="Enter Your Password"
             className="text-sm"
           />
-          <Button type="submit" className="mt-3">
-            Login
-          </Button>
+          {button}
         </form>
       </CardContent>
     </>

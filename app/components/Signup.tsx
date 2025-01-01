@@ -1,10 +1,14 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, ReactNode, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
 
-export default function Signup() {
+interface SignupProps {
+  header: ReactNode;
+  button: ReactNode;
+}
+
+export default function Signup({ header, button }: SignupProps) {
   const [userInput, setUserInput] = useState({
     email: "",
     password: "",
@@ -19,9 +23,7 @@ export default function Signup() {
 
   return (
     <>
-      <CardHeader>
-        <CardTitle className="text-center">Thanks for Joining</CardTitle>
-      </CardHeader>
+      {header}
       <CardContent>
         <form className="grid gap-3">
           <Label htmlFor="email">Email</Label>
@@ -54,9 +56,7 @@ export default function Signup() {
             placeholder="Enter Your Password Again"
             className="text-sm"
           />
-          <Button type="submit" className="mt-3">
-            Join!
-          </Button>
+          {button}
         </form>
       </CardContent>
     </>

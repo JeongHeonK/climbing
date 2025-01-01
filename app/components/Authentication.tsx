@@ -70,7 +70,10 @@ function AuthenticationButton({
       </Button>
       <div className="text-center text-sm">
         {isMember ? "Don't have an account? " : "Already Member? "}
-        <span onClick={onClick} className="underline underline-offset-4">
+        <span
+          onClick={onClick}
+          className="underline underline-offset-4 cursor-pointer"
+        >
           {isMember ? "Sign up" : "Log In"}
         </span>
       </div>

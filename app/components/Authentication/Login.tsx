@@ -2,6 +2,7 @@ import { ChangeEvent, ReactNode, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CardContent } from "@/components/ui/card";
+import { login } from "./api/login";
 
 interface LogInProps {
   header: ReactNode;
@@ -24,7 +25,7 @@ export default function Login({ header, button }: LogInProps) {
     <>
       {header}
       <CardContent>
-        <form className="grid gap-3">
+        <form className="grid gap-3" action={login}>
           <Label htmlFor="email">Email</Label>
           <Input
             onChange={handleInput}

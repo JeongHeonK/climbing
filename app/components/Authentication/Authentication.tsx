@@ -3,7 +3,7 @@
 import { MouseEvent, useState } from "react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { usePopupState, useToggle } from "../context/Popup";
+import { usePopupState, useToggle } from "../../context/Popup";
 import Login from "./Login";
 import Signup from "./Signup";
 

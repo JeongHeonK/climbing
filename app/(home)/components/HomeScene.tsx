@@ -1,4 +1,4 @@
-import Authentication from "@/app/components/Authentication";
+import Authentication from "@/app/components/Authentication/Authentication";
 import Header from "./Header";
 import CustomBadge from "./CustomBadge";
 import Gathering from "./Gathering";

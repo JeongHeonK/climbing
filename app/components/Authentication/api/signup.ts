@@ -1,17 +1,17 @@
 "use server";
 
 import { z } from "zod";
-import { REG, errorMessages } from "@/app/constant/constant";
+import { REG, ERROR_MESSAGES } from "@/app/constant/constant";
 import { Message } from "@/app/util/util";
 
 const signupUser = z
   .object({
-    email: z.string().email(new Message(errorMessages.email)),
+    email: z.string().email(new Message(ERROR_MESSAGES.email)),
     password: z
       .string()
-      .regex(REG, new Message(errorMessages.reg))
-      .min(8, new Message(errorMessages.min))
-      .max(12, new Message(errorMessages.max)),
+      .regex(REG, new Message(ERROR_MESSAGES.reg))
+      .min(8, new Message(ERROR_MESSAGES.min))
+      .max(12, new Message(ERROR_MESSAGES.max)),
     passwordCheck: z.string().regex(REG).min(8).max(12),
   })
   .superRefine(({ password, passwordCheck }, ctx) => {

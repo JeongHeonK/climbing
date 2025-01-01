@@ -13,7 +13,10 @@ const loginUser = z.object({
     .max(12, new Message(ERROR_MESSAGES.max)),
 });
 
-export const login = async (formdata: FormData) => {
+export const login = async (
+  _: { message: string } | undefined,
+  formdata: FormData,
+) => {
   const input = {
     email: formdata.get("email"),
     password: formdata.get("password"),
@@ -22,8 +25,10 @@ export const login = async (formdata: FormData) => {
   const result = loginUser.safeParse(input);
 
   if (!result.success) {
-    const [firstError] = result.error.errors;
+    const [{ message }] = result.error.errors;
 
-    throw new Error(firstError.message);
+    return { result, message };
   }
+
+  return { result: "성공", message: "" };
 };

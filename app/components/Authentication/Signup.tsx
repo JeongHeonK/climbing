@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactNode, useState } from "react";
+import { ChangeEvent, ReactNode, useActionState, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CardContent } from "@/components/ui/card";
@@ -10,23 +10,14 @@ interface SignupProps {
 }
 
 export default function Signup({ header, button }: SignupProps) {
-  const [userInput, setUserInput] = useState({
-    email: "",
-    password: "",
-    passwordCheck: "",
-  });
-
-  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    setUserInput((prev) => ({ ...prev, [name]: value }));
-  };
+  const [userInput, handleInput] = useInput(initialData);
+  const [formState, formAction] = useActionState(signup, initialFormError);
 
   return (
     <>
       {header}
       <CardContent>
-        <form className="grid gap-3" action={signup}>
+        <form className="grid gap-3" action={formAction}>
           <Label htmlFor="email">Email</Label>
           <Input
             onChange={handleInput}
@@ -57,9 +48,37 @@ export default function Signup({ header, button }: SignupProps) {
             placeholder="Enter Your Password Again"
             className="text-sm"
           />
+          <p className="text-sm text-red-600 -mt-1 -mb-4">
+            {formState?.message || " "}
+          </p>
           {button}
         </form>
       </CardContent>
     </>
   );
 }
+
+const initialData = {
+  email: "",
+  password: "",
+  passwordCheck: "",
+};
+
+const initialFormError = {
+  result: "",
+  message: "",
+};
+
+type Initial = typeof initialData;
+
+const useInput = (data: Initial) => {
+  const [userInput, setUserInput] = useState(data);
+
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setUserInput((prev) => ({ ...prev, [name]: value }));
+  };
+
+  return [userInput, handleInput] as const;
+};

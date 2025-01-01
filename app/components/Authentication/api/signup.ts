@@ -23,17 +23,23 @@ const signupUser = z
     }
   });
 
-export const signup = async (formdata: FormData) => {
+export const signup = async (
+  _: { message: string } | undefined,
+  formdata: FormData,
+) => {
   const input = {
     email: formdata.get("email"),
     password: formdata.get("password"),
+    passwordCheck: formdata.get("passwordCheck"),
   };
 
   const result = signupUser.safeParse(input);
 
   if (!result.success) {
-    const [firstError] = result.error.errors;
+    const [{ message }] = result.error.errors;
 
-    throw new Error(firstError.message);
+    return { result, message };
   }
+
+  return { result: "성공", message: "" };
 };

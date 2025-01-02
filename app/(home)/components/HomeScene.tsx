@@ -1,9 +1,12 @@
 import Authentication from "@/app/components/Authentication/Authentication";
+import { main } from "@/app/api/database";
 import Header from "./Header";
 import CustomBadge from "./CustomBadge";
 import Gathering from "./Gathering";
 
-export default function HomeScene() {
+export default async function HomeScene() {
+  const res = await main();
+  console.log(res);
   return (
     <>
       <Authentication />

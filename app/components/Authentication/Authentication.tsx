@@ -70,6 +70,7 @@ function AuthenticationButton({
   onClick,
 }: AuthenticationButtonProps) {
   const { pending } = useFormStatus();
+
   return (
     <>
       <Button type="submit" className="mt-3" disabled={pending}>

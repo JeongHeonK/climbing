@@ -1,45 +1,47 @@
 "use server";
 
-import { z } from "zod";
-import { REG, ERROR_MESSAGES } from "@/app/constant/constant";
-import { Message } from "@/app/util/util";
-
-const signupUser = z
-  .object({
-    email: z.string().email(new Message(ERROR_MESSAGES.email)),
-    password: z
-      .string()
-      .regex(REG, new Message(ERROR_MESSAGES.reg))
-      .min(8, new Message(ERROR_MESSAGES.min))
-      .max(12, new Message(ERROR_MESSAGES.max)),
-    passwordCheck: z.string().regex(REG).min(8).max(12),
-  })
-  .superRefine(({ password, passwordCheck }, ctx) => {
-    if (password !== passwordCheck) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "비밀번호가 일치하지 않습니다.",
-      });
-    }
-  });
+import { ERROR_MESSAGES } from "@/app/constant/constant";
+import { userDB } from "@/app/api/database";
+import { checkSignupValidation } from "@/app/util/validation";
+import bcrypt from "bcryptjs";
+import { FormError } from "../type";
 
 export const signup = async (
-  _: { message: string } | undefined,
+  _: FormError | undefined,
   formdata: FormData,
-) => {
+): Promise<FormError> => {
   const input = {
-    email: formdata.get("email"),
-    password: formdata.get("password"),
-    passwordCheck: formdata.get("passwordCheck"),
+    email: formdata.get("email")?.toString(),
+    password: formdata.get("password")?.toString(),
+    passwordCheck: formdata.get("passwordCheck")?.toString(),
   };
 
-  const result = signupUser.safeParse(input);
+  const validationResult = checkSignupValidation(input);
 
-  if (!result.success) {
-    const [{ message }] = result.error.errors;
+  if (!validationResult.success) {
+    const [{ message }] = validationResult.error.errors;
 
-    return { result, message };
+    return { state: "error", message };
   }
 
-  return { result: "성공", message: "" };
+  if (input.email !== undefined && input.password !== undefined) {
+    const user = await userDB.findUnique({
+      where: {
+        email: input.email,
+      },
+    });
+
+    if (user) return { state: "error", message: ERROR_MESSAGES.existingEmail };
+
+    const hash = await bcrypt.hash(input.password, 10);
+
+    await userDB.create({
+      data: {
+        email: input.email,
+        password: hash,
+      },
+    });
+  }
+
+  return { state: "success", message: null };
 };

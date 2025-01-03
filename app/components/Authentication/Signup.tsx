@@ -1,17 +1,21 @@
-import { ChangeEvent, ReactNode, useActionState, useState } from "react";
+import { ChangeEvent, useActionState, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CardContent } from "@/components/ui/card";
+import { useToggle } from "@/app/context/Popup";
 import { signup } from "./api/signup";
+import { FormError, PropsWithReactNode } from "./type";
 
-interface SignupProps {
-  header: ReactNode;
-  button: ReactNode;
-}
-
-export default function Signup({ header, button }: SignupProps) {
+export default function Signup({ header, button }: PropsWithReactNode) {
   const [userInput, handleInput] = useInput(initialData);
   const [formState, formAction] = useActionState(signup, initialFormError);
+  const toggle = useToggle();
+
+  useEffect(() => {
+    if (formState.state === "success") {
+      toggle();
+    }
+  }, [formState, toggle]);
 
   return (
     <>
@@ -42,7 +46,7 @@ export default function Signup({ header, button }: SignupProps) {
           <Input
             onChange={handleInput}
             value={userInput.passwordCheck}
-            type="passwordCheck"
+            type="password"
             id="passwordCheck"
             name="passwordCheck"
             placeholder="Enter Your Password Again"
@@ -64,9 +68,9 @@ const initialData = {
   passwordCheck: "",
 };
 
-const initialFormError = {
-  result: "",
-  message: "",
+const initialFormError: FormError = {
+  state: null,
+  message: null,
 };
 
 type Initial = typeof initialData;

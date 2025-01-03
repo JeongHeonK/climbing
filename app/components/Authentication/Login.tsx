@@ -1,17 +1,21 @@
-import { ChangeEvent, ReactNode, useActionState, useState } from "react";
+import { ChangeEvent, useActionState, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CardContent } from "@/components/ui/card";
+import { useToggle } from "@/app/context/Popup";
 import { login } from "./api/login";
+import { FormError, PropsWithReactNode } from "./type";
 
-interface LogInProps {
-  header: ReactNode;
-  button: ReactNode;
-}
-
-export default function Login({ header, button }: LogInProps) {
+export default function Login({ header, button }: PropsWithReactNode) {
   const [userInput, handleInput] = useInput(initialData);
   const [formState, formAction] = useActionState(login, initialFormError);
+  const toggle = useToggle();
+
+  useEffect(() => {
+    if (formState.state === "success") {
+      toggle();
+    }
+  }, [formState, toggle]);
 
   return (
     <>
@@ -48,9 +52,9 @@ export default function Login({ header, button }: LogInProps) {
   );
 }
 
-const initialFormError = {
-  result: "",
-  message: "",
+const initialFormError: FormError = {
+  state: null,
+  message: null,
 };
 
 const initialData = {

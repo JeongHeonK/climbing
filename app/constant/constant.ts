@@ -7,4 +7,6 @@ export const ERROR_MESSAGES = {
   max: "비밀번호는 12자리 이하여야 합니다.",
   mismatch: "비밀번호가 일치하지 않습니다.",
   existingEmail: "이미 등록된 이메일입니다.",
+  user: "일치하는 계정을 찾을 수 없습니다.",
+  pw: "비밀번호가 일치하지 않습니다.",
 };

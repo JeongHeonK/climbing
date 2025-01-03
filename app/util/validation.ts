@@ -10,7 +10,11 @@ const signupUser = z
       .regex(REG, new Message(ERROR_MESSAGES.reg))
       .min(8, new Message(ERROR_MESSAGES.min))
       .max(12, new Message(ERROR_MESSAGES.max)),
-    passwordCheck: z.string().regex(REG).min(8).max(12),
+    passwordCheck: z
+      .string()
+      .regex(REG, new Message(ERROR_MESSAGES.mismatch))
+      .min(8, new Message(ERROR_MESSAGES.mismatch))
+      .max(12, new Message(ERROR_MESSAGES.mismatch)),
   })
   .superRefine(({ password, passwordCheck }, ctx) => {
     if (password !== passwordCheck) {

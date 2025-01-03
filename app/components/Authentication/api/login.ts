@@ -1,17 +1,6 @@
 "use server";
 
-import { z } from "zod";
-import { REG, ERROR_MESSAGES } from "@/app/constant/constant";
-import { Message } from "@/app/util";
-
-const loginUser = z.object({
-  email: z.string().email(new Message(ERROR_MESSAGES.email)),
-  password: z
-    .string()
-    .regex(REG, new Message(ERROR_MESSAGES.reg))
-    .min(8, new Message(ERROR_MESSAGES.min))
-    .max(12, new Message(ERROR_MESSAGES.max)),
-});
+import { checkLoginValidation } from "@/app/util/validation";
 
 export const login = async (
   _: { message: string } | undefined,
@@ -22,7 +11,7 @@ export const login = async (
     password: formdata.get("password"),
   };
 
-  const result = loginUser.safeParse(input);
+  const result = checkLoginValidation(input);
 
   if (!result.success) {
     const [{ message }] = result.error.errors;

@@ -1,28 +1,8 @@
 "use server";
 
-import { z } from "zod";
-import { REG, ERROR_MESSAGES } from "@/app/constant/constant";
-import { Message } from "@/app/util";
+import { ERROR_MESSAGES } from "@/app/constant/constant";
 import { userDB } from "@/app/api/database";
-
-const signupUser = z
-  .object({
-    email: z.string().email(new Message(ERROR_MESSAGES.email)),
-    password: z
-      .string()
-      .regex(REG, new Message(ERROR_MESSAGES.reg))
-      .min(8, new Message(ERROR_MESSAGES.min))
-      .max(12, new Message(ERROR_MESSAGES.max)),
-    passwordCheck: z.string().regex(REG).min(8).max(12),
-  })
-  .superRefine(({ password, passwordCheck }, ctx) => {
-    if (password !== passwordCheck) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: ERROR_MESSAGES.mismatch,
-      });
-    }
-  });
+import { checkSignupValidation } from "@/app/util/validation";
 
 export type FormError = {
   message: null | string;
@@ -35,7 +15,7 @@ export const signup = async (_: FormError | undefined, formdata: FormData) => {
     passwordCheck: formdata.get("passwordCheck")?.toString(),
   };
 
-  const result = signupUser.safeParse(input);
+  const result = checkSignupValidation(input);
 
   if (!result.success) {
     const [{ message }] = result.error.errors;

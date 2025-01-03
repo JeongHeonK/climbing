@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { REG, ERROR_MESSAGES } from "@/app/constant/constant";
-import { Message } from "@/app/util/util";
+import { Message } from "@/app/util";
 
 const loginUser = z.object({
   email: z.string().email(new Message(ERROR_MESSAGES.email)),

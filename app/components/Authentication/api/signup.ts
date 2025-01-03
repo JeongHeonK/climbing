@@ -2,7 +2,8 @@
 
 import { z } from "zod";
 import { REG, ERROR_MESSAGES } from "@/app/constant/constant";
-import { Message } from "@/app/util/util";
+import { Message } from "@/app/util";
+import { userDB } from "@/app/api/database";
 
 const signupUser = z
   .object({
@@ -18,19 +19,20 @@ const signupUser = z
     if (password !== passwordCheck) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "비밀번호가 일치하지 않습니다.",
+        message: ERROR_MESSAGES.mismatch,
       });
     }
   });
 
-export const signup = async (
-  _: { message: string } | undefined,
-  formdata: FormData,
-) => {
+export type FormError = {
+  message: null | string;
+};
+
+export const signup = async (_: FormError | undefined, formdata: FormData) => {
   const input = {
-    email: formdata.get("email"),
-    password: formdata.get("password"),
-    passwordCheck: formdata.get("passwordCheck"),
+    email: formdata.get("email")?.toString(),
+    password: formdata.get("password")?.toString(),
+    passwordCheck: formdata.get("passwordCheck")?.toString(),
   };
 
   const result = signupUser.safeParse(input);
@@ -38,8 +40,25 @@ export const signup = async (
   if (!result.success) {
     const [{ message }] = result.error.errors;
 
-    return { result, message };
+    return { message };
   }
 
-  return { result: "성공", message: "" };
+  if (input.email !== undefined && input.password !== undefined) {
+    const user = await userDB.findUnique({
+      where: {
+        email: input.email,
+      },
+    });
+
+    if (user) return { message: ERROR_MESSAGES.existingEmail };
+
+    await userDB.create({
+      data: {
+        email: input.email,
+        password: input.password,
+      },
+    });
+  }
+
+  return { message: null };
 };

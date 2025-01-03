@@ -2,7 +2,7 @@ import { ChangeEvent, ReactNode, useActionState, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CardContent } from "@/components/ui/card";
-import { signup } from "./api/signup";
+import { FormError, signup } from "./api/signup";
 
 interface SignupProps {
   header: ReactNode;
@@ -42,7 +42,7 @@ export default function Signup({ header, button }: SignupProps) {
           <Input
             onChange={handleInput}
             value={userInput.passwordCheck}
-            type="passwordCheck"
+            type="password"
             id="passwordCheck"
             name="passwordCheck"
             placeholder="Enter Your Password Again"
@@ -64,9 +64,8 @@ const initialData = {
   passwordCheck: "",
 };
 
-const initialFormError = {
-  result: "",
-  message: "",
+const initialFormError: FormError = {
+  message: null,
 };
 
 type Initial = typeof initialData;

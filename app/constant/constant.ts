@@ -5,4 +5,6 @@ export const ERROR_MESSAGES = {
   reg: "특수문자와 영문이 포함되어야 합니다.",
   min: "비밀번호는 8자리 이상이어야 합니다.",
   max: "비밀번호는 12자리 이하여야 합니다.",
+  mismatch: "비밀번호가 일치하지 않습니다.",
+  existingEmail: "이미 등록된 이메일입니다.",
 };

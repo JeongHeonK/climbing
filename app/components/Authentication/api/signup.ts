@@ -4,12 +4,12 @@ import { ERROR_MESSAGES } from "@/app/constant/constant";
 import { userDB } from "@/app/api/database";
 import { checkSignupValidation } from "@/app/util/validation";
 import bcrypt from "bcryptjs";
+import { FormError } from "../type";
 
-export type FormError = {
-  message: null | string;
-};
-
-export const signup = async (_: FormError | undefined, formdata: FormData) => {
+export const signup = async (
+  _: FormError | undefined,
+  formdata: FormData,
+): Promise<FormError> => {
   const input = {
     email: formdata.get("email")?.toString(),
     password: formdata.get("password")?.toString(),
@@ -21,7 +21,7 @@ export const signup = async (_: FormError | undefined, formdata: FormData) => {
   if (!validationResult.success) {
     const [{ message }] = validationResult.error.errors;
 
-    return { message };
+    return { state: "error", message };
   }
 
   if (input.email !== undefined && input.password !== undefined) {
@@ -31,15 +31,17 @@ export const signup = async (_: FormError | undefined, formdata: FormData) => {
       },
     });
 
-    if (user) return { message: ERROR_MESSAGES.existingEmail };
+    if (user) return { state: "error", message: ERROR_MESSAGES.existingEmail };
+
+    const hash = await bcrypt.hash(input.password, 10);
 
     await userDB.create({
       data: {
         email: input.email,
-        password: bcrypt.hashSync(input.password, 10),
+        password: hash,
       },
     });
   }
 
-  return { message: null };
+  return { state: "success", message: null };
 };

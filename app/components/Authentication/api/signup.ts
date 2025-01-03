@@ -3,6 +3,7 @@
 import { ERROR_MESSAGES } from "@/app/constant/constant";
 import { userDB } from "@/app/api/database";
 import { checkSignupValidation } from "@/app/util/validation";
+import bcrypt from "bcryptjs";
 
 export type FormError = {
   message: null | string;
@@ -15,10 +16,10 @@ export const signup = async (_: FormError | undefined, formdata: FormData) => {
     passwordCheck: formdata.get("passwordCheck")?.toString(),
   };
 
-  const result = checkSignupValidation(input);
+  const validationResult = checkSignupValidation(input);
 
-  if (!result.success) {
-    const [{ message }] = result.error.errors;
+  if (!validationResult.success) {
+    const [{ message }] = validationResult.error.errors;
 
     return { message };
   }
@@ -35,7 +36,7 @@ export const signup = async (_: FormError | undefined, formdata: FormData) => {
     await userDB.create({
       data: {
         email: input.email,
-        password: input.password,
+        password: bcrypt.hashSync(input.password, 10),
       },
     });
   }

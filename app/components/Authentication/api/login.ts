@@ -2,9 +2,8 @@
 
 import { checkLoginValidation } from "@/app/util/validation";
 import { ERROR_MESSAGES } from "@/app/constant/constant";
-import bcrypt from "bcryptjs";
 import { connectDB } from "@/app/api/database";
-import getSession from "@/app/api/auth";
+import { checkPassword } from "@/app/util/bcrypt";
 import { FormError } from "../type";
 
 export const login = async (
@@ -24,23 +23,18 @@ export const login = async (
     return { state: "error", message };
   }
 
-  if (input.email !== undefined && input.password !== undefined) {
-    const db = (await connectDB).db("climbing");
-    const user = await db.collection("User").findOne({ email: input.email });
-    if (!user) return { state: "error", message: ERROR_MESSAGES.user };
+  if (input.email === undefined || input.password === undefined)
+    return { state: "error", message: "다시 한번 입력해주세요" };
 
-    if (!(await checkPassword(input.password, user.password))) {
-      return { state: "error", message: ERROR_MESSAGES.pw };
-    }
+  const db = (await connectDB).db("climbing");
+  const user = await db.collection("member").findOne({ email: input.email });
 
-    const session = await getSession(input.email);
+  if (!user) return { state: "error", message: ERROR_MESSAGES.user };
 
-    console.log(session);
+  if (!(await checkPassword(input.password, user.password))) {
+    return { state: "error", message: ERROR_MESSAGES.pw };
   }
 
+  // 쿠키 함수 변경 예정
   return { state: "success", message: null };
-};
-
-const checkPassword = async (pw: string, hash: string) => {
-  return bcrypt.compare(pw, hash);
 };

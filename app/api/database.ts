@@ -1,5 +1,17 @@
-import { PrismaClient } from "@prisma/client";
+import { MongoClient } from "mongodb";
 
-const prisma = new PrismaClient();
+const url = process.env.MONGO_DB_URL!;
 
-export const userDB = prisma.user;
+const options = { useNewUrlParser: true };
+let connectDB: Promise<MongoClient>;
+
+if (process.env.NODE_ENV === "development") {
+  if (!global._mongo) {
+    global._mongo = new MongoClient(url, options).connect();
+  }
+  connectDB = global._mongo;
+} else {
+  connectDB = new MongoClient(url, options).connect();
+}
+
+export { connectDB };

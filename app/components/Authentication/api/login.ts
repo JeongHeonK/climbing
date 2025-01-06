@@ -4,6 +4,7 @@ import { checkLoginValidation } from "@/app/util/validation";
 import { ERROR_MESSAGES } from "@/app/constant/constant";
 import bcrypt from "bcryptjs";
 import { connectDB } from "@/app/api/database";
+import getSession from "@/app/api/auth";
 import { FormError } from "../type";
 
 export const login = async (
@@ -31,6 +32,10 @@ export const login = async (
     if (!(await checkPassword(input.password, user.password))) {
       return { state: "error", message: ERROR_MESSAGES.pw };
     }
+
+    const session = await getSession(input.email);
+
+    console.log(session);
   }
 
   return { state: "success", message: null };

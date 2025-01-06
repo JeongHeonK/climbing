@@ -1,9 +1,10 @@
 "use server";
 
 import { checkLoginValidation } from "@/app/util/validation";
-import { userDB } from "@/app/api/database";
 import { ERROR_MESSAGES } from "@/app/constant/constant";
 import bcrypt from "bcryptjs";
+import { connectDB } from "@/app/api/database";
+import getSession from "@/app/api/auth";
 import { FormError } from "../type";
 
 export const login = async (
@@ -24,17 +25,17 @@ export const login = async (
   }
 
   if (input.email !== undefined && input.password !== undefined) {
-    const user = await userDB.findUnique({
-      where: {
-        email: input.email,
-      },
-    });
-
+    const db = (await connectDB).db("climbing");
+    const user = await db.collection("User").findOne({ email: input.email });
     if (!user) return { state: "error", message: ERROR_MESSAGES.user };
 
     if (!(await checkPassword(input.password, user.password))) {
       return { state: "error", message: ERROR_MESSAGES.pw };
     }
+
+    const session = await getSession(input.email);
+
+    console.log(session);
   }
 
   return { state: "success", message: null };

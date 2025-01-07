@@ -2,13 +2,18 @@
 
 import { useToggle } from "@/app/context/Popup";
 import { Button } from "@/components/ui/button";
+import { logout } from "../actions/logout";
 
-export default function LogInButton() {
+interface Props {
+  isLogin: boolean;
+}
+
+export default function LogInButton({ isLogin }: Props) {
   const toggle = useToggle();
 
   return (
-    <Button type="button" onClick={toggle}>
-      로그인
+    <Button type="button" onClick={isLogin ? logout : toggle}>
+      {isLogin ? "로그아웃" : "로그인"}
     </Button>
   );
 }

@@ -6,9 +6,11 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { cookies } from "next/headers";
 import LogInButton from "./LogInButton";
 
-export default function Header() {
+export default async function Header() {
+  const session = (await cookies()).get("session");
   return (
     <header className="flex w-full border justify-between">
       <NavigationMenu>
@@ -24,7 +26,7 @@ export default function Header() {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-      <LogInButton />
+      <LogInButton isLogin={session !== undefined} />
     </header>
   );
 }

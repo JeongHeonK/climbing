@@ -1,4 +1,5 @@
 import "server-only";
+
 import { JWTPayload, SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -47,9 +48,7 @@ export class Auth {
     const session = (await cookies()).get("session")?.value;
     const payload = await this.decrypt(session);
 
-    if (!session || !payload) {
-      throw new Error("다시 로그인 해주세요");
-    }
+    if (!session || !payload) return;
 
     const expires = new Date(Date.now() + SEVEN_DAY);
 

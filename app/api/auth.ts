@@ -1,29 +1,74 @@
-import { MongodbAdapter } from "@lucia-auth/adapter-mongodb";
-import { Lucia, TimeSpan } from "lucia";
-import { Collection } from "mongodb";
-import { connectDB } from "./database";
+import "server-only";
 
-interface UserDoc {
-  _id: string;
-}
+import { JWTPayload, SignJWT, jwtVerify } from "jose";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { SEVEN_DAY } from "../constant/constant";
 
-interface SessionDoc {
-  _id: string;
-  expires_at: Date;
-  user_id: string;
-}
+export class Auth {
+  private static secretKey = process.env.SESSION_SECRET;
+  private static encodedKey = new TextEncoder().encode(this.secretKey);
 
-const db = (await connectDB).db("climbing");
-const Session = db.collection("Sessions") as Collection<SessionDoc>;
-const UserSession = db.collection("UserSession") as Collection<UserDoc>;
-const adapter = new MongodbAdapter(Session, UserSession);
+  private static encrypt(payload: JWTPayload) {
+    return new SignJWT(payload)
+      .setProtectedHeader({ alg: "HS256" })
+      .setIssuedAt()
+      .setExpirationTime("7d")
+      .sign(this.encodedKey);
+  }
 
-export const lucia = new Lucia(adapter, {
-  sessionExpiresIn: new TimeSpan(1, "w"), // 2 weeks
-});
+  private static async decrypt(session: string | undefined = "") {
+    try {
+      const { payload } = await jwtVerify(session, this.encodedKey, {
+        algorithms: ["HS256"],
+      });
 
-export default async function getSession(userId: string) {
-  const session = await lucia.createSession(userId, {});
+      return payload;
+    } catch (err) {
+      const error = err as string;
+      throw new Error(error);
+    }
+  }
 
-  return session;
+  static async createSession(userId: string) {
+    const expiresAt = new Date(Date.now() + SEVEN_DAY);
+    const session = await Auth.encrypt({ userId, expiresAt });
+    const cookieStore = await cookies();
+
+    cookieStore.set("session", session, {
+      httpOnly: true,
+      secure: true,
+      expires: expiresAt,
+      sameSite: "lax",
+      path: "/",
+    });
+  }
+
+  static async updateSession() {
+    const session = (await cookies()).get("session")?.value;
+    const payload = await this.decrypt(session);
+
+    if (!session || !payload) return;
+
+    const expires = new Date(Date.now() + SEVEN_DAY);
+
+    const cookieStore = await cookies();
+    cookieStore.set("session", session, {
+      httpOnly: true,
+      secure: true,
+      expires,
+      sameSite: "lax",
+      path: "/",
+    });
+  }
+
+  private static async deleteSession() {
+    const cookieStore = await cookies();
+    cookieStore.delete("session");
+  }
+
+  static async logout() {
+    this.deleteSession();
+    redirect("/");
+  }
 }

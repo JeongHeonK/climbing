@@ -1,5 +1,7 @@
 export const REG = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).*$/;
 
+export const SEVEN_DAY = 7 * 24 * 60 * 60 * 1000;
+
 export const ERROR_MESSAGES = {
   email: "유효하지 않은 이메일입니다.",
   reg: "특수문자와 영문이 포함되어야 합니다.",

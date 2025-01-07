@@ -4,6 +4,7 @@ import { checkLoginValidation } from "@/app/util/validation";
 import { ERROR_MESSAGES } from "@/app/constant/constant";
 import { connectDB } from "@/app/api/database";
 import { checkPassword } from "@/app/util/bcrypt";
+import { Auth } from "@/app/api/auth";
 import { FormError } from "../type";
 
 export const login = async (
@@ -35,6 +36,6 @@ export const login = async (
     return { state: "error", message: ERROR_MESSAGES.pw };
   }
 
-  // 쿠키 함수 변경 예정
+  await Auth.createSession(input.email);
   return { state: "success", message: null };
 };

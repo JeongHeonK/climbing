@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CardContent } from "@/components/ui/card";
 import { useToggle } from "@/app/context/Popup";
-import { signup } from "./api/signup";
+import { signup } from "./actions/signup";
 import { FormError, PropsWithReactNode } from "./type";
 
 export default function Signup({ header, button }: PropsWithReactNode) {

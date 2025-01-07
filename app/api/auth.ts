@@ -1,13 +1,14 @@
 import "server-only";
 import { JWTPayload, SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { SEVEN_DAY } from "../constant/constant";
 
 export class Auth {
   private static secretKey = process.env.SESSION_SECRET;
   private static encodedKey = new TextEncoder().encode(this.secretKey);
 
-  static encrypt(payload: JWTPayload) {
+  private static encrypt(payload: JWTPayload) {
     return new SignJWT(payload)
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
@@ -15,7 +16,7 @@ export class Auth {
       .sign(this.encodedKey);
   }
 
-  static async decrypt(session: string | undefined = "") {
+  private static async decrypt(session: string | undefined = "") {
     try {
       const { payload } = await jwtVerify(session, this.encodedKey, {
         algorithms: ["HS256"],
@@ -40,5 +41,35 @@ export class Auth {
       sameSite: "lax",
       path: "/",
     });
+  }
+
+  static async updateSession() {
+    const session = (await cookies()).get("session")?.value;
+    const payload = await this.decrypt(session);
+
+    if (!session || !payload) {
+      throw new Error("다시 로그인 해주세요");
+    }
+
+    const expires = new Date(Date.now() + SEVEN_DAY);
+
+    const cookieStore = await cookies();
+    cookieStore.set("session", session, {
+      httpOnly: true,
+      secure: true,
+      expires,
+      sameSite: "lax",
+      path: "/",
+    });
+  }
+
+  private static async deleteSession() {
+    const cookieStore = await cookies();
+    cookieStore.delete("session");
+  }
+
+  static async logout() {
+    this.deleteSession();
+    redirect("/");
   }
 }

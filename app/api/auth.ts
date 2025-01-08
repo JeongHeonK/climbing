@@ -7,19 +7,19 @@ import { SEVEN_DAY } from "../constant/constant";
 
 export class Auth {
   private static secretKey = process.env.SESSION_SECRET;
-  private static encodedKey = new TextEncoder().encode(this.secretKey);
+  private static encodedKey = new TextEncoder().encode(Auth.secretKey);
 
   private static encrypt(payload: JWTPayload) {
     return new SignJWT(payload)
       .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
       .setExpirationTime("7d")
-      .sign(this.encodedKey);
+      .sign(Auth.encodedKey);
   }
 
   private static async decrypt(session: string | undefined = "") {
     try {
-      const { payload } = await jwtVerify(session, this.encodedKey, {
+      const { payload } = await jwtVerify(session, Auth.encodedKey, {
         algorithms: ["HS256"],
       });
 
@@ -46,7 +46,7 @@ export class Auth {
 
   static async updateSession() {
     const session = (await cookies()).get("session")?.value;
-    const payload = await this.decrypt(session);
+    const payload = await Auth.decrypt(session);
 
     if (!session || !payload) return;
 
@@ -68,7 +68,7 @@ export class Auth {
   }
 
   static async logout() {
-    this.deleteSession();
+    Auth.deleteSession();
     redirect("/");
   }
 }

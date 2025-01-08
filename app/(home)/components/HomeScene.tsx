@@ -1,9 +1,15 @@
-import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 import Gathering from "./Gathering";
 
 export default async function HomeScene() {
   return (
-    <main className="w-full">
+    <main className="w-full mt-20">
       <div className="px-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-y-8 py-2 px-12 md:px-3 max-w-[1100px] mx-auto">
         <Gathering
           title="양재 클라이밍"
@@ -42,9 +48,16 @@ export default async function HomeScene() {
           id="map6"
         />
       </div>
-      <Button className="text-2xl font-thin z-50 absolute bottom-1 right-10 rounded-full px-3">
-        +
-      </Button>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger className="bg-black text-white text-2xl font-thin z-50 fixed bottom-10 right-6 rounded-full px-3 py-1">
+            +
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>모임 생성하기</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </main>
   );
 }

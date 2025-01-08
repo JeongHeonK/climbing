@@ -29,7 +29,7 @@ export default async function Header() {
           </NavigationMenuItem>
           <NavigationMenuItem>
             <NavigationMenuLink
-              href="/"
+              href="/myClimbing"
               className="text-sm  hover:text-slate-500 transition-color"
             >
               MY CLIMBING

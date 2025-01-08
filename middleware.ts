@@ -11,8 +11,12 @@ export async function middleware(request: NextResponse) {
   if (request.url.includes("/detail") && !session) {
     return NextResponse.redirect(new URL("/", request.url));
   }
+
+  if (request.url.includes("/myClimbing") && !session) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
 }
 
 export const config = {
-  matcher: ["/", "/detail"],
+  matcher: ["/", "/myClimbing"],
 };

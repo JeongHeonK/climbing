@@ -1,14 +1,11 @@
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { cookies } from "next/headers";
 import Image from "next/image";
-import Link from "next/link";
 import LogInButton from "./LogInButton";
 
 export default async function Header() {
@@ -16,26 +13,32 @@ export default async function Header() {
   const isLogin = session !== undefined;
 
   return (
-    <header className="flex w-full border justify-between items-center">
+    <header className="flex w-full border justify-between items-center px-2">
       <NavigationMenu>
-        <NavigationMenuList className="pl-2 py-1">
+        <NavigationMenuList className="py-1 gap-2">
           <NavigationMenuItem>
-            <NavigationMenuLink href="/">
-              <Image src="/logo.png" width={50} height={50} alt="logo" />
+            <Image src="/logo.png" width={50} height={50} alt="logo" />
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              href="/"
+              className="text-sm hover:text-slate-500 transition-colors"
+            >
+              HOME
             </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger>Menu</NavigationMenuTrigger>
-            <NavigationMenuContent className="w-[120px] p-3 ">
-              <Link href="/myPage" className="hover:font-bold transition-all">
-                My Climbing
-              </Link>
-            </NavigationMenuContent>
+            <NavigationMenuLink
+              href="/"
+              className="text-sm  hover:text-slate-500 transition-color"
+            >
+              MY CLIMBING
+            </NavigationMenuLink>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
       <LogInButton isLogin={isLogin}>
-        {isLogin ? "Log In" : "Log Out"}
+        {isLogin ? "Log Out" : "Log In"}
       </LogInButton>
     </header>
   );

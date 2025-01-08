@@ -28,14 +28,14 @@ export default function Gathering({
   }).format(date);
 
   return (
-    <Card className="hover:-translate-y-2 transition-all">
-      <CardHeader className="mb-0 pb-2">
+    <Card className="hover:-translate-y-2 transition-all mx-auto p-1">
+      <CardHeader className="pb-2 mb-3">
         <CardTitle>{title}</CardTitle>
         <CardDescription>{newDate}</CardDescription>
       </CardHeader>
       <CardContent className="align-middle">
-        {image || <div className="size-32 mx-auto bg-slate-600 rounded-md" />}
-        <p className="mt-2">{location}</p>
+        {image || <div className="size-44 mx-auto bg-slate-600 rounded-md" />}
+        <p className="mt-3">{location}</p>
       </CardContent>
     </Card>
   );

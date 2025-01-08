@@ -52,7 +52,7 @@ export default function Gathering({
         <CardDescription>{newDate}</CardDescription>
       </CardHeader>
       <CardContent className="align-middle -mb-2">
-        <div id={id} className="size-44 mx-auto bg-slate-600 rounded-md" />
+        <div id={id} className="size-44 mx-auto rounded-md" />
         <p className="mt-4 mb-1">{location}</p>
       </CardContent>
     </Card>

@@ -1,6 +1,6 @@
 "use client";
 
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useCallback, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,15 +15,22 @@ export default function Authentication() {
   const toggle = useToggle();
   const preventPropagation = (e: MouseEvent) => e.stopPropagation();
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     SetIsMember((p) => !p);
-  };
+  }, []);
+
+  const handleClose = useCallback(() => {
+    SetIsMember(true);
+  }, []);
 
   if (isOpen) {
     return (
       <div
         className="w-full absolute top-0 right-0 bottom-0 bg-slate-900/75 z-50"
-        onClick={toggle}
+        onClick={() => {
+          toggle();
+          handleClose();
+        }}
       >
         <Card
           className="absolute top-40 flex flex-col max-w-[350px] mx-auto left-0 right-0"
@@ -31,6 +38,7 @@ export default function Authentication() {
         >
           {isMember ? (
             <Login
+              onClose={handleClose}
               header={<AuthenticationCardHeader text="Welcome Back" />}
               button={
                 <AuthenticationButton
@@ -41,6 +49,7 @@ export default function Authentication() {
             />
           ) : (
             <Signup
+              onClose={handleClose}
               header={<AuthenticationCardHeader text="Welcome Here" />}
               button={
                 <AuthenticationButton

@@ -6,7 +6,7 @@ import { useToggle } from "@/app/context/Popup";
 import { login } from "./actions/login";
 import { FormError, PropsWithReactNode } from "./type";
 
-export default function Login({ header, button }: PropsWithReactNode) {
+export default function Login({ header, button, onClose }: PropsWithReactNode) {
   const [userInput, handleInput] = useInput(initialData);
   const [formState, formAction] = useActionState(login, initialFormError);
   const toggle = useToggle();
@@ -14,8 +14,9 @@ export default function Login({ header, button }: PropsWithReactNode) {
   useEffect(() => {
     if (formState.state === "success") {
       toggle();
+      onClose();
     }
-  }, [formState, toggle]);
+  }, [toggle, onClose, formState.state]);
 
   return (
     <>

@@ -14,7 +14,6 @@ export default function LogInButton({
   children,
 }: PropsWithChildren<Props>) {
   const toggle = useToggle();
-
   return (
     <Button type="button" onClick={isLogin ? logout : toggle}>
       {children}

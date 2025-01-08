@@ -6,7 +6,11 @@ import { useToggle } from "@/app/context/Popup";
 import { signup } from "./actions/signup";
 import { FormError, PropsWithReactNode } from "./type";
 
-export default function Signup({ header, button }: PropsWithReactNode) {
+export default function Signup({
+  header,
+  button,
+  onClose,
+}: PropsWithReactNode) {
   const [userInput, handleInput] = useInput(initialData);
   const [formState, formAction] = useActionState(signup, initialFormError);
   const toggle = useToggle();
@@ -14,8 +18,9 @@ export default function Signup({ header, button }: PropsWithReactNode) {
   useEffect(() => {
     if (formState.state === "success") {
       toggle();
+      onClose();
     }
-  }, [formState, toggle]);
+  }, [toggle, onClose, formState.state]);
 
   return (
     <>

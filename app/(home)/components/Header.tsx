@@ -13,7 +13,7 @@ export default async function Header() {
   const isLogin = session !== undefined;
 
   return (
-    <header className="flex w-full border justify-between items-center px-2">
+    <header className="bg-white z-50 fixed top-0 left-0 right-0 flex w-full border justify-between items-center px-2">
       <NavigationMenu>
         <NavigationMenuList className="py-1 gap-2">
           <NavigationMenuItem>

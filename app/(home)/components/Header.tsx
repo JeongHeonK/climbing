@@ -1,32 +1,45 @@
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { cookies } from "next/headers";
+import Image from "next/image";
 import LogInButton from "./LogInButton";
 
 export default async function Header() {
   const session = (await cookies()).get("session");
+  const isLogin = session !== undefined;
+
   return (
-    <header className="flex w-full border justify-between">
+    <header className="flex w-full border justify-between items-center px-2">
       <NavigationMenu>
-        <NavigationMenuList>
+        <NavigationMenuList className="py-1 gap-2">
           <NavigationMenuItem>
-            <NavigationMenuLink href="/123">logo</NavigationMenuLink>
+            <Image src="/logo.png" width={50} height={50} alt="logo" />
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger>Menu</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <div className="p-4 w-[200px]">will be updated soon</div>
-            </NavigationMenuContent>
+            <NavigationMenuLink
+              href="/"
+              className="text-sm hover:text-slate-500 transition-colors"
+            >
+              HOME
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              href="/myClimbing"
+              className="text-sm  hover:text-slate-500 transition-color"
+            >
+              MY CLIMBING
+            </NavigationMenuLink>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-      <LogInButton isLogin={session !== undefined} />
+      <LogInButton isLogin={isLogin}>
+        {isLogin ? "Log Out" : "Log In"}
+      </LogInButton>
     </header>
   );
 }

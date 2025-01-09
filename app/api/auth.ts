@@ -71,7 +71,7 @@ export class Auth {
   }
 
   static async logout() {
-    Auth.deleteSession();
+    await Auth.deleteSession();
     redirect("/");
   }
 }

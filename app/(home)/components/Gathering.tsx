@@ -23,13 +23,7 @@ export default function Gathering({
   location,
   id,
 }: GatheringProps) {
-  const newDate = new Intl.DateTimeFormat("ko-KR", {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  }).format(date);
+  const newDate = getDate(date);
 
   useEffect(() => {
     const kakaoMapScript = generateKakaoScript();
@@ -58,3 +52,13 @@ export default function Gathering({
     </Card>
   );
 }
+
+const getDate = (data: Date) => {
+  return new Intl.DateTimeFormat("ko-KR", {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  }).format(data);
+};

@@ -1,7 +1,7 @@
 "use server";
 
 import { checkLoginValidation } from "@/app/util/validation";
-import { ERROR_MESSAGES } from "@/app/constant/constant";
+import { AUTH_ERROR_MESSAGES } from "@/app/constant/constant";
 import { connectDB } from "@/app/api/database";
 import { checkPassword } from "@/app/util/bcrypt";
 import { Auth } from "@/app/api/auth";
@@ -30,10 +30,10 @@ export const login = async (
   const db = (await connectDB).db("climbing");
   const user = await db.collection("member").findOne({ email: input.email });
 
-  if (!user) return { state: "error", message: ERROR_MESSAGES.user };
+  if (!user) return { state: "error", message: AUTH_ERROR_MESSAGES.user };
 
   if (!(await checkPassword(input.password, user.password))) {
-    return { state: "error", message: ERROR_MESSAGES.pw };
+    return { state: "error", message: AUTH_ERROR_MESSAGES.pw };
   }
 
   await Auth.createSession(input.email);

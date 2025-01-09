@@ -1,6 +1,6 @@
 "use server";
 
-import { ERROR_MESSAGES } from "@/app/constant/constant";
+import { AUTH_ERROR_MESSAGES } from "@/app/constant/constant";
 import { checkSignupValidation } from "@/app/util/validation";
 import { connectDB } from "@/app/api/database";
 import { hashPassword } from "@/app/util/bcrypt";
@@ -28,7 +28,8 @@ export const signup = async (
     const db = (await connectDB).db("climbing");
     const user = await db.collection("users").findOne({ email: input.email });
 
-    if (user) return { state: "error", message: ERROR_MESSAGES.existingEmail };
+    if (user)
+      return { state: "error", message: AUTH_ERROR_MESSAGES.existingEmail };
 
     const hash = await hashPassword(input.password);
 

@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { AUTH_ERROR_MESSAGES, REG } from "../constant/constant";
+import {
+  AUTH_ERROR_MESSAGES,
+  GATHERING_ERROR_MESSAGE,
+  REG,
+} from "../constant/constant";
 import { Message } from ".";
 
 const signupUser = z
@@ -37,3 +41,21 @@ const loginUser = z.object({
 });
 
 export const checkLoginValidation = loginUser.safeParse;
+
+const gathering = z.object({
+  title: z
+    .string()
+    .trim()
+    .min(3, new Message(GATHERING_ERROR_MESSAGE.titleMin))
+    .max(10, new Message(GATHERING_ERROR_MESSAGE.titleMax)),
+  description: z
+    .string()
+    .trim()
+    .min(5, new Message(GATHERING_ERROR_MESSAGE.descriptionMin))
+    .max(100, new Message(GATHERING_ERROR_MESSAGE.descriptionMax)),
+  lat: z.number(new Message(GATHERING_ERROR_MESSAGE.location)),
+  lng: z.number(new Message(GATHERING_ERROR_MESSAGE.location)),
+  date: z.date(new Message(GATHERING_ERROR_MESSAGE.date)),
+});
+
+export const gatheringValidation = gathering.safeParse;

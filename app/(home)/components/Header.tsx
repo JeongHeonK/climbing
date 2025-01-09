@@ -17,7 +17,14 @@ export default async function Header() {
       <NavigationMenu>
         <NavigationMenuList className="py-1 gap-2">
           <NavigationMenuItem>
-            <Image src="/logo.png" width={50} height={50} alt="logo" />
+            <Image
+              src="/logo.png"
+              alt="logo"
+              priority
+              width={50}
+              height={50}
+              className="w-auto h-auto"
+            />
           </NavigationMenuItem>
           <NavigationMenuItem>
             <NavigationMenuLink

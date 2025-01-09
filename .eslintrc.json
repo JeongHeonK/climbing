@@ -34,7 +34,10 @@
     "jsx-a11y/no-noninteractive-element-interactions": "off",
     "no-underscore-dangle": "off",
     "import/no-mutable-exports": "off",
-    "react/jsx-no-constructed-context-values": "off"
+    "react/jsx-no-constructed-context-values": "off",
+    "react/prop-types": "off",
+    "react/no-unstable-nested-components": "off",
+    "@typescript-eslint/no-shadow": "off"
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

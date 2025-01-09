@@ -12,9 +12,10 @@ import {
   generateMap,
   generateMarker,
 } from "@/app/(home)/util";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
+import { Label } from "@radix-ui/react-label";
 
-const formSchema = z.object({
+export const formSchema = z.object({
   title: z
     .string()
     .trim()
@@ -30,14 +31,30 @@ const formSchema = z.object({
   date: z.date(new Message(GATHERING_ERROR_MESSAGE.date)),
 });
 
+const initialValue: {
+  title: string;
+  description: string;
+  lat: number;
+  lng: number;
+  date: Date | undefined;
+} = {
+  title: "",
+  description: "",
+  lat: 0,
+  lng: 0,
+  date: new Date(),
+};
+
 export default function NewMeetingForm() {
-  const [location, setLocation] = useState({
-    lat: 0,
-    lng: 0,
-  });
-  const [date, setDate] = useState<Date | undefined>(new Date());
-  console.log(location);
-  console.log(date, formSchema);
+  const [userInput, setUserInput] = useState(initialValue);
+  console.log(userInput);
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    setUserInput((prev) => ({ ...prev, [name]: value }));
+  };
 
   useEffect(() => {
     const kakaoMapScript = generateKakaoScript();
@@ -56,7 +73,7 @@ export default function NewMeetingForm() {
 
           marker.setPosition(latlng);
 
-          setLocation((prev) => ({
+          setUserInput((prev) => ({
             ...prev,
             lat: latlng.getLat(),
             lng: latlng.getLng(),
@@ -77,19 +94,37 @@ export default function NewMeetingForm() {
         <div id="inputMap" className="size-52 rounded-md" />
         <Calendar
           mode="single"
-          selected={date}
-          onSelect={setDate}
+          selected={userInput.date}
+          onSelect={(value) =>
+            setUserInput((prev) => ({ ...prev, date: value }))
+          }
           className="rounded-md"
           disabled={(elem) => elem < new Date(new Date().getTime() - ONE_DAY)}
         />
-
-        <Input name="title" placeholder="모임 이름을 입력하세요" />
+        <Label htmlFor="title" className="self-start">
+          제목
+        </Label>
+        <Input
+          id="title"
+          name="title"
+          placeholder="모임 이름을 입력하세요"
+          value={userInput.title}
+          onChange={handleChange}
+        />
+        <Label htmlFor="description" className="self-start">
+          내용
+        </Label>
         <Textarea
+          id="description"
           name="description"
           rows={4}
           placeholder="모임 설명을 입력하세요."
+          value={userInput.description}
+          onChange={handleChange}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" className="mt-3">
+          모임 만들기
+        </Button>
       </form>
     </div>
   );

@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { Auth } from "./app/api/auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function middleware(request: NextResponse) {
+export async function middleware(request: NextRequest) {
   const session = (await cookies()).get("session");
   if (request.url.endsWith("/") && session) {
     await Auth.updateSession();

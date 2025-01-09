@@ -2,7 +2,10 @@ import { ChangeEvent, useActionState, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CardContent } from "@/components/ui/card";
-import { useToggle } from "@/app/context/Popup";
+import {
+  useAuthenticationAction,
+  useToggle,
+} from "@/app/context/ContextProvider";
 import { login } from "./actions/login";
 import { FormError, PropsWithReactNode } from "./type";
 
@@ -10,13 +13,15 @@ export default function Login({ header, button, onClose }: PropsWithReactNode) {
   const [userInput, handleInput] = useInput(initialData);
   const [formState, formAction] = useActionState(login, initialFormError);
   const toggle = useToggle();
+  const loginUser = useAuthenticationAction();
 
   useEffect(() => {
     if (formState.state === "success") {
       toggle();
       onClose();
+      loginUser();
     }
-  }, [toggle, onClose, formState.state]);
+  }, [toggle, onClose, loginUser, formState.state]);
 
   return (
     <>

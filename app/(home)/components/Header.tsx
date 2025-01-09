@@ -4,14 +4,10 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { cookies } from "next/headers";
 import Image from "next/image";
 import LogInButton from "./LogInButton";
 
 export default async function Header() {
-  const session = (await cookies()).get("session");
-  const isLogin = session !== undefined;
-
   return (
     <header className="bg-white z-50 fixed top-0 left-0 right-0 flex w-full border justify-between items-center px-2">
       <NavigationMenu>
@@ -44,9 +40,7 @@ export default async function Header() {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-      <LogInButton isLogin={isLogin}>
-        {isLogin ? "Log Out" : "Log In"}
-      </LogInButton>
+      <LogInButton />
     </header>
   );
 }

@@ -12,24 +12,24 @@ import {
 } from "@/app/(home)/util";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Label } from "@radix-ui/react-label";
+import { generateGathering } from "../actions/handleSubmit";
 
 const initialValue: {
   title: string;
   description: string;
-  lat: number;
-  lng: number;
+  lat: string;
+  lng: string;
   date: Date | undefined;
 } = {
   title: "",
   description: "",
-  lat: 0,
-  lng: 0,
+  lat: "",
+  lng: "",
   date: new Date(),
 };
 
 export default function NewMeetingForm() {
   const [userInput, setUserInput] = useState(initialValue);
-  console.log(userInput);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -48,19 +48,27 @@ export default function NewMeetingForm() {
 
         marker.setMap(map);
 
-        kakao.maps.event.addListener(map, "click", function <
-          T extends { latLng: { getLat: () => number; getLng: () => number } },
-        >(mouseEvent: T) {
-          const latlng = mouseEvent.latLng;
+        kakao.maps.event.addListener(
+          map,
+          "click",
+          <
+            T extends {
+              latLng: { getLat: () => number; getLng: () => number };
+            },
+          >(
+            mouseEvent: T,
+          ) => {
+            const latlng = mouseEvent.latLng;
 
-          marker.setPosition(latlng);
+            marker.setPosition(latlng);
 
-          setUserInput((prev) => ({
-            ...prev,
-            lat: latlng.getLat(),
-            lng: latlng.getLng(),
-          }));
-        });
+            setUserInput((prev) => ({
+              ...prev,
+              lat: latlng.getLat().toString(),
+              lng: latlng.getLng().toString(),
+            }));
+          },
+        );
       });
     };
 
@@ -70,7 +78,7 @@ export default function NewMeetingForm() {
   return (
     <div className="px-2">
       <form
-        onSubmit={() => {}}
+        action={generateGathering}
         className="max-w-[400px] mx-auto flex-col flex gap-2 items-center"
       >
         <div id="inputMap" className="size-52 rounded-md" />
@@ -92,6 +100,27 @@ export default function NewMeetingForm() {
           placeholder="모임 이름을 입력하세요"
           value={userInput.title}
           onChange={handleChange}
+        />
+        <Input
+          id="lng"
+          name="lng"
+          value={userInput.lng}
+          className="hidden"
+          onChange={handleChange}
+        />
+        <Input
+          id="lat"
+          name="lat"
+          value={userInput.lat}
+          className="hidden"
+          onChange={handleChange}
+        />
+        <Input
+          id="date"
+          name="date"
+          className="hidden"
+          onChange={handleChange}
+          value={userInput.date?.toDateString() ?? new Date().toDateString()}
         />
         <Label htmlFor="description" className="self-start">
           내용

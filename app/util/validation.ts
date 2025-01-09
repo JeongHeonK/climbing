@@ -53,8 +53,8 @@ const gathering = z.object({
     .trim()
     .min(5, new Message(GATHERING_ERROR_MESSAGE.descriptionMin))
     .max(100, new Message(GATHERING_ERROR_MESSAGE.descriptionMax)),
-  lat: z.number(new Message(GATHERING_ERROR_MESSAGE.location)),
-  lng: z.number(new Message(GATHERING_ERROR_MESSAGE.location)),
+  lat: z.string(new Message(GATHERING_ERROR_MESSAGE.location)),
+  lng: z.string(new Message(GATHERING_ERROR_MESSAGE.location)),
   date: z.date(new Message(GATHERING_ERROR_MESSAGE.date)),
 });
 

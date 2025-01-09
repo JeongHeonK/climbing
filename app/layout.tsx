@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import PopupProvider from "./context/Popup";
+import { cookies } from "next/headers";
+import ContextProvider from "./context/ContextProvider";
 import Authentication from "./components/Authentication/Authentication";
 import Header from "./(home)/components/Header";
 
@@ -20,21 +21,24 @@ export const metadata: Metadata = {
   description: "join Climbing group & have fun",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = (await cookies()).get("session");
+  const isLogin = session !== undefined;
+
   return (
     <html lang="ko">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <PopupProvider>
+        <ContextProvider initialUserState={isLogin}>
           <Authentication />
           <Header />
           {children}
-        </PopupProvider>
+        </ContextProvider>
       </body>
     </html>
   );

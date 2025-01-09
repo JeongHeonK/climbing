@@ -28,3 +28,13 @@ export const generateMarker = () => {
 
   return marker;
 };
+
+export const getDate = (data: Date) => {
+  return new Intl.DateTimeFormat("ko-KR", {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  }).format(data);
+};

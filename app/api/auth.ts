@@ -4,6 +4,7 @@ import { JWTPayload, SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { SEVEN_DAY } from "../constant/constant";
+import { isOverADay } from "../util";
 
 export class Auth {
   private static secretKey = process.env.SESSION_SECRET;
@@ -49,6 +50,8 @@ export class Auth {
     const payload = await Auth.decrypt(session);
 
     if (!session || !payload) return;
+
+    if (isOverADay(payload.expiresAt as string)) return;
 
     const expires = new Date(Date.now() + SEVEN_DAY);
 

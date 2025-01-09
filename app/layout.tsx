@@ -4,7 +4,7 @@ import "./globals.css";
 import PopupProvider from "./context/PopupContext";
 import Authentication from "./components/Authentication/Authentication";
 import Header from "./(home)/components/Header";
-import { SpaceDiv } from "./components/common/SpaceDiv";
+import { SpaceDiv24 } from "./components/common/SpaceDiv";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +34,7 @@ export default async function RootLayout({
         <PopupProvider>
           <Authentication />
           <Header />
-          <SpaceDiv vertical={24} />
+          <SpaceDiv24 />
           {children}
         </PopupProvider>
       </body>

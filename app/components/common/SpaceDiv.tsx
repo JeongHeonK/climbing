@@ -1,8 +1,7 @@
-interface SpaceDivProps {
-  vertical?: number;
-  horizontal?: number;
+export function SpaceDiv24() {
+  return <div className="mb-24" />;
 }
 
-export function SpaceDiv({ vertical, horizontal }: SpaceDivProps) {
-  return <div className={`mb-${vertical ?? 0} mr-${horizontal ?? 0}`} />;
+export function SpaceDiv20() {
+  return <div className="mb-20" />;
 }

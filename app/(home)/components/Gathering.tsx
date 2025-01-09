@@ -8,7 +8,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useEffect } from "react";
-import { generateMap, generateMarker, generateKakaoScript } from "../util";
+import {
+  generateMap,
+  generateMarker,
+  generateKakaoScript,
+  getDate,
+} from "../util";
 
 interface GatheringProps {
   title: string;
@@ -52,13 +57,3 @@ export default function Gathering({
     </Card>
   );
 }
-
-const getDate = (data: Date) => {
-  return new Intl.DateTimeFormat("ko-KR", {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  }).format(data);
-};

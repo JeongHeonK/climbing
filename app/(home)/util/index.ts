@@ -10,7 +10,7 @@ export const generateKakaoScript = () => {
 export const generateMap = (id: string, level: number = 5) => {
   const container = document.getElementById(id);
   const options = {
-    center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+    center: new window.kakao.maps.LatLng(37.5641, 126.997),
     level,
   };
 
@@ -19,11 +19,10 @@ export const generateMap = (id: string, level: number = 5) => {
   return map;
 };
 
-export const generateMarker = () => {
-  const markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
-
+export const generateMarker = <T extends { getCenter: () => void }>(map: T) => {
   const marker = new kakao.maps.Marker({
-    position: markerPosition,
+    map,
+    position: map.getCenter(),
   });
 
   return marker;

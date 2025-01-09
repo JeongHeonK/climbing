@@ -1,27 +1,19 @@
 "use client";
 
-import { useCallback } from "react";
-import {
-  useAuthenticationAction,
-  useToggle,
-  useUserState,
-} from "@/app/context/ContextProvider";
+import { PropsWithChildren } from "react";
+import { useToggle } from "@/app/context/PopupContext";
 import { Button } from "@/components/ui/button";
 import { logout } from "../actions/logout";
 
-export default function LogInButton() {
-  const userState = useUserState();
-  const logoutUser = useAuthenticationAction();
+export default function LogInButton({
+  isLogin,
+  children,
+}: PropsWithChildren<{ isLogin: boolean }>) {
   const toggle = useToggle();
 
-  const handleLogout = useCallback(() => {
-    logout();
-    logoutUser();
-  }, [logoutUser]);
-
   return (
-    <Button type="button" onClick={userState ? handleLogout : toggle}>
-      {userState ? "Log Out" : "Log In"}
+    <Button type="button" onClick={isLogin ? logout : toggle}>
+      {children}
     </Button>
   );
 }

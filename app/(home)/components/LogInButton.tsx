@@ -1,7 +1,7 @@
 "use client";
 
 import { PropsWithChildren } from "react";
-import { useToggle } from "@/app/context/ContextProvider";
+import { useToggle } from "@/app/context/PopupContext";
 import { Button } from "@/components/ui/button";
 import { logout } from "../actions/logout";
 

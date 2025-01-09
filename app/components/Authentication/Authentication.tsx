@@ -4,7 +4,7 @@ import { MouseEvent, useCallback, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { usePopupState, useToggle } from "../../context/ContextProvider";
+import { usePopupState, useToggle } from "../../context/PopupContext";
 import Login from "./Login";
 import Signup from "./Signup";
 import Spinner from "../common/Spinner";

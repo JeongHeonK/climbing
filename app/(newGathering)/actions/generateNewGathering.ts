@@ -4,6 +4,7 @@ import { Auth } from "@/app/api/auth";
 import { connectDB } from "@/app/api/database";
 import { FormError } from "@/app/components/Authentication/type";
 import { gatheringValidation } from "@/app/util/validation";
+import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
 export const generateGathering = async (
@@ -42,6 +43,6 @@ export const generateGathering = async (
     lng: userInput.lng,
     date: userInput.date,
   });
-
+  redirect("/");
   return { state: "success", message: null };
 };

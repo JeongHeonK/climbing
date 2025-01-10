@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ONE_DAY } from "@/app/constant/constant";
 import { Calendar } from "@/components/ui/calendar";
@@ -10,9 +9,12 @@ import {
   generateMap,
   generateMarker,
 } from "@/app/(home)/util";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useActionState, useEffect, useState } from "react";
 import { Label } from "@radix-ui/react-label";
-import { generateGathering } from "../actions/handleSubmit";
+import { FormError } from "@/app/components/Authentication/type";
+import { useToast } from "@/hooks/use-toast";
+import { generateGathering } from "../actions/generateNewGathering";
+import SubmitButton from "./SubmitButton";
 
 export type InitialValue = {
   title: string;
@@ -31,13 +33,28 @@ const initialValue: InitialValue = {
 };
 
 export default function NewMeetingForm() {
-  const { userInput, handleDateChange, handleInputChange } = useMeeting();
+  const {
+    userInput,
+    handleDateChange,
+    handleInputChange,
+    onSubmit,
+    formState,
+  } = useMeeting();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (formState.message !== null) {
+      toast({
+        description: formState.message,
+      });
+    }
+  }, [formState.message]);
 
   return (
     <div className="px-2">
       <form
-        action={generateGathering}
-        className="max-w-[400px] mx-auto flex-col flex  gap-2 items-center"
+        action={onSubmit}
+        className="max-w-[400px] mx-auto flex-col flex  gap-2 items-center bg-white px-5 py-5 -mt-3 rounded-md"
       >
         <div id="inputMap" className="size-52 rounded-md" />
         <Calendar
@@ -89,16 +106,22 @@ export default function NewMeetingForm() {
           value={userInput.description}
           onChange={handleInputChange}
         />
-        <Button type="submit" className="mt-3">
-          모임 만들기
-        </Button>
+        <SubmitButton />
       </form>
     </div>
   );
 }
 
+const initialFormError: FormError = {
+  state: null,
+  message: null,
+};
 const useMeeting = () => {
   const [userInput, setUserInput] = useState(initialValue);
+  const [formState, onSubmit] = useActionState(
+    generateGathering,
+    initialFormError,
+  );
 
   const handleDateChange = (value: Date | undefined) => {
     setUserInput((prev) => ({ ...prev, date: value }));
@@ -152,5 +175,11 @@ const useMeeting = () => {
     };
   }, []);
 
-  return { userInput, handleDateChange, handleInputChange };
+  return {
+    userInput,
+    handleDateChange,
+    handleInputChange,
+    onSubmit,
+    formState,
+  };
 };

@@ -9,7 +9,7 @@ import Image from "next/image";
 import LogInButton from "./LogInButton";
 
 export default async function Header() {
-  const session = await (await cookies()).get("session");
+  const session = (await cookies()).get("session");
   const isLogin = session !== undefined;
 
   return (
@@ -21,8 +21,8 @@ export default async function Header() {
               src="/logo.png"
               alt="logo"
               priority
-              width={50}
-              height={50}
+              width={35}
+              height={35}
               className="w-auto h-auto"
             />
           </NavigationMenuItem>

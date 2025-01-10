@@ -73,6 +73,10 @@ export default function NewMeetingForm() {
     };
 
     kakaoMapScript.addEventListener("load", onLoadKakaoAPI);
+
+    return () => {
+      kakaoMapScript.removeEventListener("load", onLoadKakaoAPI);
+    };
   }, []);
 
   return (

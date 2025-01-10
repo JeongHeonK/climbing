@@ -14,13 +14,15 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { Label } from "@radix-ui/react-label";
 import { generateGathering } from "../actions/handleSubmit";
 
-const initialValue: {
+export type InitialValue = {
   title: string;
   description: string;
   lat: string;
   lng: string;
   date: Date | undefined;
-} = {
+};
+
+const initialValue: InitialValue = {
   title: "",
   description: "",
   lat: "",
@@ -29,9 +31,80 @@ const initialValue: {
 };
 
 export default function NewMeetingForm() {
+  const { userInput, handleDateChange, handleInputChange } = useMeeting();
+
+  return (
+    <div className="px-2">
+      <form
+        action={generateGathering}
+        className="max-w-[400px] mx-auto flex-col flex  gap-2 items-center"
+      >
+        <div id="inputMap" className="size-52 rounded-md" />
+        <Calendar
+          mode="single"
+          selected={userInput.date}
+          onSelect={handleDateChange}
+          className="rounded-md"
+          disabled={(elem) => elem < new Date(new Date().getTime() - ONE_DAY)}
+        />
+        <Label htmlFor="title" className="self-start">
+          제목
+        </Label>
+        <Input
+          id="title"
+          name="title"
+          placeholder="모임 이름을 입력하세요"
+          value={userInput.title}
+          onChange={handleInputChange}
+        />
+        <Input
+          id="lng"
+          name="lng"
+          value={userInput.lng}
+          className="hidden"
+          onChange={handleInputChange}
+        />
+        <Input
+          id="lat"
+          name="lat"
+          value={userInput.lat}
+          className="hidden"
+          onChange={handleInputChange}
+        />
+        <Input
+          id="date"
+          name="date"
+          className="hidden"
+          onChange={handleInputChange}
+          value={userInput.date?.toDateString() ?? new Date().toDateString()}
+        />
+        <Label htmlFor="description" className="self-start">
+          내용
+        </Label>
+        <Textarea
+          id="description"
+          name="description"
+          rows={4}
+          placeholder="모임 설명을 입력하세요."
+          value={userInput.description}
+          onChange={handleInputChange}
+        />
+        <Button type="submit" className="mt-3">
+          모임 만들기
+        </Button>
+      </form>
+    </div>
+  );
+}
+
+const useMeeting = () => {
   const [userInput, setUserInput] = useState(initialValue);
 
-  const handleChange = (
+  const handleDateChange = (value: Date | undefined) => {
+    setUserInput((prev) => ({ ...prev, date: value }));
+  };
+
+  const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
@@ -79,68 +152,5 @@ export default function NewMeetingForm() {
     };
   }, []);
 
-  return (
-    <div className="px-2">
-      <form
-        action={generateGathering}
-        className="max-w-[400px] mx-auto flex-col flex gap-2 items-center"
-      >
-        <div id="inputMap" className="size-52 rounded-md" />
-        <Calendar
-          mode="single"
-          selected={userInput.date}
-          onSelect={(value) =>
-            setUserInput((prev) => ({ ...prev, date: value }))
-          }
-          className="rounded-md"
-          disabled={(elem) => elem < new Date(new Date().getTime() - ONE_DAY)}
-        />
-        <Label htmlFor="title" className="self-start">
-          제목
-        </Label>
-        <Input
-          id="title"
-          name="title"
-          placeholder="모임 이름을 입력하세요"
-          value={userInput.title}
-          onChange={handleChange}
-        />
-        <Input
-          id="lng"
-          name="lng"
-          value={userInput.lng}
-          className="hidden"
-          onChange={handleChange}
-        />
-        <Input
-          id="lat"
-          name="lat"
-          value={userInput.lat}
-          className="hidden"
-          onChange={handleChange}
-        />
-        <Input
-          id="date"
-          name="date"
-          className="hidden"
-          onChange={handleChange}
-          value={userInput.date?.toDateString() ?? new Date().toDateString()}
-        />
-        <Label htmlFor="description" className="self-start">
-          내용
-        </Label>
-        <Textarea
-          id="description"
-          name="description"
-          rows={4}
-          placeholder="모임 설명을 입력하세요."
-          value={userInput.description}
-          onChange={handleChange}
-        />
-        <Button type="submit" className="mt-3">
-          모임 만들기
-        </Button>
-      </form>
-    </div>
-  );
-}
+  return { userInput, handleDateChange, handleInputChange };
+};

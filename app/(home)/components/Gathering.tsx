@@ -2,7 +2,6 @@
 
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -18,16 +17,10 @@ import {
 interface GatheringProps {
   title: string;
   date: Date;
-  location: string;
   id: string;
 }
 
-export default function Gathering({
-  title,
-  date,
-
-  id,
-}: GatheringProps) {
+export default function Gathering({ title, date, id }: GatheringProps) {
   const newDate = getDate(date);
 
   useEffect(() => {

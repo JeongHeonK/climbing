@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 import PopupProvider from "./context/PopupContext";
 import Authentication from "./components/Authentication/Authentication";
 import Header from "./(home)/components/Header";
@@ -37,6 +38,7 @@ export default async function RootLayout({
           <SpaceDiv20 />
           {children}
         </PopupProvider>
+        <Toaster />
       </body>
     </html>
   );

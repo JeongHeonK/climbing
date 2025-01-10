@@ -74,4 +74,9 @@ export class Auth {
     await Auth.deleteSession();
     redirect("/");
   }
+
+  static async getUsername(session: string) {
+    const payload = await Auth.decrypt(JSON.parse(session));
+    return payload.userId as string;
+  }
 }

@@ -33,7 +33,5 @@ export const getDate = (data: Date) => {
     year: "numeric",
     month: "numeric",
     day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
   }).format(data);
 };

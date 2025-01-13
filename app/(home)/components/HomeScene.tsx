@@ -5,7 +5,8 @@ import { getGathering } from "../actions/getGatherings";
 
 export default async function HomeScene() {
   const isLogin = (await cookies()).get("session") !== undefined;
-  const gatherings = await getGathering();
+  const result = await getGathering(1);
+  const gatherings = (await result.hasNext()) ? await result.toArray() : [];
 
   return (
     <main className="w-full bg-slate-50">

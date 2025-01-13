@@ -64,7 +64,7 @@ export default function Gathering({
     return () => {
       kakaoMapScript.removeEventListener("load", onLoadKakaoAPI);
     };
-  }, [id]);
+  }, [id, lat, lng]);
 
   return (
     <Card

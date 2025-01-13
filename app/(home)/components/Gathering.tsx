@@ -17,16 +17,22 @@ import {
 } from "../util";
 
 interface GatheringProps {
+  id: string;
+  user: string;
   title: string;
   date: Date;
-  id: string;
+  lat: number;
+  lng: number;
   isLogin: boolean;
 }
 
 export default function Gathering({
+  id,
+  user,
   title,
   date,
-  id,
+  lat,
+  lng,
   isLogin,
 }: GatheringProps) {
   const newDate = getDate(date);
@@ -46,7 +52,7 @@ export default function Gathering({
 
     const onLoadKakaoAPI = () => {
       window.kakao.maps.load(() => {
-        const map = generateMap(id);
+        const map = generateMap(id, lat, lng);
         const marker = generateMarker(map);
 
         marker.setMap(map);
@@ -70,8 +76,11 @@ export default function Gathering({
         className="size-48 mx-auto rounded-md border border-slate-200"
       />
       <CardHeader className="p-0 py-2 my-3">
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{newDate}</CardDescription>
+        <div className="flex justify-between items-center">
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{newDate}</CardDescription>
+        </div>
+        <CardDescription>{user}</CardDescription>
       </CardHeader>
     </Card>
   );

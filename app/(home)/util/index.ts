@@ -7,10 +7,15 @@ export const generateKakaoScript = () => {
   return kakaoMapScript;
 };
 
-export const generateMap = (id: string, level: number = 5) => {
+export const generateMap = (
+  id: string,
+  lat: number = 37.5641,
+  lng: number = 126.997,
+  level: number = 5,
+) => {
   const container = document.getElementById(id);
   const options = {
-    center: new window.kakao.maps.LatLng(37.5641, 126.997),
+    center: new window.kakao.maps.LatLng(lat, lng),
     level,
   };
 

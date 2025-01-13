@@ -47,7 +47,7 @@ export default function Gatherings({
 
   return (
     <>
-      <div className="px-8 md:px-8 flex gap-3 justify-end items-center -mt-6">
+      <div className="px-8 md:px-8 flex gap-3 justify-end items-center -mt-8">
         <Button
           onClick={handlePrevClick}
           className="bg-slate-400"

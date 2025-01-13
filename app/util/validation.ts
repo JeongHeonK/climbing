@@ -50,7 +50,7 @@ const gathering = z.object({
     .string()
     .trim()
     .min(3, new Message(GATHERING_ERROR_MESSAGE.titleMin))
-    .max(10, new Message(GATHERING_ERROR_MESSAGE.titleMax)),
+    .max(20, new Message(GATHERING_ERROR_MESSAGE.titleMax)),
   description: z
     .string()
     .trim()
@@ -64,5 +64,5 @@ export const gatheringValidation = gathering.safeParse;
 
 export type Gathering = z.infer<typeof gathering> & {
   user: string;
-  date: string;
+  date: Date;
 };

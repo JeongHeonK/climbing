@@ -3,7 +3,7 @@
 import { Auth } from "@/app/api/auth";
 import { connectDB } from "@/app/api/database";
 import { FormError } from "@/app/components/Authentication/type";
-import { gatheringValidation } from "@/app/util/validation";
+import { gatheringValidation, Gathering } from "@/app/util/validation";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
@@ -18,7 +18,7 @@ export const generateGathering = async (
   const userInput = {
     title: formData.get("title")?.toString(),
     description: formData.get("description")?.toString(),
-    lat: formData.get("lat"),
+    lat: formData.get("lat")?.toString(),
     lng: formData.get("lng")?.toString(),
     date: formData.get("date")?.toString(),
   };
@@ -33,8 +33,17 @@ export const generateGathering = async (
 
   const userId = await Auth.getUsername(JSON.stringify(session));
 
+  if (
+    userInput.title === undefined ||
+    userInput.description === undefined ||
+    userInput.lat === undefined ||
+    userInput.lng === undefined ||
+    userInput.date === undefined
+  )
+    return { state: "error", message: "빈 값을 입력할 수 없습니다" };
+
   const db = (await connectDB).db("climbing");
-  await db.collection("gathering").insertOne({
+  await db.collection<Gathering>("gathering").insertOne({
     user: userId,
     title: userInput.title,
     description: userInput.description,

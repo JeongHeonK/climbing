@@ -1,7 +1,7 @@
 "use server";
 
 import { AUTH_ERROR_MESSAGES } from "@/app/constant/constant";
-import { checkSignupValidation } from "@/app/util/validation";
+import { checkSignupValidation, SignupUser } from "@/app/util/validation";
 import { connectDB } from "@/app/api/database";
 import { hashPassword } from "@/app/util/bcrypt";
 import { FormError } from "../type";
@@ -26,7 +26,9 @@ export const signup = async (
 
   if (input.email !== undefined && input.password !== undefined) {
     const db = (await connectDB).db("climbing");
-    const user = await db.collection("users").findOne({ email: input.email });
+    const user = await db
+      .collection<SignupUser>("users")
+      .findOne({ email: input.email });
 
     if (user)
       return { state: "error", message: AUTH_ERROR_MESSAGES.existingEmail };

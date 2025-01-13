@@ -1,6 +1,6 @@
 "use server";
 
-import { checkLoginValidation } from "@/app/util/validation";
+import { checkLoginValidation, LoginUser } from "@/app/util/validation";
 import { AUTH_ERROR_MESSAGES } from "@/app/constant/constant";
 import { connectDB } from "@/app/api/database";
 import { checkPassword } from "@/app/util/bcrypt";
@@ -28,7 +28,9 @@ export const login = async (
     return { state: "error", message: "다시 한번 입력해주세요" };
 
   const db = (await connectDB).db("climbing");
-  const user = await db.collection("member").findOne({ email: input.email });
+  const user = await db
+    .collection<LoginUser>("member")
+    .findOne({ email: input.email });
 
   if (!user) return { state: "error", message: AUTH_ERROR_MESSAGES.user };
 

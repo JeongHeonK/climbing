@@ -48,7 +48,7 @@ export default function NewMeetingForm() {
         description: formState.message,
       });
     }
-  }, [formState.message]);
+  }, [formState.message, toast]);
 
   return (
     <div className="px-2">

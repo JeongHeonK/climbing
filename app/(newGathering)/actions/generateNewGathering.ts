@@ -32,7 +32,6 @@ export const generateGathering = async (
   }
 
   const userId = await Auth.getUsername(JSON.stringify(session));
-  console.log(userId);
 
   const db = (await connectDB).db("climbing");
   await db.collection("gathering").insertOne({

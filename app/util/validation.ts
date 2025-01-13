@@ -30,6 +30,8 @@ const signupUser = z
   });
 
 export const checkSignupValidation = signupUser.safeParse;
+type Signup = z.infer<typeof signupUser>;
+export type SignupUser = Omit<Signup, "passwordCheck">;
 
 const loginUser = z.object({
   email: z.string().email(new Message(AUTH_ERROR_MESSAGES.email)),
@@ -41,6 +43,7 @@ const loginUser = z.object({
 });
 
 export const checkLoginValidation = loginUser.safeParse;
+export type LoginUser = z.infer<typeof loginUser>;
 
 const gathering = z.object({
   title: z
@@ -58,3 +61,8 @@ const gathering = z.object({
 });
 
 export const gatheringValidation = gathering.safeParse;
+
+export type Gathering = z.infer<typeof gathering> & {
+  user: string;
+  date: string;
+};

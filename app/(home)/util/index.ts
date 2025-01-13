@@ -38,5 +38,5 @@ export const getDate = (data: Date) => {
     year: "numeric",
     month: "numeric",
     day: "numeric",
-  }).format(data);
+  }).format(new Date(data));
 };

@@ -3,18 +3,21 @@ import { Auth } from "./app/api/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  const session = (await cookies()).get("session");
+  const cookieStorage = await cookies();
+  const session = cookieStorage.get("session");
+  const response = NextResponse.next();
 
   if (request.url.endsWith("/") && session) {
     await Auth.updateSession();
-    return NextResponse.next();
+
+    return response;
   }
 
   if (request.url.includes("/newGathering") && !session) {
     return NextResponse.rewrite(new URL("/", request.nextUrl));
   }
 
-  if (request.url.includes("/myClimbing") || !session) {
+  if (request.url.includes("/myClimbing") && !session) {
     return NextResponse.rewrite(new URL("/", request.nextUrl));
   }
 }

@@ -7,6 +7,7 @@ import {
 import { cookies } from "next/headers";
 import Image from "next/image";
 import LogInButton from "./LogInButton";
+import CustomLink from "./CustomLink";
 
 export default async function Header() {
   const session = (await cookies()).get("session");
@@ -35,12 +36,7 @@ export default async function Header() {
             </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuLink
-              href="/myClimbing"
-              className="text-sm  hover:text-slate-500 transition-color"
-            >
-              MY CLIMBING
-            </NavigationMenuLink>
+            <CustomLink isLogin={isLogin}>MY CLIMBING</CustomLink>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>

@@ -49,7 +49,7 @@ export const generateGathering = async (
     description: userInput.description,
     lat: userInput.lat,
     lng: userInput.lng,
-    date: userInput.date,
+    date: new Date(userInput.date),
   });
   redirect("/");
   return { state: "success", message: null };

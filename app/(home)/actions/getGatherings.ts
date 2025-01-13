@@ -7,7 +7,7 @@ interface Gathering {
   description: string;
   lat: string;
   lng: string;
-  date: string;
+  date: Date;
 }
 
 export const getGathering = async (page = 1) => {
@@ -18,8 +18,10 @@ export const getGathering = async (page = 1) => {
     .collection<Gathering>("gathering")
     .find({})
     .skip(skipCount)
-    .sort({ date: -1 })
-    .limit(8);
+    .limit(8)
+    .sort({ date: -1 });
 
-  return result;
+  const gatherings = (await result.hasNext()) ? await result.toArray() : [];
+
+  return gatherings;
 };

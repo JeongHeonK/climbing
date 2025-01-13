@@ -6,7 +6,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useEffect } from "react";
+import { MouseEvent, useEffect } from "react";
+import { useToggle } from "@/app/context/PopupContext";
+import { useToast } from "@/hooks/use-toast";
 import {
   generateMap,
   generateMarker,
@@ -18,10 +20,26 @@ interface GatheringProps {
   title: string;
   date: Date;
   id: string;
+  isLogin: boolean;
 }
 
-export default function Gathering({ title, date, id }: GatheringProps) {
+export default function Gathering({
+  title,
+  date,
+  id,
+  isLogin,
+}: GatheringProps) {
   const newDate = getDate(date);
+  const { toast } = useToast();
+  const toggle = useToggle();
+
+  const handleClick = (e: MouseEvent) => {
+    if (!isLogin) {
+      e.preventDefault();
+      toggle();
+      toast({ description: "로그인 후 이용해주세요" });
+    }
+  };
 
   useEffect(() => {
     const kakaoMapScript = generateKakaoScript();
@@ -41,8 +59,12 @@ export default function Gathering({ title, date, id }: GatheringProps) {
       kakaoMapScript.removeEventListener("load", onLoadKakaoAPI);
     };
   }, [id]);
+
   return (
-    <Card className="hover:-translate-y-2 transition-all mx-auto px-4 pt-4 pb-0">
+    <Card
+      className="hover:-translate-y-2 transition-all mx-auto px-4 pt-4 pb-0"
+      onClick={handleClick}
+    >
       <div
         id={id}
         className="size-48 mx-auto rounded-md border border-slate-200"

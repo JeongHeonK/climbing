@@ -76,11 +76,11 @@ export default function Gathering({
         className="size-48 mx-auto rounded-md border border-slate-200"
       />
       <CardHeader className="p-0 py-2 my-3">
+        <CardTitle>{title}</CardTitle>
         <div className="flex justify-between items-center">
-          <CardTitle>{title}</CardTitle>
           <CardDescription>{newDate}</CardDescription>
+          <CardDescription>{user}</CardDescription>
         </div>
-        <CardDescription>{user}</CardDescription>
       </CardHeader>
     </Card>
   );

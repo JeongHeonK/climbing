@@ -11,9 +11,9 @@ export const getGatherings = async (page = 1) => {
   const result = await db
     .collection<IGathering>("gathering")
     .find({})
+    .sort({ date: -1 })
     .skip(skipCount)
     .limit(9)
-    .sort({ date: -1 })
     .toArray();
 
   const gatherings = result.slice(0, 8).map((data) => ({

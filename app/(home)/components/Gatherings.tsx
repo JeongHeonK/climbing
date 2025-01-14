@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { WithId } from "mongodb";
 import Gathering from "./Gathering";
-import { getGathering, IGathering } from "../actions/getGatherings";
+import { getGatherings } from "../actions/getGatherings";
+import { IGathering } from "../types/type";
 
 export default function Gatherings({
   isLogin,
@@ -31,7 +32,7 @@ export default function Gatherings({
   useEffect(() => {
     const updateGatherings = async () => {
       const { gatherings: newGatherings, hasNext } =
-        await getGathering(currentPage);
+        await getGatherings(currentPage);
 
       if (!hasNext) {
         setNextDisabled(true);

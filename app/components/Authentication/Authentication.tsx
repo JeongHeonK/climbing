@@ -1,9 +1,10 @@
 "use client";
 
-import { MouseEvent, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { stopBubbling } from "@/app/util";
 import { usePopupState, useToggle } from "../../context/PopupContext";
 import Login from "./Login";
 import Signup from "./Signup";
@@ -13,7 +14,6 @@ export default function Authentication() {
   const [isMember, SetIsMember] = useState(true);
   const isOpen = usePopupState();
   const toggle = useToggle();
-  const preventPropagation = (e: MouseEvent) => e.stopPropagation();
 
   const handleClick = useCallback(() => {
     SetIsMember((p) => !p);
@@ -34,7 +34,7 @@ export default function Authentication() {
       >
         <Card
           className="absolute top-40 flex flex-col max-w-[350px] mx-auto left-0 right-0"
-          onClick={preventPropagation}
+          onClick={stopBubbling}
         >
           {isMember ? (
             <Login

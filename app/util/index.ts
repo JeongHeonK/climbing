@@ -1,3 +1,4 @@
+import { MouseEvent } from "react";
 import { ONE_DAY } from "../constant/constant";
 
 export class Message {
@@ -9,3 +10,5 @@ export const isOverADay = (date: string) => {
   const today = new Date();
   return Number(sessionLeft) - Number(today) > ONE_DAY;
 };
+
+export const stopBubbling = (e: MouseEvent) => e.stopPropagation();

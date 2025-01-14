@@ -1,27 +1,19 @@
 "use server";
 
 import { connectDB } from "@/app/api/database";
+import { ObjectId } from "mongodb";
+import { IGathering } from "../types/type";
 
-export interface IGathering {
-  _id: string;
-  user: string;
-  title: string;
-  description: string;
-  lat: string;
-  lng: string;
-  date: Date;
-}
-
-export const getGathering = async (page = 1) => {
+export const getGatherings = async (page = 1) => {
   const skipCount = (page - 1) * 8;
 
   const db = (await connectDB).db("climbing");
   const result = await db
     .collection<IGathering>("gathering")
     .find({})
+    .sort({ date: -1 })
     .skip(skipCount)
     .limit(9)
-    .sort({ date: -1 })
     .toArray();
 
   const gatherings = result.slice(0, 8).map((data) => ({
@@ -31,4 +23,13 @@ export const getGathering = async (page = 1) => {
 
   const hasNext = result.length > 8;
   return { gatherings, hasNext };
+};
+
+export const getGathering = async (id: string) => {
+  const db = (await connectDB).db("climbing");
+  const result = await db
+    .collection("gathering")
+    .findOne({ _id: new ObjectId(id) });
+
+  return result;
 };

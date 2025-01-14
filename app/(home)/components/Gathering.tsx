@@ -49,7 +49,7 @@ export default function Gathering({
       toast({ description: "로그인 후 이용해주세요" });
       return;
     }
-    router.push(`/detail/${id}`);
+    router.push(`/detail/${id}`, { scroll: false });
   };
 
   useEffect(() => {

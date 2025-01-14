@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { WithId } from "mongodb";
 import Gathering from "./Gathering";
-import { getGatherings, IGathering } from "../actions/getGatherings";
+import { getGatherings } from "../actions/getGatherings";
+import { IGathering } from "../types/type";
 
 export default function Gatherings({
   isLogin,

@@ -2,16 +2,7 @@
 
 import { connectDB } from "@/app/api/database";
 import { ObjectId } from "mongodb";
-
-export interface IGathering {
-  _id: string;
-  user: string;
-  title: string;
-  description: string;
-  lat: string;
-  lng: string;
-  date: Date;
-}
+import { IGathering } from "../types/type";
 
 export const getGatherings = async (page = 1) => {
   const skipCount = (page - 1) * 8;

@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { stopBubbling } from "@/app/util";
 import {
   generateKakaoScript,
   generateMap,
@@ -57,7 +58,10 @@ export default function GatheringDetail({
   }, [_id, lat, lng]);
 
   return (
-    <Card className="fixed top-32 right-0 gap-2 left-0 mx-auto max-w-[400px] flex flex-col py-2 px-6">
+    <Card
+      className="fixed top-32 right-0 gap-2 left-0 mx-auto max-w-[400px] flex flex-col py-2 px-6"
+      onClick={stopBubbling}
+    >
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <div className="flex justify-between">

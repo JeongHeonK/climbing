@@ -11,10 +11,7 @@ export default function ModalWrapper({ children }: PropsWithChildren) {
   };
 
   return (
-    <div
-      className="bg-slate-900/50 fixed z-40 inset-0 text-white"
-      onClick={handleClick}
-    >
+    <div className="bg-slate-900/50 fixed z-40 inset-0" onClick={handleClick}>
       {children}
     </div>
   );

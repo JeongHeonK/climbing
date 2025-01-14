@@ -1,6 +1,7 @@
 "use server";
 
 import { connectDB } from "@/app/api/database";
+import { ObjectId } from "mongodb";
 
 export interface IGathering {
   _id: string;
@@ -12,7 +13,7 @@ export interface IGathering {
   date: Date;
 }
 
-export const getGathering = async (page = 1) => {
+export const getGatherings = async (page = 1) => {
   const skipCount = (page - 1) * 8;
 
   const db = (await connectDB).db("climbing");
@@ -31,4 +32,13 @@ export const getGathering = async (page = 1) => {
 
   const hasNext = result.length > 8;
   return { gatherings, hasNext };
+};
+
+export const getGathering = async (id: string) => {
+  const db = (await connectDB).db("climbing");
+  const result = await db
+    .collection("gathering")
+    .findOne({ _id: new ObjectId(id) });
+
+  return result;
 };

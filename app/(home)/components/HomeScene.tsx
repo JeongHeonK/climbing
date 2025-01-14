@@ -1,11 +1,11 @@
 import { cookies } from "next/headers";
 import NewGatheringBtn from "./NewGatheringBtn";
 import Gatherings from "./Gatherings";
-import { getGathering } from "../actions/getGatherings";
+import { getGatherings } from "../actions/getGatherings";
 
 export default async function HomeScene() {
   const isLogin = (await cookies()).get("session") !== undefined;
-  const { gatherings: initialGatherings } = await getGathering();
+  const { gatherings: initialGatherings } = await getGatherings();
 
   return (
     <main className="w-full bg-slate-50">

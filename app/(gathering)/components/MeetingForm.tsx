@@ -1,7 +1,7 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { ONE_DAY } from "@/app/constant/constant";
+import { ONE_DAY, DEFAULT_LOCATION } from "@/app/constant/constant";
 import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -9,37 +9,49 @@ import {
   generateMap,
   generateMarker,
 } from "@/app/(home)/util";
-import { ChangeEvent, useActionState, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  useActionState,
+  useEffect,
+  useState,
+  MouseEvent,
+} from "react";
 import { Label } from "@radix-ui/react-label";
 import { FormError } from "@/app/components/Authentication/type";
 import { useToast } from "@/hooks/use-toast";
-import { generateGathering } from "../actions/generateNewGathering";
+import { Button } from "@/components/ui/button";
+import {
+  generateGathering,
+  editGathering,
+  deleteGathering,
+} from "../actions/gatheringActions";
 import SubmitButton from "./SubmitButton";
 
-export type InitialValue = {
-  title: string;
-  description: string;
-  lat: string;
-  lng: string;
-  date: Date | undefined;
-};
+export interface MeetingFormProps {
+  _id?: string;
+  title?: string;
+  date?: Date;
+  lat?: string;
+  lng?: string;
+  description?: string;
+}
 
-const initialValue: InitialValue = {
-  title: "",
-  description: "",
-  lat: "",
-  lng: "",
-  date: new Date(),
-};
-
-export default function NewMeetingForm() {
+export default function MeetingForm({
+  _id,
+  title,
+  date,
+  lat,
+  lng,
+  description,
+}: MeetingFormProps) {
   const {
     userInput,
     handleDateChange,
     handleInputChange,
     onSubmit,
+    handleDelete,
     formState,
-  } = useMeeting();
+  } = useMeeting({ title, date, lat, lng, description }, _id);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -56,7 +68,7 @@ export default function NewMeetingForm() {
         action={onSubmit}
         className="max-w-[400px] mx-auto flex-col flex  gap-2 items-center bg-white px-5 py-5 -mt-3 rounded-md"
       >
-        <div id="inputMap" className="size-52 rounded-md" />
+        <div id={_id || "inputMap"} className="size-52 rounded-md" />
         <Calendar
           mode="single"
           selected={userInput.date}
@@ -93,8 +105,15 @@ export default function NewMeetingForm() {
           name="date"
           className="hidden"
           onChange={handleInputChange}
-          value={userInput.date?.toDateString() ?? new Date().toDateString()}
+          value={
+            userInput.date
+              ? userInput.date.toDateString()
+              : new Date().toDateString()
+          }
         />
+        {_id && (
+          <Input id="id" name="id" className="hidden" defaultValue={_id} />
+        )}
         <Label htmlFor="description" className="self-start">
           내용
         </Label>
@@ -106,22 +125,49 @@ export default function NewMeetingForm() {
           value={userInput.description}
           onChange={handleInputChange}
         />
-        <SubmitButton />
+        {_id ? (
+          <span className="flex gap-4">
+            <Button>수정</Button>
+            <Button className="bg-red-500" type="button" onClick={handleDelete}>
+              삭제
+            </Button>
+          </span>
+        ) : (
+          <SubmitButton />
+        )}
       </form>
     </div>
   );
 }
+export type InitialValue = {
+  title: string;
+  description: string;
+  lat: string;
+  lng: string;
+  date: Date | undefined;
+};
+
+const initialValue: InitialValue = {
+  title: "",
+  description: "",
+  lat: "",
+  lng: "",
+  date: new Date(),
+};
 
 const initialFormError: FormError = {
   state: null,
   message: null,
 };
-const useMeeting = () => {
-  const [userInput, setUserInput] = useState(initialValue);
-  const [formState, onSubmit] = useActionState(
-    generateGathering,
-    initialFormError,
-  );
+
+const useMeeting = (editValue: Partial<InitialValue>, id?: string) => {
+  const [userInput, setUserInput] = useState(() => {
+    return editValue.description ? editValue : initialValue;
+  });
+
+  const formAction = id ? editGathering : generateGathering;
+
+  const [formState, onSubmit] = useActionState(formAction, initialFormError);
 
   const handleDateChange = (value: Date | undefined) => {
     setUserInput((prev) => ({ ...prev, date: value }));
@@ -134,12 +180,23 @@ const useMeeting = () => {
     setUserInput((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleDelete = async (e: MouseEvent) => {
+    e.preventDefault();
+    if (!id) return;
+    await deleteGathering(id);
+  };
+
   useEffect(() => {
     const kakaoMapScript = generateKakaoScript();
 
     const onLoadKakaoAPI = () => {
       window.kakao.maps.load(() => {
-        const map = generateMap("inputMap");
+        const newId = id ?? null;
+        const map = generateMap(
+          newId || "inputMap",
+          id ? Number(editValue.lat) : DEFAULT_LOCATION.lat,
+          id ? Number(editValue.lng) : DEFAULT_LOCATION.lng,
+        );
         const marker = generateMarker(map);
 
         marker.setMap(map);
@@ -173,7 +230,7 @@ const useMeeting = () => {
     return () => {
       kakaoMapScript.removeEventListener("load", onLoadKakaoAPI);
     };
-  }, []);
+  }, [id, editValue.lat, editValue.lng]);
 
   return {
     userInput,
@@ -181,5 +238,6 @@ const useMeeting = () => {
     handleInputChange,
     onSubmit,
     formState,
+    handleDelete,
   };
 };

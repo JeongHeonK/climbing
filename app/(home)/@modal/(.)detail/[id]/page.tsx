@@ -3,6 +3,7 @@ import GatheringDetail from "@/app/(home)/components/GatheringDetail";
 import ModalWrapper from "@/app/(home)/components/ModalWrapper";
 import { Auth } from "@/app/api/auth";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 interface DetailModalProps {
   params: Promise<{ id: string }>;
@@ -18,7 +19,9 @@ export default async function DetailModalPage({ params }: DetailModalProps) {
 
   const isAuthor = currentUser === gather?.user;
 
-  if (!gather) return null;
+  if (!gather) {
+    redirect("/");
+  }
 
   return (
     <ModalWrapper>

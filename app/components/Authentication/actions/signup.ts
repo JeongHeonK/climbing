@@ -25,20 +25,25 @@ export const signup = async (
   }
 
   if (input.email !== undefined && input.password !== undefined) {
-    const db = (await connectDB).db("climbing");
-    const user = await db
-      .collection<SignupUser>("member")
-      .findOne({ email: input.email });
+    try {
+      const db = (await connectDB).db("climbing");
+      const user = await db
+        .collection<SignupUser>("member")
+        .findOne({ email: input.email });
 
-    if (user)
-      return { state: "error", message: AUTH_ERROR_MESSAGES.existingEmail };
+      if (user)
+        return { state: "error", message: AUTH_ERROR_MESSAGES.existingEmail };
 
-    const hash = await hashPassword(input.password);
+      const hash = await hashPassword(input.password);
 
-    await db.collection("member").insertOne({
-      email: input.email,
-      password: hash,
-    });
+      await db.collection("member").insertOne({
+        email: input.email,
+        password: hash,
+      });
+    } catch (err) {
+      const error = err as Error;
+      throw new Error(error.message);
+    }
   }
 
   return { state: "success", message: null };

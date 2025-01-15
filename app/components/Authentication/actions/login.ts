@@ -27,15 +27,20 @@ export const login = async (
   if (input.email === undefined || input.password === undefined)
     return { state: "error", message: "다시 한번 입력해주세요" };
 
-  const db = (await connectDB).db("climbing");
-  const user = await db
-    .collection<LoginUser>("member")
-    .findOne({ email: input.email });
+  try {
+    const db = (await connectDB).db("climbing");
+    const user = await db
+      .collection<LoginUser>("member")
+      .findOne({ email: input.email });
 
-  if (!user) return { state: "error", message: AUTH_ERROR_MESSAGES.user };
+    if (!user) return { state: "error", message: AUTH_ERROR_MESSAGES.user };
 
-  if (!(await checkPassword(input.password, user.password))) {
-    return { state: "error", message: AUTH_ERROR_MESSAGES.pw };
+    if (!(await checkPassword(input.password, user.password))) {
+      return { state: "error", message: AUTH_ERROR_MESSAGES.pw };
+    }
+  } catch (err) {
+    const error = err as Error;
+    throw new Error(error.message);
   }
 
   await Auth.createSession(input.email);

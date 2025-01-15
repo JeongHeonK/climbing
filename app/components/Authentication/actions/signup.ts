@@ -27,7 +27,7 @@ export const signup = async (
   if (input.email !== undefined && input.password !== undefined) {
     const db = (await connectDB).db("climbing");
     const user = await db
-      .collection<SignupUser>("users")
+      .collection<SignupUser>("member")
       .findOne({ email: input.email });
 
     if (user)
@@ -35,7 +35,7 @@ export const signup = async (
 
     const hash = await hashPassword(input.password);
 
-    await db.collection("users").insertOne({
+    await db.collection("member").insertOne({
       email: input.email,
       password: hash,
     });

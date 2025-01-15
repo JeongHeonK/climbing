@@ -1,5 +1,5 @@
-import NewGatheringPageScene from "../components/NewGatheringPageScene";
+import GatheringPageScene from "../components/GatheringPageScene";
 
 export default function NewGatheringPage() {
-  return <NewGatheringPageScene />;
+  return <GatheringPageScene />;
 }

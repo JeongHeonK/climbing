@@ -1,3 +1,11 @@
-export default function NewGatheringPage() {
-  return <div>수정페이지 입니다.</div>;
+import GatheringPageScene from "../../components/GatheringPageScene";
+
+export default async function EditGatheringPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+
+  return <GatheringPageScene id={id} />;
 }

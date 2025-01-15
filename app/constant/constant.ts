@@ -24,3 +24,8 @@ export const GATHERING_ERROR_MESSAGE = {
   locationDescription: "지점 명을 입력해주세요",
   date: "날짜를 선택해주세요.",
 };
+
+export const DEFAULT_LOCATION = {
+  lat: 37.5641,
+  lng: 126.997,
+};

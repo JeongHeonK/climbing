@@ -8,7 +8,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { stopBubbling } from "@/app/util";
+import { useRouter } from "next/navigation";
 import {
   generateKakaoScript,
   generateMap,
@@ -24,6 +26,7 @@ export interface GatheringDetailProps {
   lat: number;
   lng: number;
   description: string;
+  isAuthor: boolean;
 }
 
 export default function GatheringDetail({
@@ -34,8 +37,15 @@ export default function GatheringDetail({
   lat,
   lng,
   description,
+  isAuthor,
 }: GatheringDetailProps) {
+  const router = useRouter();
+  const isEditableDate = date.getTime() > new Date().getTime();
   const newDate = getDate(date);
+
+  const handleClick = () => {
+    router.push(`/editGathering/${_id}`);
+  };
 
   useEffect(() => {
     const kakaoMapScript = generateKakaoScript();
@@ -70,7 +80,15 @@ export default function GatheringDetail({
         </div>
       </CardHeader>
       <CardContent className="whitespace-pre-wrap">{description}</CardContent>
-      <div id={`${_id}1`} className="size-72 self-center rounded-md mb-8" />
+      <div
+        id={`${_id}1`}
+        className={`size-72 self-center rounded-md ${isAuthor && isEditableDate ? "mb-2" : "mb-10"}`}
+      />
+      {isAuthor && isEditableDate && (
+        <Button className="mb-6 mx-auto" type="button" onClick={handleClick}>
+          수정
+        </Button>
+      )}
     </Card>
   );
 }

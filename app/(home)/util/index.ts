@@ -9,8 +9,8 @@ export const generateKakaoScript = () => {
 
 export const generateMap = (
   id: string,
-  lat: number = 37.5641,
-  lng: number = 126.997,
+  lat: number,
+  lng: number,
   level: number = 5,
 ) => {
   const container = document.getElementById(id);

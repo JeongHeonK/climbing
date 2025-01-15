@@ -43,17 +43,22 @@ export const generateGathering = async (
   )
     return { state: "error", message: "빈 값을 입력할 수 없습니다" };
 
-  const db = (await connectDB).db("climbing");
-  await db.collection<Gathering>("gathering").insertOne({
-    user: userId,
-    title: userInput.title,
-    description: userInput.description,
-    lat: userInput.lat,
-    lng: userInput.lng,
-    date: new Date(userInput.date),
-  });
-  redirect("/");
-  return { state: "success", message: null };
+  try {
+    const db = (await connectDB).db("climbing");
+    await db.collection<Gathering>("gathering").insertOne({
+      user: userId,
+      title: userInput.title,
+      description: userInput.description,
+      lat: userInput.lat,
+      lng: userInput.lng,
+      date: new Date(userInput.date),
+    });
+    redirect("/");
+    return { state: "success", message: null };
+  } catch (err) {
+    const error = err as Error;
+    throw new Error(error.message);
+  }
 };
 
 type UpdateGathering = {
@@ -100,29 +105,39 @@ export const editGathering = async (
   )
     return { state: "error", message: "빈 값을 입력할 수 없습니다" };
 
-  const db = (await connectDB).db("climbing");
-  await db.collection<UpdateGathering>("gathering").updateOne(
-    { _id: new ObjectId(docId) },
-    {
-      $set: {
-        title: userInput.title,
-        description: userInput.description,
-        lat: userInput.lat,
-        lng: userInput.lng,
-        date: new Date(userInput.date),
+  try {
+    const db = (await connectDB).db("climbing");
+    await db.collection<UpdateGathering>("gathering").updateOne(
+      { _id: new ObjectId(docId) },
+      {
+        $set: {
+          title: userInput.title,
+          description: userInput.description,
+          lat: userInput.lat,
+          lng: userInput.lng,
+          date: new Date(userInput.date),
+        },
       },
-    },
-  );
+    );
 
-  redirect("/");
-  return { state: "success", message: null };
+    redirect("/");
+    return { state: "success", message: null };
+  } catch (err) {
+    const error = err as Error;
+    throw new Error(error.message);
+  }
 };
 
 export const deleteGathering = async (id: string) => {
-  const db = (await connectDB).db("climbing");
-  await db
-    .collection<UpdateGathering>("gathering")
-    .deleteOne({ _id: new ObjectId(id) });
+  try {
+    const db = (await connectDB).db("climbing");
+    await db
+      .collection<UpdateGathering>("gathering")
+      .deleteOne({ _id: new ObjectId(id) });
 
-  redirect("/");
+    redirect("/");
+  } catch (err) {
+    const error = err as Error;
+    throw new Error(error.message);
+  }
 };

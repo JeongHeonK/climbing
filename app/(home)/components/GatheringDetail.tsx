@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { stopBubbling } from "@/app/util";
+import { useRouter } from "next/navigation";
 import {
   generateKakaoScript,
   generateMap,
@@ -38,7 +39,12 @@ export default function GatheringDetail({
   description,
   isAuthor,
 }: GatheringDetailProps) {
+  const router = useRouter();
   const newDate = getDate(date);
+
+  const handleClick = () => {
+    router.push(`/editGathering/${_id}`);
+  };
 
   useEffect(() => {
     const kakaoMapScript = generateKakaoScript();
@@ -78,7 +84,7 @@ export default function GatheringDetail({
         className={`size-72 self-center rounded-md ${isAuthor ? "mb-2" : "mb-8"}`}
       />
       {isAuthor && (
-        <Button className="mb-6 mx-auto" type="button">
+        <Button className="mb-6 mx-auto" type="button" onClick={handleClick}>
           수정
         </Button>
       )}

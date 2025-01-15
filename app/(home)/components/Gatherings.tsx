@@ -36,6 +36,8 @@ export default function Gatherings({
 
       if (!hasNext) {
         setNextDisabled(true);
+        setGatherings(newGatherings);
+        return;
       }
 
       setNextDisabled(false);

@@ -40,6 +40,7 @@ export default function GatheringDetail({
   isAuthor,
 }: GatheringDetailProps) {
   const router = useRouter();
+  const isEditableDate = date.getTime() > new Date().getTime();
   const newDate = getDate(date);
 
   const handleClick = () => {
@@ -81,9 +82,9 @@ export default function GatheringDetail({
       <CardContent className="whitespace-pre-wrap">{description}</CardContent>
       <div
         id={`${_id}1`}
-        className={`size-72 self-center rounded-md ${isAuthor ? "mb-2" : "mb-8"}`}
+        className={`size-72 self-center rounded-md ${isAuthor && isEditableDate ? "mb-2" : "mb-10"}`}
       />
-      {isAuthor && (
+      {isAuthor && isEditableDate && (
         <Button className="mb-6 mx-auto" type="button" onClick={handleClick}>
           수정
         </Button>

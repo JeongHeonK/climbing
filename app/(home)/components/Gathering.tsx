@@ -17,6 +17,7 @@ import {
   generateKakaoScript,
   getDate,
 } from "../util";
+import LikeButton from "./LikeButton";
 
 interface GatheringProps {
   id: string;
@@ -81,8 +82,9 @@ export default function Gathering({
         className="size-48 mx-auto rounded-md border border-slate-200"
         onClick={stopBubbling}
       />
-      <CardHeader className="p-0 py-2 my-3 cursor-pointer">
+      <CardHeader className="relative p-0 py-2 my-3 cursor-pointer">
         <CardTitle>{title}</CardTitle>
+        <LikeButton id={id} date={date} />
         <div className="flex justify-between items-center cursor-pointer">
           <CardDescription>{newDate}</CardDescription>
           <CardDescription>{user}</CardDescription>

@@ -15,7 +15,7 @@ export default async function HomeScene() {
         {initialGatherings ? (
           <Gatherings isLogin={isLogin} initialGatherings={initialGatherings} />
         ) : (
-          <DefaultGathering />
+          <DefaultGathering kind="home" />
         )}
       </div>
       <NewGatheringBtn isLogin={isLogin} />

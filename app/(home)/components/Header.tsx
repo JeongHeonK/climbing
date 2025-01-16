@@ -1,11 +1,11 @@
 import {
   NavigationMenu,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { cookies } from "next/headers";
 import Image from "next/image";
+import Link from "next/link";
 import LogInButton from "./LogInButton";
 import CustomLink from "./CustomLink";
 
@@ -28,12 +28,12 @@ export default async function Header() {
             />
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuLink
+            <Link
               href="/"
               className="text-sm hover:text-slate-500 transition-colors"
             >
               HOME
-            </NavigationMenuLink>
+            </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <CustomLink isLogin={isLogin}>MY CLIMBING</CustomLink>

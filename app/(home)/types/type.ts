@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 export interface IGathering {
   _id: string;
   user: string;
@@ -9,10 +11,9 @@ export interface IGathering {
 }
 
 export interface Gathering extends Omit<IGathering, "_id"> {
-  _id: string;
+  _id: ObjectId;
 }
 
 export interface MyGathering extends Omit<IGathering, "_id"> {
   id: string;
-  userLike: boolean;
 }

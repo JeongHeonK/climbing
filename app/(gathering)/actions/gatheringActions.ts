@@ -141,3 +141,33 @@ export const deleteGathering = async (id: string) => {
     throw new Error(error.message);
   }
 };
+
+export const getMyGathering = async (ids: string[]) => {
+  try {
+    const objectIds = ids.map((id) => new ObjectId(id));
+    const db = (await connectDB).db("climbing");
+    const result = await db
+      .collection<Gathering>("gathering")
+      .find({ _id: { $in: objectIds } })
+      .toArray();
+
+    const myGatherings = result.map((data) => {
+      const newData = {
+        id: data._id.toString(),
+        user: data.user,
+        title: data.title,
+        description: data.description,
+        lat: data.lat,
+        lng: data.lng,
+        date: data.date,
+      };
+
+      return newData;
+    });
+
+    return myGatherings;
+  } catch (err) {
+    const error = err as Error;
+    throw new Error(error.message);
+  }
+};

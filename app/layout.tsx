@@ -20,6 +20,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Climbing",
   description: "join Climbing group & have fun",
+  icons: {
+    icon: "./favicon.ico",
+  },
 };
 
 export default async function RootLayout({

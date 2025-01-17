@@ -53,11 +53,13 @@ export const generateGathering = async (
       lng: userInput.lng,
       date: new Date(userInput.date),
     });
-    redirect("/");
+
     return { state: "success", message: null };
   } catch (err) {
     const error = err as Error;
     throw new Error(error.message);
+  } finally {
+    redirect("/");
   }
 };
 
@@ -120,11 +122,12 @@ export const editGathering = async (
       },
     );
 
-    redirect("/");
     return { state: "success", message: null };
   } catch (err) {
     const error = err as Error;
     throw new Error(error.message);
+  } finally {
+    redirect("/");
   }
 };
 
@@ -134,11 +137,11 @@ export const deleteGathering = async (id: string) => {
     await db
       .collection<UpdateGathering>("gathering")
       .deleteOne({ _id: new ObjectId(id) });
-
-    redirect("/");
   } catch (err) {
     const error = err as Error;
     throw new Error(error.message);
+  } finally {
+    redirect("/");
   }
 };
 

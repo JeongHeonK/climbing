@@ -1,10 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { WithId } from "mongodb";
+import PageButton from "@/app/(home)/components/PageButton";
 import Gathering from "./Gathering";
-import { getGatherings } from "../actions/getGatherings";
 import { IGathering } from "../types/type";
 
 export default function Gatherings({
@@ -15,56 +14,14 @@ export default function Gatherings({
   initialGatherings: WithId<IGathering>[];
 }) {
   const [gatherings, setGatherings] = useState(initialGatherings);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [nextDisabled, setNextDisabled] = useState(false);
 
-  const handlePrevClick = () => {
-    if (currentPage === 1) {
-      return;
-    }
-    setCurrentPage((p) => p - 1);
-  };
-  const handleNextClick = () => {
-    if (nextDisabled) return;
-    setCurrentPage((p) => p + 1);
-  };
-
-  useEffect(() => {
-    const updateGatherings = async () => {
-      const { gatherings: newGatherings, hasNext } =
-        await getGatherings(currentPage);
-
-      if (!hasNext) {
-        setNextDisabled(true);
-        setGatherings(newGatherings);
-        return;
-      }
-
-      setNextDisabled(false);
-      setGatherings(newGatherings);
-    };
-    updateGatherings();
-  }, [currentPage]);
+  const handleChangeGatherings = useCallback((data: IGathering[]) => {
+    setGatherings(data);
+  }, []);
 
   return (
     <>
-      <div className="px-8 md:px-8 flex gap-3 justify-end items-center -mt-8">
-        <Button
-          onClick={handlePrevClick}
-          className="bg-slate-400"
-          disabled={currentPage === 1}
-        >
-          &lt;
-        </Button>
-        <span>{currentPage}</span>
-        <Button
-          onClick={handleNextClick}
-          className="bg-slate-400"
-          disabled={nextDisabled}
-        >
-          &gt;
-        </Button>
-      </div>
+      <PageButton onChange={handleChangeGatherings} />
       <div className="px-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-y-6 py-2 px-12 md:px-3 mx-auto">
         {gatherings.map((gathering) => {
           return (

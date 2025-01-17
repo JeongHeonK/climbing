@@ -1,4 +1,4 @@
-import { getGathering } from "@/app/(home)/actions/getGatherings";
+import { getGathering } from "@/app/(home)/actions/homeGatheringAction";
 import GatheringDetail from "@/app/(home)/components/GatheringDetail";
 import ModalWrapper from "@/app/(home)/components/ModalWrapper";
 import { Auth } from "@/app/api/auth";

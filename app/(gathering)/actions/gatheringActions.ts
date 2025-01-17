@@ -7,6 +7,7 @@ import { gatheringValidation, Gathering } from "@/app/util/validation";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { ObjectId } from "mongodb";
+import { IGathering } from "@/app/(home)/types/type";
 
 export const generateGathering = async (
   _: FormError | undefined,
@@ -53,11 +54,13 @@ export const generateGathering = async (
       lng: userInput.lng,
       date: new Date(userInput.date),
     });
-    redirect("/");
+
     return { state: "success", message: null };
   } catch (err) {
     const error = err as Error;
     throw new Error(error.message);
+  } finally {
+    redirect("/");
   }
 };
 
@@ -120,11 +123,12 @@ export const editGathering = async (
       },
     );
 
-    redirect("/");
     return { state: "success", message: null };
   } catch (err) {
     const error = err as Error;
     throw new Error(error.message);
+  } finally {
+    redirect("/");
   }
 };
 
@@ -134,32 +138,29 @@ export const deleteGathering = async (id: string) => {
     await db
       .collection<UpdateGathering>("gathering")
       .deleteOne({ _id: new ObjectId(id) });
-
-    redirect("/");
   } catch (err) {
     const error = err as Error;
     throw new Error(error.message);
+  } finally {
+    redirect("/");
   }
 };
 
-export const getMyGathering = async (ids: string[]) => {
+export const getMyGatherings = async (ids: string[]) => {
   try {
-    const objectIds = ids.map((id) => new ObjectId(id));
+    const objectIds = ids.map((id) => new ObjectId(id)) as unknown as string[];
+
     const db = (await connectDB).db("climbing");
     const result = await db
-      .collection<Gathering>("gathering")
+      .collection<IGathering>("gathering")
       .find({ _id: { $in: objectIds } })
+      .sort({ date: -1 })
       .toArray();
 
     const myGatherings = result.map((data) => {
       const newData = {
-        id: data._id.toString(),
-        user: data.user,
-        title: data.title,
-        description: data.description,
-        lat: data.lat,
-        lng: data.lng,
-        date: data.date,
+        ...data,
+        _id: data._id.toString(),
       };
 
       return newData;

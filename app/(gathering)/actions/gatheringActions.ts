@@ -142,16 +142,21 @@ export const deleteGathering = async (id: string) => {
   }
 };
 
-export const getMyGathering = async (ids: string[]) => {
+export const getMyGatherings = async (ids: string[], page = 1) => {
+  const skipCount = (page - 1) * 8;
+
   try {
     const objectIds = ids.map((id) => new ObjectId(id));
     const db = (await connectDB).db("climbing");
     const result = await db
       .collection<Gathering>("gathering")
       .find({ _id: { $in: objectIds } })
+      .sort({ date: -1 })
+      .skip(skipCount)
+      .limit(9)
       .toArray();
 
-    const myGatherings = result.map((data) => {
+    const myGatherings = result.slice(0, 8).map((data) => {
       const newData = {
         id: data._id.toString(),
         user: data.user,
@@ -165,7 +170,9 @@ export const getMyGathering = async (ids: string[]) => {
       return newData;
     });
 
-    return myGatherings;
+    const hasNext = result.length > 8;
+
+    return { myGatherings, hasNext };
   } catch (err) {
     const error = err as Error;
     throw new Error(error.message);

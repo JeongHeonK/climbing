@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { WithId } from "mongodb";
-import PageButton from "@/app/components/common/PageButton";
+import PageButton from "@/app/(home)/components/PageButton";
 import Gathering from "./Gathering";
 import { IGathering } from "../types/type";
 

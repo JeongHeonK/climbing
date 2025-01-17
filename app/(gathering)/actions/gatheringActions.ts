@@ -7,6 +7,7 @@ import { gatheringValidation, Gathering } from "@/app/util/validation";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { ObjectId } from "mongodb";
+import { IGathering } from "@/app/(home)/types/type";
 
 export const generateGathering = async (
   _: FormError | undefined,
@@ -145,37 +146,27 @@ export const deleteGathering = async (id: string) => {
   }
 };
 
-export const getMyGatherings = async (ids: string[], page = 1) => {
-  const skipCount = (page - 1) * 8;
-
+export const getMyGatherings = async (ids: string[]) => {
   try {
-    const objectIds = ids.map((id) => new ObjectId(id));
+    const objectIds = ids.map((id) => new ObjectId(id)) as unknown as string[];
+
     const db = (await connectDB).db("climbing");
     const result = await db
-      .collection<Gathering>("gathering")
+      .collection<IGathering>("gathering")
       .find({ _id: { $in: objectIds } })
       .sort({ date: -1 })
-      .skip(skipCount)
-      .limit(9)
       .toArray();
 
-    const myGatherings = result.slice(0, 8).map((data) => {
+    const myGatherings = result.map((data) => {
       const newData = {
-        id: data._id.toString(),
-        user: data.user,
-        title: data.title,
-        description: data.description,
-        lat: data.lat,
-        lng: data.lng,
-        date: data.date,
+        ...data,
+        _id: data._id.toString(),
       };
 
       return newData;
     });
 
-    const hasNext = result.length > 8;
-
-    return { myGatherings, hasNext };
+    return myGatherings;
   } catch (err) {
     const error = err as Error;
     throw new Error(error.message);

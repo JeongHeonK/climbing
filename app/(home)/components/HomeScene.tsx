@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import NewGatheringBtn from "./NewGatheringBtn";
 import Gatherings from "./Gatherings";
-import { getGatherings } from "../actions/getGatherings";
+import { getGatherings } from "../actions/homeGatheringAction";
 import DefaultGathering from "./DefaultGathering";
 
 export default async function HomeScene() {

@@ -1,4 +1,4 @@
-import { getGathering } from "@/app/(home)/actions/getGatherings";
+import { getGathering } from "@/app/(home)/actions/homeGatheringAction";
 import MeetingForm from "./MeetingForm";
 
 export default async function GatheringPageScene({ id }: { id?: string }) {

@@ -13,7 +13,3 @@ export interface IGathering {
 export interface Gathering extends Omit<IGathering, "_id"> {
   _id: ObjectId;
 }
-
-export interface MyGathering extends Omit<IGathering, "_id"> {
-  id: string;
-}

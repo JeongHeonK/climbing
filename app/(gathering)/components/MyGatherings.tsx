@@ -1,8 +1,8 @@
 import Gathering from "@/app/(home)/components/Gathering";
-import { MyGathering } from "@/app/(home)/types/type";
+import { IGathering } from "@/app/(home)/types/type";
 
 interface MyGatheringsProps {
-  myGatherings: MyGathering[];
+  myGatherings: IGathering[];
   isLogin: boolean;
   onDelete: (id: string) => void;
 }
@@ -17,8 +17,8 @@ export default function MyGatherings({
       {myGatherings.map((gathering) => {
         return (
           <Gathering
-            key={gathering.id}
-            id={gathering.id}
+            key={gathering._id}
+            id={gathering._id}
             user={gathering.user}
             title={gathering.title}
             date={gathering.date}

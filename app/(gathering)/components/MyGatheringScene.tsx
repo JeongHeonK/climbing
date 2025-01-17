@@ -2,7 +2,7 @@
 
 import DefaultGathering from "@/app/(home)/components/DefaultGathering";
 import { MyGathering } from "@/app/(home)/types/type";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import MyGatherings from "./MyGatherings";
 import CardsSkeleton from "./CardsSkeleton";
 import { getMyGathering } from "../actions/gatheringActions";
@@ -15,6 +15,10 @@ export interface LikeButtonData {
 export default function MyGatheringScene({ isLogin }: { isLogin: boolean }) {
   const [myGatherings, setMyGatherings] = useState<MyGathering[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const handleDelete = useCallback((id: string) => {
+    setMyGatherings((prev) => prev.filter((gathering) => gathering.id !== id));
+  }, []);
 
   useEffect(() => {
     const result = window.localStorage.getItem("mine");
@@ -46,7 +50,11 @@ export default function MyGatheringScene({ isLogin }: { isLogin: boolean }) {
       {myGatherings.length === 0 ? (
         <DefaultGathering kind="mine" />
       ) : (
-        <MyGatherings myGatherings={myGatherings} isLogin={isLogin} />
+        <MyGatherings
+          myGatherings={myGatherings}
+          isLogin={isLogin}
+          onDelete={handleDelete}
+        />
       )}
     </div>
   );

@@ -27,6 +27,7 @@ interface GatheringProps {
   lat: number;
   lng: number;
   isLogin: boolean;
+  onDelete?: (id: string) => void;
 }
 
 export default function Gathering({
@@ -37,6 +38,7 @@ export default function Gathering({
   lat,
   lng,
   isLogin,
+  onDelete,
 }: GatheringProps) {
   const newDate = getDate(date);
   const { toast } = useToast();
@@ -84,7 +86,7 @@ export default function Gathering({
       />
       <CardHeader className="relative p-0 py-2 my-3 cursor-pointer">
         <CardTitle>{title}</CardTitle>
-        <LikeButton id={id} date={date} />
+        <LikeButton id={id} date={date} onDelete={onDelete ?? undefined} />
         <div className="flex justify-between items-center cursor-pointer">
           <CardDescription>{newDate}</CardDescription>
           <CardDescription>{user}</CardDescription>

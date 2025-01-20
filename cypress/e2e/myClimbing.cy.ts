@@ -28,4 +28,15 @@ describe("myClimbing", () => {
     cy.visit(baseUrl + "/myClimbing");
     cy.get("[data-cy='like']").should("have.length", 8);
   });
+
+  it("should remove gatherings with like button", () => {
+    const baseUrl = Cypress.env("baseUrl");
+    cy.get("[data-cy='like']").click({ multiple: true });
+
+    cy.visit(baseUrl + "/myClimbing");
+
+    cy.get("[data-cy='like']").first().click();
+    cy.get("[data-cy='like']").last().click();
+    cy.get("[data-cy='like']").should("have.length", 6);
+  });
 });

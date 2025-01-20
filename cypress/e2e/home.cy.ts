@@ -49,3 +49,20 @@ describe("Home page before login", () => {
     cy.get("@modal-bg").should("not.exist");
   });
 });
+
+describe("home page after login", () => {
+  beforeEach(() => {
+    const email = Cypress.env("testId");
+    const pw = Cypress.env("testPw");
+    cy.visit("/");
+    cy.contains("Log In").click();
+    cy.get("#email").type(email);
+    cy.get("#password").type(pw);
+    cy.get(".grid > .inline-flex").click();
+    cy.intercept("/");
+  });
+
+  it("should be log in", () => {
+    cy.contains("Log Out").should("exist");
+  });
+});

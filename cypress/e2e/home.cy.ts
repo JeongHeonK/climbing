@@ -59,10 +59,44 @@ describe("home page after login", () => {
     cy.get("#email").type(email);
     cy.get("#password").type(pw);
     cy.get(".grid > .inline-flex").click();
-    cy.intercept("/");
+    cy.wait(100);
   });
 
   it("should be log in", () => {
     cy.contains("Log Out").should("exist");
+  });
+
+  it("should be able to go myClimbing", () => {
+    cy.get("a").eq(1).click();
+    cy.location("pathname").should("eq", "/myClimbing");
+    cy.contains("My Climbing").should("exist");
+  });
+
+  it("should be able to go detail", () => {
+    cy.get(".px-auto > :nth-child(2)").click("bottom");
+    cy.location("pathname").should("contains", "/detail");
+  });
+
+  it("should be able to go detail", () => {
+    cy.get("[data-cy='newGathering']").click();
+    cy.location("pathname").should("contains", "/newGathering");
+  });
+});
+
+describe("log out", () => {
+  beforeEach(() => {
+    const email = Cypress.env("testId");
+    const pw = Cypress.env("testPw");
+    cy.visit("/");
+    cy.contains("Log In").click();
+    cy.get("#email").type(email);
+    cy.get("#password").type(pw);
+    cy.get(".grid > .inline-flex").click();
+    cy.wait(100);
+  });
+
+  it("should be logged out", () => {
+    cy.contains("Log Out").click();
+    cy.location("pathname").should("eq", "/");
   });
 });

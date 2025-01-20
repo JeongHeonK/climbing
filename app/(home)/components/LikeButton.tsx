@@ -65,6 +65,7 @@ export default function LikeButton({ id, date, onDelete }: LikeButtonProps) {
 
   return (
     <button
+      data-cy="like"
       type="button"
       className={`absolute px-2 py-0.5 rounded-md right-0 -top-2 ${like ? "text-white bg-slate-900" : "text-slate-800 bg-white"}`}
       onClick={handleLikeClick}

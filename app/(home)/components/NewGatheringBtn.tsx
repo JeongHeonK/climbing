@@ -31,7 +31,10 @@ export default function NewGatheringBtn({ isLogin }: NewGatheringBtnProps) {
     <TooltipProvider>
       <Tooltip>
         <Link href="/newGathering" onClick={handleClick}>
-          <TooltipTrigger className="bg-black text-white text-2xl font-thin z-50 fixed bottom-10 right-6 rounded-full px-3 py-1">
+          <TooltipTrigger
+            data-cy="newGathering"
+            className="bg-black text-white text-2xl font-thin z-50 fixed bottom-10 right-6 rounded-full px-3 py-1"
+          >
             +
           </TooltipTrigger>
         </Link>

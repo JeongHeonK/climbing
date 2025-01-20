@@ -68,7 +68,11 @@ export default function MeetingForm({
         action={onSubmit}
         className="max-w-[400px] mx-auto flex-col flex  gap-2 items-center bg-white px-5 py-5 -mt-3 rounded-md"
       >
-        <div id={_id || "inputMap"} className="size-52 rounded-md" />
+        <div
+          id={_id || "inputMap"}
+          className="size-52 rounded-md"
+          data-cy="map"
+        />
         <Calendar
           mode="single"
           selected={userInput.date}

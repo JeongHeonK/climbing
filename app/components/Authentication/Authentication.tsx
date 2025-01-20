@@ -26,6 +26,7 @@ export default function Authentication() {
   if (isOpen) {
     return (
       <div
+        data-cy="modal-bg"
         className="w-full fixed top-0 right-0 bottom-0 bg-slate-900/75 z-50"
         onClick={() => {
           toggle();

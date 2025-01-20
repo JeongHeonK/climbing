@@ -58,4 +58,17 @@ describe("new Gathering", () => {
     cy.contains("모임 만들기").click();
     cy.contains("위치를 선택해주세요").should("exist");
   });
+
+  it("should generate new gathering", () => {
+    const baseUrl = Cypress.env("baseUrl");
+
+    cy.visit(baseUrl);
+    cy.get('[data-cy="newGathering"]').click();
+    cy.get("#title").type("cypress_test");
+    cy.get("#description").type("test입니다.");
+    cy.get(`[data-cy="map"]`).click("bottom");
+    cy.contains("모임 만들기").click();
+    cy.location("pathname").should("eq", "/");
+    cy.contains("cypress_test").should("exist");
+  });
 });

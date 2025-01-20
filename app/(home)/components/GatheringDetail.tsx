@@ -85,7 +85,12 @@ export default function GatheringDetail({
         className={`size-72 self-center rounded-md ${isAuthor && isEditableDate ? "mb-2" : "mb-10"}`}
       />
       {isAuthor && isEditableDate && (
-        <Button className="mb-6 mx-auto" type="button" onClick={handleClick}>
+        <Button
+          className="mb-6 mx-auto"
+          type="button"
+          onClick={handleClick}
+          data-cy="editPage"
+        >
           수정
         </Button>
       )}

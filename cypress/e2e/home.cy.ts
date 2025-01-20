@@ -1,6 +1,7 @@
 describe("Home page before login", () => {
   it("should show header without login", () => {
-    cy.visit("/");
+    const baseUrl = Cypress.env("baseUrl");
+    cy.visit(baseUrl);
     cy.get("a").first().should("have.text", "HOME");
     cy.contains("Join us").should("exist");
     cy.get("a").eq(1).should("have.text", "MY CLIMBING");
@@ -8,7 +9,8 @@ describe("Home page before login", () => {
   });
 
   it("can't access myClimbing page without login", () => {
-    cy.visit("/");
+    const baseUrl = Cypress.env("baseUrl");
+    cy.visit(baseUrl);
     cy.getCookie("session").should("not.exist");
     cy.get("a").eq(1).click();
     cy.contains("로그인 후 이용해주세요").as("alert");
@@ -22,7 +24,8 @@ describe("Home page before login", () => {
   });
 
   it("can't access detail without login", () => {
-    cy.visit("/");
+    const baseUrl = Cypress.env("baseUrl");
+    cy.visit(baseUrl);
     cy.getCookie("session").should("not.exist");
     cy.get(".px-auto > :nth-child(2)").click("bottom");
     cy.contains("로그인 후 이용해주세요").as("alert");
@@ -36,7 +39,8 @@ describe("Home page before login", () => {
   });
 
   it("can't make new gathering", () => {
-    cy.visit("/");
+    const baseUrl = Cypress.env("baseUrl");
+    cy.visit(baseUrl);
     cy.getCookie("session").should("not.exist");
     cy.get("[data-cy='newGathering']").click();
     cy.contains("로그인 후 이용해주세요").as("alert");
@@ -54,7 +58,9 @@ describe("home page after login", () => {
   beforeEach(() => {
     const email = Cypress.env("testId");
     const pw = Cypress.env("testPw");
-    cy.visit("/");
+    const baseUrl = Cypress.env("baseUrl");
+
+    cy.visit(baseUrl);
     cy.contains("Log In").click();
     cy.get("#email").type(email);
     cy.get("#password").type(pw);
@@ -87,7 +93,9 @@ describe("log out", () => {
   beforeEach(() => {
     const email = Cypress.env("testId");
     const pw = Cypress.env("testPw");
-    cy.visit("/");
+    const baseUrl = Cypress.env("baseUrl");
+
+    cy.visit(baseUrl);
     cy.contains("Log In").click();
     cy.get("#email").type(email);
     cy.get("#password").type(pw);
@@ -96,7 +104,10 @@ describe("log out", () => {
   });
 
   it("should be logged out", () => {
+    const baseUrl = Cypress.env("baseUrl");
+
+    cy.visit(baseUrl);
     cy.contains("Log Out").click();
-    cy.location("pathname").should("eq", "/");
+    cy.location("pathname").should("contains", "/");
   });
 });

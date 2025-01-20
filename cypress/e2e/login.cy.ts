@@ -1,6 +1,8 @@
 describe("login", () => {
   it("should show login popup", () => {
-    cy.visit("/");
+    const baseUrl = Cypress.env("baseUrl");
+
+    cy.visit(baseUrl);
     cy.contains("Log In").click();
     cy.contains("Welcome Back").should("exist");
     cy.contains("Email").should("exist");
@@ -8,7 +10,9 @@ describe("login", () => {
   });
 
   it("should show alert with invalid email", () => {
-    cy.visit("/");
+    const baseUrl = Cypress.env("baseUrl");
+
+    cy.visit(baseUrl);
     cy.contains("Log In").click();
     cy.get("#email").type("email");
     cy.get(".grid > .inline-flex").click();
@@ -16,7 +20,9 @@ describe("login", () => {
   });
 
   it("should show alert with invalid pw", () => {
-    cy.visit("/");
+    const baseUrl = Cypress.env("baseUrl");
+
+    cy.visit(baseUrl);
     cy.contains("Log In").click();
     cy.get("#email").type("email@email.com");
     cy.get("#password").type("pw");
@@ -25,7 +31,9 @@ describe("login", () => {
   });
 
   it("should show alert with invalid pw length", () => {
-    cy.visit("/");
+    const baseUrl = Cypress.env("baseUrl");
+
+    cy.visit(baseUrl);
     cy.contains("Log In").click();
     cy.get("#email").type("email@email.com");
     cy.get("#password").type("pw!a1");
@@ -34,7 +42,9 @@ describe("login", () => {
   });
 
   it("should be possible to sign up", () => {
-    cy.visit("/");
+    const baseUrl = Cypress.env("baseUrl");
+
+    cy.visit(baseUrl);
     cy.contains("Log In").click();
     cy.get(".underline").click();
     cy.contains("Welcome Here").should("exist");
@@ -43,12 +53,14 @@ describe("login", () => {
   it("can log in with right id and pw", () => {
     const email = Cypress.env("testId");
     const pw = Cypress.env("testPw");
-    cy.visit("/");
+    const baseUrl = Cypress.env("baseUrl");
+
+    cy.visit(baseUrl);
     cy.contains("Log In").click();
     cy.get("#email").type(email);
     cy.get("#password").type(pw);
     cy.get(".grid > .inline-flex").click();
-    cy.visit("/");
+    cy.visit(baseUrl);
     cy.getCookie("session").should("exist");
   });
 });

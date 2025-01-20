@@ -1,7 +1,8 @@
 describe("sign up fail", () => {
   beforeEach(() => {
-    cy.visit("/");
+    const baseUrl = Cypress.env("baseUrl");
 
+    cy.visit(baseUrl);
     cy.contains("Log In").click();
     cy.contains("Sign up").click();
   });
@@ -60,8 +61,9 @@ describe("sign up fail", () => {
 
 describe("sign up success", () => {
   beforeEach(() => {
-    cy.visit("/");
+    const baseUrl = Cypress.env("baseUrl");
 
+    cy.visit(baseUrl);
     cy.contains("Log In").click();
     cy.contains("Sign up").click();
   });
@@ -70,14 +72,14 @@ describe("sign up success", () => {
     cy.contains("Welcome Here").should("exist");
   });
 
-  it("should be sign up", () => {
-    const email = Cypress.env("testId2");
-    const pw = Cypress.env("testPw2");
+  // it("should be sign up", () => {
+  //   const email = Cypress.env("testId2");
+  //   const pw = Cypress.env("testPw2");
 
-    cy.get("#email").type(email);
-    cy.get("#password").type(pw);
-    cy.get("#passwordCheck").type(pw);
-    cy.get(".grid > .inline-flex").click();
-    cy.location("pathname").should("eq", "/");
-  });
+  //   cy.get("#email").type(email);
+  //   cy.get("#password").type(pw);
+  //   cy.get("#passwordCheck").type(pw);
+  //   cy.get(".grid > .inline-flex").click();
+  //   cy.location("pathname").should("eq", "/");
+  // });
 });

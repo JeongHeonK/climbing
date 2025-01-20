@@ -57,3 +57,27 @@ describe("sign up fail", () => {
     cy.contains("이미 등록된 이메일입니다.").should("exist");
   });
 });
+
+describe("sign up success", () => {
+  beforeEach(() => {
+    cy.visit("/");
+
+    cy.contains("Log In").click();
+    cy.contains("Sign up").click();
+  });
+
+  it("should show sign up modal", () => {
+    cy.contains("Welcome Here").should("exist");
+  });
+
+  it("should be sign up", () => {
+    const email = Cypress.env("testId2");
+    const pw = Cypress.env("testPw2");
+
+    cy.get("#email").type(email);
+    cy.get("#password").type(pw);
+    cy.get("#passwordCheck").type(pw);
+    cy.get(".grid > .inline-flex").click();
+    cy.location("pathname").should("eq", "/");
+  });
+});

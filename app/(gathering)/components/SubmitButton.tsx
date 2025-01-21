@@ -1,6 +1,6 @@
+import { useFormStatus } from "react-dom";
 import Spinner from "@/app/components/common/Spinner";
 import { Button } from "@/components/ui/button";
-import { useFormStatus } from "react-dom";
 
 export default function SubmitButton() {
   const { pending } = useFormStatus();

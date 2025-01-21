@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useToggle } from "@/app/context/PopupContext";
 import { Button } from "@/components/ui/button";
 import Spinner from "@/app/components/common/Spinner";
-import { useRouter } from "next/navigation";
 import { logout } from "../actions/logout";
 
 export default function LogInButton({ loginStatus }: { loginStatus: boolean }) {

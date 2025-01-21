@@ -1,7 +1,7 @@
 "use server";
 
-import { connectDB } from "@/app/api/database";
 import { ObjectId } from "mongodb";
+import { connectDB } from "@/app/api/database";
 import { IGathering } from "../types/type";
 
 export const getGatherings = async (page = 1) => {

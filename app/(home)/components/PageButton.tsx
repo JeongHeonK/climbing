@@ -1,6 +1,6 @@
+import { useEffect, useState } from "react";
 import { IGathering } from "@/app/(home)/types/type";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
 import { getGatherings } from "../actions/homeGatheringAction";
 
 interface PageButtonProps {

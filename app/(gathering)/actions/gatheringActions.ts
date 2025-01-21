@@ -1,12 +1,12 @@
 "use server";
 
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import { ObjectId } from "mongodb";
 import { Auth } from "@/app/api/auth";
 import { connectDB } from "@/app/api/database";
 import { FormError } from "@/app/components/Authentication/type";
 import { gatheringValidation, Gathering } from "@/app/util/validation";
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
-import { ObjectId } from "mongodb";
 import { IGathering } from "@/app/(home)/types/type";
 
 export const generateGathering = async (

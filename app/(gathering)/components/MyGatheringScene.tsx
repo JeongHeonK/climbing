@@ -1,8 +1,8 @@
 "use client";
 
+import { useCallback, useEffect, useState } from "react";
 import DefaultGathering from "@/app/(home)/components/DefaultGathering";
 import { IGathering } from "@/app/(home)/types/type";
-import { useCallback, useEffect, useState } from "react";
 import MyGatherings from "./MyGatherings";
 import CardsSkeleton from "./CardsSkeleton";
 import { getMyGatherings } from "../actions/gatheringActions";

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -10,7 +11,6 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { stopBubbling } from "@/app/util";
-import { useRouter } from "next/navigation";
 import {
   generateKakaoScript,
   generateMap,

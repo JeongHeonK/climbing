@@ -43,6 +43,7 @@ export class Auth {
       sameSite: "lax",
       path: "/",
     });
+    redirect("/");
   }
 
   static async updateSession() {
@@ -72,7 +73,6 @@ export class Auth {
 
   static async logout() {
     await Auth.deleteSession();
-    redirect("/");
   }
 
   static async getUsername(session: string) {

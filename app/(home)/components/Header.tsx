@@ -40,9 +40,7 @@ export default async function Header() {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-      <LogInButton isLogin={isLogin}>
-        {isLogin ? "Log Out" : "Log In"}
-      </LogInButton>
+      <LogInButton loginStatus={isLogin} />
     </header>
   );
 }

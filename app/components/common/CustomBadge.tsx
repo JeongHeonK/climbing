@@ -1,7 +1,7 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { PropsWithChildren, useState } from "react";
+import { Badge } from "@/components/ui/badge";
 
 export default function CustomBadge({ children }: PropsWithChildren) {
   const [isActive, handleClick] = useActive();

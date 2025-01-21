@@ -1,28 +1,10 @@
-"use client";
-
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
 
-export default function Error({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+export default function NotFound() {
   const router = useRouter();
-
   const handleClickHome = () => {
     router.push("/");
-  };
-
-  useEffect(() => {
-    console.log(error);
-  }, [error]);
-
-  const handleClickReset = () => {
-    reset();
   };
 
   return (
@@ -35,9 +17,6 @@ export default function Error({
           className="bg-slate-300 text-black hover:bg-slate-400"
         >
           go home
-        </Button>
-        <Button onClick={handleClickReset} type="button">
-          Try again
         </Button>
       </div>
     </div>

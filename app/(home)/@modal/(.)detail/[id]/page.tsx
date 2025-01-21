@@ -1,9 +1,9 @@
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { getGathering } from "@/app/(home)/actions/homeGatheringAction";
 import GatheringDetail from "@/app/(home)/components/GatheringDetail";
 import ModalWrapper from "@/app/(home)/components/ModalWrapper";
 import { Auth } from "@/app/api/auth";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 interface DetailModalProps {
   params: Promise<{ id: string }>;

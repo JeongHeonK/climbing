@@ -23,14 +23,13 @@ export default function MyGatheringScene({ isLogin }: { isLogin: boolean }) {
   useEffect(() => {
     const result = window.localStorage.getItem("mine");
     const updateMyGathering = async () => {
-      if (!result) {
-        return;
-      }
-      const myGatheringData: LikeButtonData[] = JSON.parse(result);
-      const ids = myGatheringData.map((gathering) => gathering.id);
-      const myGatherings = await getMyGatherings(ids);
+      if (result) {
+        const myGatheringData: LikeButtonData[] = JSON.parse(result);
+        const ids = myGatheringData.map((gathering) => gathering.id);
+        const myGatherings = await getMyGatherings(ids);
 
-      setMyGatherings(myGatherings);
+        setMyGatherings(myGatherings);
+      }
       setLoading(false);
     };
     updateMyGathering();

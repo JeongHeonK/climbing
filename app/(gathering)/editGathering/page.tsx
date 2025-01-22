@@ -1,14 +1,22 @@
-import { notFound } from "next/navigation";
-import EditGatheringPageScene from "../components/editGatheringScene";
+import { getGathering } from "@/app/(home)/actions/homeGatheringAction";
+import MeetingForm from "../components/MeetingForm";
 
 export default async function EditGatheringPage({
   searchParams,
 }: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  searchParams: Promise<{ id: string }>;
 }) {
-  const id = (await searchParams).id as string;
+  const id = (await searchParams).id;
+  const gathering = await getGathering(id);
 
-  if (!id) notFound();
-
-  return <EditGatheringPageScene id={id} />;
+  return (
+    <MeetingForm
+      _id={gathering?._id.toString()}
+      title={gathering?.title}
+      description={gathering?.description}
+      lat={gathering?.lat}
+      lng={gathering?.lng}
+      date={gathering?.date}
+    />
+  );
 }

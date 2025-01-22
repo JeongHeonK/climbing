@@ -20,7 +20,7 @@ const initialValue: InitialValue = {
 };
 
 export default async function GatheringPageScene({ id }: { id?: string }) {
-  const gathering = id ? await getGathering(id) : initialValue;
+  const gathering = id !== undefined ? await getGathering(id) : initialValue;
 
   return (
     <MeetingForm

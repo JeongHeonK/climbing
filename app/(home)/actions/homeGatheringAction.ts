@@ -32,6 +32,10 @@ export const getGatherings = async (page = 1) => {
 
 export const getGathering = async (id: string) => {
   try {
+    if (!ObjectId.isValid(id)) {
+      throw new Error("Invalid ObjectId format");
+    }
+
     const db = (await connectDB).db("climbing");
     const result = await db
       .collection("gathering")
@@ -40,6 +44,6 @@ export const getGathering = async (id: string) => {
     return result;
   } catch (err) {
     const error = err as Error;
-    console.log(error);
+    throw new Error(error.message);
   }
 };

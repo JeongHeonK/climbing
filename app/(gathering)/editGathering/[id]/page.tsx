@@ -6,6 +6,5 @@ export default async function EditGatheringPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-
   return <GatheringPageScene id={id} />;
 }

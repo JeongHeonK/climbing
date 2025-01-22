@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   title: "Climbing",
   description: "join Climbing group & have fun",
   icons: {
-    icon: "./favicon.ico",
+    icon: "/favicon.ico",
   },
 };
 

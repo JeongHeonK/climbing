@@ -13,3 +13,7 @@ export interface IGathering {
 export interface Gathering extends Omit<IGathering, "_id"> {
   _id: ObjectId;
 }
+
+export interface KakaoMap extends HTMLScriptElement {
+  crossorigin?: string;
+}

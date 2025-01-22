@@ -4,12 +4,12 @@ import NewGatheringPageScene from "../../components/editGatheringScene";
 export default async function Page({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  if ((await params) === undefined || (await params).id === undefined) {
+  if ((await params) === undefined || (await params).slug === undefined) {
     notFound();
   }
-  const { id } = await params;
+  const { slug } = await params;
 
-  return <NewGatheringPageScene id={id} />;
+  return <NewGatheringPageScene id={slug} />;
 }

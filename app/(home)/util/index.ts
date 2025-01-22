@@ -1,7 +1,10 @@
+import { KakaoMap } from "../types/type";
+
 export const generateKakaoScript = () => {
-  const kakaoMapScript = document.createElement("script");
+  const kakaoMapScript: KakaoMap = document.createElement("script");
   kakaoMapScript.async = false;
   kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_KEY}&autoload=false`;
+  kakaoMapScript.crossorigin = "anonymous";
   document.head.appendChild(kakaoMapScript);
 
   return kakaoMapScript;

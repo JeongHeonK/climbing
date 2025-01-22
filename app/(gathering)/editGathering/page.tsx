@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import NewGatheringPageScene from "../components/editGatheringScene";
+import EditGatheringPageScene from "../components/editGatheringScene";
 
-export default async function Page({
+export default async function EditGatheringPage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -10,5 +10,5 @@ export default async function Page({
 
   if (!id) notFound();
 
-  return <NewGatheringPageScene id={id} />;
+  return <EditGatheringPageScene id={id} />;
 }

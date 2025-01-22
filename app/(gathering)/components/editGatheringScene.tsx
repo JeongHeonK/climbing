@@ -1,8 +1,14 @@
+import { notFound } from "next/navigation";
 import { getGathering } from "@/app/(home)/actions/homeGatheringAction";
 import MeetingForm from "./MeetingForm";
 
 export default async function NewGatheringPageScene({ id }: { id: string }) {
-  const gathering = await getGathering(id);
+  let gathering;
+  if (id === undefined) {
+    notFound();
+  } else {
+    gathering = await getGathering(id);
+  }
 
   return (
     <MeetingForm

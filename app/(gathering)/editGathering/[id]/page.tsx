@@ -1,15 +1,15 @@
 import { notFound } from "next/navigation";
-import GatheringPageScene from "../../components/GatheringPageScene";
+import NewGatheringPageScene from "../../components/editGatheringScene";
 
-export default async function EditGatheringPage({
+export default async function Page({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  if ((await params) === undefined || (await params).id === undefined)
+  if ((await params) === undefined || (await params).id === undefined) {
     notFound();
-
+  }
   const { id } = await params;
 
-  return <GatheringPageScene id={id} />;
+  return <NewGatheringPageScene id={id} />;
 }

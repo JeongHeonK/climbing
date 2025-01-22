@@ -1,4 +1,3 @@
-import { getGathering } from "@/app/(home)/actions/homeGatheringAction";
 import MeetingForm from "./MeetingForm";
 
 export type InitialValue = {
@@ -19,8 +18,8 @@ const initialValue: InitialValue = {
   date: new Date(),
 };
 
-export default async function GatheringPageScene({ id }: { id?: string }) {
-  const gathering = id !== undefined ? await getGathering(id) : initialValue;
+export default function NewGatheringPageScene() {
+  const gathering = initialValue;
 
   return (
     <MeetingForm

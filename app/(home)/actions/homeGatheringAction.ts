@@ -40,6 +40,6 @@ export const getGathering = async (id: string) => {
     return result;
   } catch (err) {
     const error = err as Error;
-    throw new Error(error.message);
+    console.log(error);
   }
 };

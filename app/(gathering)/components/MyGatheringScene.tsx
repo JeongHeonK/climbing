@@ -1,11 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DefaultGathering from "@/app/(home)/components/DefaultGathering";
-import { IGathering } from "@/app/(home)/types/type";
 import MyGatherings from "./MyGatherings";
 import CardsSkeleton from "./CardsSkeleton";
 import { getMyGatherings } from "../actions/gatheringActions";
+import { useMyGatheringsStore } from "@/app/store/store";
 
 export interface LikeButtonData {
   id: string;
@@ -13,12 +13,9 @@ export interface LikeButtonData {
 }
 
 export default function MyGatheringScene({ isLogin }: { isLogin: boolean }) {
-  const [myGatherings, setMyGatherings] = useState<IGathering[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const handleDelete = useCallback((id: string) => {
-    setMyGatherings((prev) => prev.filter((gathering) => gathering._id !== id));
-  }, []);
+  const myGatherings = useMyGatheringsStore((state) => state.myGatherings);
+  const setMyGatherings = useMyGatheringsStore((state) => state.setGatherings);
 
   useEffect(() => {
     const result = window.localStorage.getItem("mine");
@@ -33,7 +30,7 @@ export default function MyGatheringScene({ isLogin }: { isLogin: boolean }) {
       setLoading(false);
     };
     updateMyGathering();
-  }, []);
+  }, [setMyGatherings]);
 
   if (loading) {
     return (
@@ -47,14 +44,10 @@ export default function MyGatheringScene({ isLogin }: { isLogin: boolean }) {
   return (
     <div className="max-w-[1100px] mx-auto">
       <h3 className="ml-7 p-1 font-semibold">My Climbing</h3>
-      {myGatherings.length === 0 ? (
+      {myGatherings === undefined ? (
         <DefaultGathering kind="mine" />
       ) : (
-        <MyGatherings
-          myGatherings={myGatherings}
-          isLogin={isLogin}
-          onDelete={handleDelete}
-        />
+        <MyGatherings isLogin={isLogin} />
       )}
     </div>
   );

@@ -2,7 +2,6 @@ import "server-only";
 
 import { JWTPayload, SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { SEVEN_DAY } from "../constant/constant";
 import { isOverADay } from "../util";
 
@@ -43,7 +42,6 @@ export class Auth {
       sameSite: "lax",
       path: "/",
     });
-    redirect("/");
   }
 
   static async updateSession() {

@@ -19,7 +19,7 @@ export default function Authentication() {
     SetIsMember((p) => !p);
   }, []);
 
-  const handleClose = useCallback(() => {
+  const handleReset = useCallback(() => {
     SetIsMember(true);
   }, []);
 
@@ -30,7 +30,7 @@ export default function Authentication() {
         className="w-full fixed top-0 right-0 bottom-0 bg-slate-900/75 z-50"
         onClick={() => {
           toggle();
-          handleClose();
+          handleReset();
         }}
       >
         <Card
@@ -39,7 +39,7 @@ export default function Authentication() {
         >
           {isMember ? (
             <Login
-              onClose={handleClose}
+              onReset={handleReset}
               header={<AuthenticationCardHeader text="Welcome Back" />}
               button={
                 <AuthenticationButton
@@ -50,7 +50,7 @@ export default function Authentication() {
             />
           ) : (
             <Signup
-              onClose={handleClose}
+              onReset={handleReset}
               header={<AuthenticationCardHeader text="Welcome Here" />}
               button={
                 <AuthenticationButton

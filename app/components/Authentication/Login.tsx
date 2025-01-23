@@ -1,4 +1,5 @@
 import { ChangeEvent, useActionState, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CardContent } from "@/components/ui/card";
@@ -6,17 +7,19 @@ import { login } from "./actions/login";
 import { FormError, PropsWithReactNode } from "./type";
 import { usePopupStore } from "@/app/store/store";
 
-export default function Login({ header, button, onClose }: PropsWithReactNode) {
+export default function Login({ header, button, onReset }: PropsWithReactNode) {
   const [userInput, handleInput] = useInput(initialData);
   const [formState, formAction] = useActionState(login, initialFormError);
   const toggle = usePopupStore((state) => state.toggle);
+  const router = useRouter();
 
   useEffect(() => {
     if (formState.state === "success") {
       toggle();
-      onClose();
+      onReset();
+      router.push("/");
     }
-  }, [toggle, onClose, formState.state]);
+  }, [toggle, onReset, formState.state, router]);
 
   return (
     <>

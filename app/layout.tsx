@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import PopupProvider from "./context/PopupContext";
 import Authentication from "./components/Authentication/Authentication";
 import Header from "./(home)/components/Header";
 import { SpaceDiv20 } from "./components/common/SpaceDiv";
@@ -35,12 +34,10 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50`}
       >
-        <PopupProvider>
-          <Authentication />
-          <Header />
-          <SpaceDiv20 />
-          {children}
-        </PopupProvider>
+        <Authentication />
+        <Header />
+        <SpaceDiv20 />
+        {children}
         <Toaster />
       </body>
     </html>

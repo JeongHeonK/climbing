@@ -5,7 +5,7 @@ import DefaultGathering from "@/app/(home)/components/DefaultGathering";
 import MyGatherings from "./MyGatherings";
 import CardsSkeleton from "./CardsSkeleton";
 import { getMyGatherings } from "../actions/gatheringActions";
-import { useMyGatheringsStore } from "@/app/store/store";
+import { useLocalStorageStore, useMyGatheringsStore } from "@/app/store/store";
 
 export interface LikeButtonData {
   id: string;
@@ -16,13 +16,12 @@ export default function MyGatheringScene({ isLogin }: { isLogin: boolean }) {
   const [loading, setLoading] = useState(true);
   const myGatherings = useMyGatheringsStore((state) => state.myGatherings);
   const setMyGatherings = useMyGatheringsStore((state) => state.setGatherings);
+  const myLocalGatherings = useLocalStorageStore((state) => state.mine);
 
   useEffect(() => {
-    const result = window.localStorage.getItem("mine");
     const updateMyGathering = async () => {
-      if (result) {
-        const myGatheringData: LikeButtonData[] = JSON.parse(result);
-        const ids = myGatheringData.map((gathering) => gathering.id);
+      if (myLocalGatherings !== undefined && myLocalGatherings?.length > 0) {
+        const ids = myLocalGatherings?.map((gathering) => gathering[0]);
         const myGatherings = await getMyGatherings(ids);
 
         setMyGatherings(myGatherings);
@@ -30,7 +29,7 @@ export default function MyGatheringScene({ isLogin }: { isLogin: boolean }) {
       setLoading(false);
     };
     updateMyGathering();
-  }, [setMyGatherings]);
+  }, [myLocalGatherings, setMyGatherings]);
 
   if (loading) {
     return (
@@ -44,7 +43,7 @@ export default function MyGatheringScene({ isLogin }: { isLogin: boolean }) {
   return (
     <div className="max-w-[1100px] mx-auto">
       <h3 className="ml-7 p-1 font-semibold">My Climbing</h3>
-      {myGatherings === undefined ? (
+      {myGatherings !== undefined && myGatherings.length === 0 ? (
         <DefaultGathering kind="mine" />
       ) : (
         <MyGatherings isLogin={isLogin} />

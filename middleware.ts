@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
-import { Auth } from "./app/api/auth";
 import { NextRequest, NextResponse } from "next/server";
+import { Auth } from "./app/api/auth";
 
 export async function middleware(request: NextRequest) {
   const cookieStorage = await cookies();
@@ -23,5 +23,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/newGathering", "/myClimbing"],
+  matcher: ["/", "/newGathering", "/myClimbing", "/editGathering"],
 };

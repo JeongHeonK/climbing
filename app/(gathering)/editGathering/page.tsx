@@ -1,16 +1,14 @@
-import { notFound } from "next/navigation";
 import { getGathering } from "@/app/(home)/actions/homeGatheringAction";
-import MeetingForm from "./MeetingForm";
+import MeetingForm from "../components/MeetingForm";
 
-export default async function GatheringPageScene({ id }: { id?: string }) {
-  let gathering;
-  if (id) {
-    try {
-      gathering = await getGathering(id);
-    } catch {
-      throw notFound();
-    }
-  }
+export default async function EditGatheringPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ id: string }>;
+}) {
+  const id = (await searchParams).id;
+  const gathering = await getGathering(id);
+
   return (
     <MeetingForm
       _id={gathering?._id.toString()}

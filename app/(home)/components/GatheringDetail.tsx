@@ -44,7 +44,7 @@ export default function GatheringDetail({
   const newDate = getDate(date);
 
   const handleClick = () => {
-    router.push(`/editGathering/${_id}`);
+    router.push(`/editGathering?id=${_id}`);
   };
 
   useEffect(() => {

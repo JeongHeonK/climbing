@@ -29,12 +29,14 @@ import SubmitButton from "./SubmitButton";
 
 export interface MeetingFormProps {
   _id?: string;
-  title?: string;
-  date?: Date;
-  lat?: string;
-  lng?: string;
-  description?: string;
+  title: string;
+  date: Date | undefined;
+  lat: string;
+  lng: string;
+  description: string;
 }
+
+export interface UseMeetingArgs extends Omit<MeetingFormProps, "_id"> {}
 
 export default function MeetingForm({
   _id,
@@ -143,31 +145,14 @@ export default function MeetingForm({
     </div>
   );
 }
-export type InitialValue = {
-  title: string;
-  description: string;
-  lat: string;
-  lng: string;
-  date: Date | undefined;
-};
-
-const initialValue: InitialValue = {
-  title: "",
-  description: "",
-  lat: "",
-  lng: "",
-  date: new Date(),
-};
 
 const initialFormError: FormError = {
   state: null,
   message: null,
 };
 
-const useMeeting = (editValue: Partial<InitialValue>, id?: string) => {
-  const [userInput, setUserInput] = useState(() => {
-    return editValue.description ? editValue : initialValue;
-  });
+const useMeeting = (initialValue: UseMeetingArgs, id?: string) => {
+  const [userInput, setUserInput] = useState(initialValue);
 
   const formAction = id ? editGathering : generateGathering;
 
@@ -198,8 +183,8 @@ const useMeeting = (editValue: Partial<InitialValue>, id?: string) => {
         const newId = id ?? null;
         const map = generateMap(
           newId || "inputMap",
-          id ? Number(editValue.lat) : DEFAULT_LOCATION.lat,
-          id ? Number(editValue.lng) : DEFAULT_LOCATION.lng,
+          id ? Number(initialValue.lat) : DEFAULT_LOCATION.lat,
+          id ? Number(initialValue.lng) : DEFAULT_LOCATION.lng,
         );
         const marker = generateMarker(map);
 
@@ -234,7 +219,7 @@ const useMeeting = (editValue: Partial<InitialValue>, id?: string) => {
     return () => {
       kakaoMapScript.removeEventListener("load", onLoadKakaoAPI);
     };
-  }, [id, editValue.lat, editValue.lng]);
+  }, [id, initialValue.lat, initialValue.lng]);
 
   return {
     userInput,

@@ -5,15 +5,15 @@ import { useFormStatus } from "react-dom";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { stopBubbling } from "@/app/util";
-import { usePopupState, useToggle } from "../../context/PopupContext";
 import Login from "./Login";
 import Signup from "./Signup";
 import Spinner from "../common/Spinner";
+import { usePopupStore } from "@/app/store/store";
 
 export default function Authentication() {
   const [isMember, SetIsMember] = useState(true);
-  const isOpen = usePopupState();
-  const toggle = useToggle();
+  const toggle = usePopupStore((state) => state.toggle);
+  const isOpen = usePopupStore((state) => state.popupState);
 
   const handleClick = useCallback(() => {
     SetIsMember((p) => !p);

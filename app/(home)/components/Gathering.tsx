@@ -8,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useToggle } from "@/app/context/PopupContext";
 import { useToast } from "@/hooks/use-toast";
 import { stopBubbling } from "@/app/util";
 import {
@@ -18,6 +17,7 @@ import {
   getDate,
 } from "../util";
 import LikeButton from "./LikeButton";
+import { usePopupStore } from "@/app/store/store";
 
 interface GatheringProps {
   id: string;
@@ -42,7 +42,7 @@ export default function Gathering({
 }: GatheringProps) {
   const newDate = getDate(date);
   const { toast } = useToast();
-  const toggle = useToggle();
+  const toggle = usePopupStore((state) => state.toggle);
   const router = useRouter();
 
   const handleClick = (e: MouseEvent) => {

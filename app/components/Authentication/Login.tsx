@@ -2,14 +2,14 @@ import { ChangeEvent, useActionState, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CardContent } from "@/components/ui/card";
-import { useToggle } from "@/app/context/PopupContext";
 import { login } from "./actions/login";
 import { FormError, PropsWithReactNode } from "./type";
+import { usePopupStore } from "@/app/store/store";
 
 export default function Login({ header, button, onClose }: PropsWithReactNode) {
   const [userInput, handleInput] = useInput(initialData);
   const [formState, formAction] = useActionState(login, initialFormError);
-  const toggle = useToggle();
+  const toggle = usePopupStore((state) => state.toggle);
 
   useEffect(() => {
     if (formState.state === "success") {

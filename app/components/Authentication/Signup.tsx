@@ -2,9 +2,9 @@ import { ChangeEvent, useActionState, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CardContent } from "@/components/ui/card";
-import { useToggle } from "@/app/context/PopupContext";
 import { signup } from "./actions/signup";
 import { FormError, PropsWithReactNode } from "./type";
+import { usePopupStore } from "@/app/store/store";
 
 export default function Signup({
   header,
@@ -13,7 +13,7 @@ export default function Signup({
 }: PropsWithReactNode) {
   const [userInput, handleInput] = useInput(initialData);
   const [formState, formAction] = useActionState(signup, initialFormError);
-  const toggle = useToggle();
+  const toggle = usePopupStore((state) => state.toggle);
 
   useEffect(() => {
     if (formState.state === "success") {

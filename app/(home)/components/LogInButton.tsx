@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useToggle } from "@/app/context/PopupContext";
 import { Button } from "@/components/ui/button";
 import Spinner from "@/app/components/common/Spinner";
 import { logout } from "../actions/logout";
+import { usePopupStore } from "@/app/store/store";
 
 export default function LogInButton({ loginStatus }: { loginStatus: boolean }) {
-  const toggle = useToggle();
+  const toggle = usePopupStore((state) => state.toggle);
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(loginStatus);
   const [isLoading, setIsLoading] = useState(false);

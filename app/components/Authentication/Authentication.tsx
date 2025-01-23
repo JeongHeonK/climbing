@@ -5,21 +5,21 @@ import { useFormStatus } from "react-dom";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { stopBubbling } from "@/app/util";
-import { usePopupState, useToggle } from "../../context/PopupContext";
 import Login from "./Login";
 import Signup from "./Signup";
 import Spinner from "../common/Spinner";
+import { usePopupStore } from "@/app/store/store";
 
 export default function Authentication() {
   const [isMember, SetIsMember] = useState(true);
-  const isOpen = usePopupState();
-  const toggle = useToggle();
+  const toggle = usePopupStore((state) => state.toggle);
+  const isOpen = usePopupStore((state) => state.popupState);
 
   const handleClick = useCallback(() => {
     SetIsMember((p) => !p);
   }, []);
 
-  const handleClose = useCallback(() => {
+  const handleReset = useCallback(() => {
     SetIsMember(true);
   }, []);
 
@@ -30,7 +30,7 @@ export default function Authentication() {
         className="w-full fixed top-0 right-0 bottom-0 bg-slate-900/75 z-50"
         onClick={() => {
           toggle();
-          handleClose();
+          handleReset();
         }}
       >
         <Card
@@ -39,7 +39,7 @@ export default function Authentication() {
         >
           {isMember ? (
             <Login
-              onClose={handleClose}
+              onReset={handleReset}
               header={<AuthenticationCardHeader text="Welcome Back" />}
               button={
                 <AuthenticationButton
@@ -50,7 +50,7 @@ export default function Authentication() {
             />
           ) : (
             <Signup
-              onClose={handleClose}
+              onReset={handleReset}
               header={<AuthenticationCardHeader text="Welcome Here" />}
               button={
                 <AuthenticationButton

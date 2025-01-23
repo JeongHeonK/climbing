@@ -17,5 +17,5 @@ export type FormError =
 export interface PropsWithReactNode {
   header: ReactNode;
   button: ReactNode;
-  onClose: () => void;
+  onReset: () => void;
 }

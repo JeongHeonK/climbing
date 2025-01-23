@@ -1,16 +1,16 @@
 "use client";
 
 import { PropsWithChildren, MouseEvent } from "react";
-import { useToggle } from "@/app/context/PopupContext";
 import { NavigationMenuLink } from "@/components/ui/navigation-menu";
 import { useToast } from "@/hooks/use-toast";
+import { usePopupStore } from "@/app/store/store";
 
 export default function CustomLink({
   children,
   isLogin,
 }: PropsWithChildren<{ isLogin: boolean }>) {
   const { toast } = useToast();
-  const toggle = useToggle();
+  const toggle = usePopupStore((state) => state.toggle);
 
   const handleClick = (e: MouseEvent) => {
     if (!isLogin) {

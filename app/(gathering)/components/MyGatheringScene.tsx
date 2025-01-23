@@ -1,11 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DefaultGathering from "@/app/(home)/components/DefaultGathering";
-import { IGathering } from "@/app/(home)/types/type";
 import MyGatherings from "./MyGatherings";
 import CardsSkeleton from "./CardsSkeleton";
 import { getMyGatherings } from "../actions/gatheringActions";
+import { useLocalStorageStore, useMyGatheringsStore } from "@/app/store/store";
 
 export interface LikeButtonData {
   id: string;
@@ -13,19 +13,15 @@ export interface LikeButtonData {
 }
 
 export default function MyGatheringScene({ isLogin }: { isLogin: boolean }) {
-  const [myGatherings, setMyGatherings] = useState<IGathering[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const handleDelete = useCallback((id: string) => {
-    setMyGatherings((prev) => prev.filter((gathering) => gathering._id !== id));
-  }, []);
+  const myGatherings = useMyGatheringsStore((state) => state.myGatherings);
+  const setMyGatherings = useMyGatheringsStore((state) => state.setGatherings);
+  const myLocalGatherings = useLocalStorageStore((state) => state.mine);
 
   useEffect(() => {
-    const result = window.localStorage.getItem("mine");
     const updateMyGathering = async () => {
-      if (result) {
-        const myGatheringData: LikeButtonData[] = JSON.parse(result);
-        const ids = myGatheringData.map((gathering) => gathering.id);
+      if (myLocalGatherings !== undefined && myLocalGatherings?.length > 0) {
+        const ids = myLocalGatherings?.map((gathering) => gathering[0]);
         const myGatherings = await getMyGatherings(ids);
 
         setMyGatherings(myGatherings);
@@ -33,7 +29,7 @@ export default function MyGatheringScene({ isLogin }: { isLogin: boolean }) {
       setLoading(false);
     };
     updateMyGathering();
-  }, []);
+  }, [myLocalGatherings, setMyGatherings]);
 
   if (loading) {
     return (
@@ -47,14 +43,10 @@ export default function MyGatheringScene({ isLogin }: { isLogin: boolean }) {
   return (
     <div className="max-w-[1100px] mx-auto">
       <h3 className="ml-7 p-1 font-semibold">My Climbing</h3>
-      {myGatherings.length === 0 ? (
+      {myGatherings !== undefined && myGatherings.length === 0 ? (
         <DefaultGathering kind="mine" />
       ) : (
-        <MyGatherings
-          myGatherings={myGatherings}
-          isLogin={isLogin}
-          onDelete={handleDelete}
-        />
+        <MyGatherings isLogin={isLogin} />
       )}
     </div>
   );

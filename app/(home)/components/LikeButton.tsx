@@ -1,4 +1,5 @@
-import { useEffect, useState, MouseEvent } from "react";
+import { useState, MouseEvent, useEffect } from "react";
+import { useLocalStorageStore } from "@/app/store/store";
 
 export interface LikeButtonProps {
   id: string;
@@ -6,62 +7,31 @@ export interface LikeButtonProps {
   onDelete?: (id: string) => void;
 }
 
-type Gathering = Omit<LikeButtonProps, "onDelete">;
-
 export default function LikeButton({ id, date, onDelete }: LikeButtonProps) {
+  const myGatherings = useLocalStorageStore((state) => state.mine);
   const [like, setLike] = useState(false);
+
+  const addGathering = useLocalStorageStore((state) => state.addMine);
+  const deleteGathering = useLocalStorageStore((state) => state.deleteMine);
 
   const handleLikeClick = (e: MouseEvent) => {
     e.stopPropagation();
-
-    if (typeof window === "undefined") return;
-
     if (!like) {
-      const myGatherings = window.localStorage.getItem("mine");
-      const gathering = {
-        id,
-        date,
-      };
-
-      if (!myGatherings) {
-        const gatheringArray = [];
-        gatheringArray.push(gathering);
-        window.localStorage.setItem("mine", JSON.stringify(gatheringArray));
-      } else {
-        const gatheringArray: Gathering[] = JSON.parse(myGatherings);
-        gatheringArray.push(gathering);
-        gatheringArray.sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-        );
-
-        window.localStorage.setItem("mine", JSON.stringify(gatheringArray));
-      }
-
+      addGathering(id, date);
       setLike(true);
     } else {
-      const myGatherings = window.localStorage.getItem("mine");
-      if (!myGatherings) return;
-
-      let gatheringArray = JSON.parse(myGatherings);
-
-      gatheringArray = gatheringArray.filter(
-        (gathering: Gathering) => gathering.id !== id,
-      );
-
-      window.localStorage.setItem("mine", JSON.stringify(gatheringArray));
+      deleteGathering(id);
       setLike(false);
       if (onDelete) onDelete(id);
     }
   };
 
   useEffect(() => {
-    const result = window.localStorage.getItem("mine");
-    if (!result) return;
-    const gatheringArray: Gathering[] = JSON.parse(result);
-    if (gatheringArray.some((gathering) => gathering.id === id)) {
-      setLike(true);
-    }
-  }, [id]);
+    if (myGatherings === undefined) return;
+    setLike(
+      myGatherings?.some((gathering: [string, Date]) => gathering[0] === id),
+    );
+  }, [myGatherings, id]);
 
   return (
     <button

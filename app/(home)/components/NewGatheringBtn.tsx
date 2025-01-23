@@ -2,7 +2,6 @@
 
 import { MouseEvent } from "react";
 import Link from "next/link";
-import { useToggle } from "@/app/context/PopupContext";
 import {
   Tooltip,
   TooltipContent,
@@ -10,6 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
+import { usePopupStore } from "@/app/store/store";
 
 interface NewGatheringBtnProps {
   isLogin: boolean;
@@ -17,7 +17,7 @@ interface NewGatheringBtnProps {
 
 export default function NewGatheringBtn({ isLogin }: NewGatheringBtnProps) {
   const { toast } = useToast();
-  const toggle = useToggle();
+  const toggle = usePopupStore((state) => state.toggle);
 
   const handleClick = (e: MouseEvent) => {
     if (!isLogin) {

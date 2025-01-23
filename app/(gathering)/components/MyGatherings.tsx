@@ -1,20 +1,17 @@
 import Gathering from "@/app/(home)/components/Gathering";
-import { IGathering } from "@/app/(home)/types/type";
+import { useMyGatheringsStore } from "@/app/store/store";
 
 interface MyGatheringsProps {
-  myGatherings: IGathering[];
   isLogin: boolean;
-  onDelete: (id: string) => void;
 }
 
-export default function MyGatherings({
-  myGatherings,
-  isLogin,
-  onDelete,
-}: MyGatheringsProps) {
+export default function MyGatherings({ isLogin }: MyGatheringsProps) {
+  const onDelete = useMyGatheringsStore((state) => state.handleDelete);
+  const myGatherings = useMyGatheringsStore((state) => state.myGatherings);
+
   return (
     <div className="px-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-y-6 py-2 px-12 md:px-3 mx-auto">
-      {myGatherings.map((gathering) => {
+      {myGatherings?.map((gathering) => {
         return (
           <Gathering
             key={gathering._id}

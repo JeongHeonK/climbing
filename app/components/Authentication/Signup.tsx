@@ -9,7 +9,7 @@ import { usePopupStore } from "@/app/store/store";
 export default function Signup({
   header,
   button,
-  onClose,
+  onReset,
 }: PropsWithReactNode) {
   const [userInput, handleInput] = useInput(initialData);
   const [formState, formAction] = useActionState(signup, initialFormError);
@@ -18,9 +18,9 @@ export default function Signup({
   useEffect(() => {
     if (formState.state === "success") {
       toggle();
-      onClose();
+      onReset();
     }
-  }, [toggle, onClose, formState.state]);
+  }, [toggle, onReset, formState.state]);
 
   return (
     <>

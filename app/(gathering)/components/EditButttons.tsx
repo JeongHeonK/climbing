@@ -10,8 +10,8 @@ export default function EditButtons({ id }: { id: string }) {
 
   return (
     <span className="flex gap-4">
-      <Button>{pending ? <Spinner /> : "수정"}</Button>
-      <Button className="bg-red-500 " type="button" onClick={handleDelete}>
+      <Button className="w-16">{pending ? <Spinner /> : "수정"}</Button>
+      <Button className="bg-red-500 w-16" type="button" onClick={handleDelete}>
         {isLoading ? <Spinner /> : "삭제"}
       </Button>
     </span>

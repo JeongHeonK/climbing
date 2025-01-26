@@ -10,14 +10,12 @@ import { usePopupStore } from "@/app/store/store";
 export default function LogInButton({ loginStatus }: { loginStatus: boolean }) {
   const toggle = usePopupStore((state) => state.toggle);
   const router = useRouter();
-  const [isLogin, setIsLogin] = useState(loginStatus);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = async () => {
-    if (isLogin) {
+    if (loginStatus) {
       setIsLoading(true);
       await logout();
-      setIsLogin(false);
       setIsLoading(false);
       router.push("/");
     } else {
@@ -27,7 +25,7 @@ export default function LogInButton({ loginStatus }: { loginStatus: boolean }) {
 
   return (
     <Button type="button" className="w-20" onClick={handleClick}>
-      {isLoading ? <Spinner /> : getButtonText(isLogin)}
+      {isLoading ? <Spinner /> : getButtonText(loginStatus)}
     </Button>
   );
 }

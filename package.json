@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "npm install --force",
+    "postinstall": "husky install",
     "cy:open": "cypress open"
   },
   "lint-staged": {

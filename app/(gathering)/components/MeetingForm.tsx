@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  ChangeEvent,
-  useActionState,
-  useEffect,
-  useState,
-  MouseEvent,
-} from "react";
+import { ChangeEvent, useActionState, useEffect, useState } from "react";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { ONE_DAY, DEFAULT_LOCATION } from "@/app/constant/constant";
@@ -19,13 +13,9 @@ import {
 } from "@/app/(home)/util";
 import { FormError } from "@/app/components/Authentication/type";
 import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
-import {
-  generateGathering,
-  editGathering,
-  deleteGathering,
-} from "../actions/gatheringActions";
+import { generateGathering, editGathering } from "../actions/gatheringActions";
 import SubmitButton from "./SubmitButton";
+import EditButtons from "./EditButttons";
 
 export interface MeetingFormProps {
   _id?: string;
@@ -51,7 +41,6 @@ export default function MeetingForm({
     handleDateChange,
     handleInputChange,
     onSubmit,
-    handleDelete,
     formState,
   } = useMeeting({ title, date, lat, lng, description }, _id);
   const { toast } = useToast();
@@ -131,16 +120,7 @@ export default function MeetingForm({
           value={userInput.description}
           onChange={handleInputChange}
         />
-        {_id ? (
-          <span className="flex gap-4">
-            <Button>수정</Button>
-            <Button className="bg-red-500" type="button" onClick={handleDelete}>
-              삭제
-            </Button>
-          </span>
-        ) : (
-          <SubmitButton />
-        )}
+        {_id ? <EditButtons id={_id} /> : <SubmitButton />}
       </form>
     </div>
   );
@@ -167,12 +147,6 @@ const useMeeting = (initialValue: UseMeetingArgs, id?: string) => {
   ) => {
     const { name, value } = e.target;
     setUserInput((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleDelete = async (e: MouseEvent) => {
-    e.preventDefault();
-    if (!id) return;
-    await deleteGathering(id);
   };
 
   useEffect(() => {
@@ -227,6 +201,5 @@ const useMeeting = (initialValue: UseMeetingArgs, id?: string) => {
     handleInputChange,
     onSubmit,
     formState,
-    handleDelete,
   };
 };

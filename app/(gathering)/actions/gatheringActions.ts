@@ -141,8 +141,6 @@ export const deleteGathering = async (id: string) => {
   } catch (err) {
     const error = err as Error;
     throw new Error(error.message);
-  } finally {
-    redirect("/");
   }
 };
 

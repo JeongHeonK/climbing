@@ -18,7 +18,7 @@ export default function Error({
   };
 
   useEffect(() => {
-    console.log(error);
+    console.log("error: ", error);
   }, [error]);
 
   const handleClickReset = () => {

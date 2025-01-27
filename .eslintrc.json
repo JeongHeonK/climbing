@@ -39,7 +39,8 @@
     "react/no-unstable-nested-components": "off",
     "@typescript-eslint/no-shadow": "off",
     "consistent-return": "off",
-    "prefer-destructuring": "off"
+    "prefer-destructuring": "off",
+    "react/destructuring-assignment": "off"
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

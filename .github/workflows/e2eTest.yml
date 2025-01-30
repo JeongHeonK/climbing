@@ -17,17 +17,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build Next.js app
-        run: npm run build
-
       - name: Start the application
-        run: npm run start &
+        run: npm run dev &
         env:
           CYPRESS_baseUrl: "http://localhost:3000"
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          start: npm run start
+          start: npm run dev
           wait-on: "http://localhost:3000"
           browser: chrome

@@ -13,33 +13,35 @@ describe("edit gathering", () => {
   });
 
   it("should show edit button button", () => {
-    cy.contains("cypress 수정 테스트").should("exist");
-    cy.contains("cypress 수정 테스트").click();
+    cy.contains("양재 클라이밍 10명").should("exist");
+    cy.contains("양재 클라이밍 10명").click();
     cy.contains("수정").should("exist");
   });
 
   it("should go to edit page", () => {
-    cy.contains("cypress 수정 테스트").should("exist");
-    cy.contains("cypress 수정 테스트").click();
+    cy.contains("양재 클라이밍 10명").should("exist");
+    cy.contains("양재 클라이밍 10명").click();
     cy.get('[data-cy="editPage"]').click();
     cy.location("pathname").should("contains", "/editGathering");
   });
 
   it("should go to edit page", () => {
-    cy.contains("cypress 수정 테스트").should("exist");
-    cy.contains("cypress 수정 테스트").click();
+    cy.contains("양재 클라이밍 10명").should("exist");
+    cy.contains("양재 클라이밍 10명").click();
     cy.get('[data-cy="editPage"]').click();
     cy.location("pathname").should("contains", "/editGathering");
   });
 
-  it("should go to edit gathering title", () => {
-    cy.contains("cypress 수정 테스트").should("exist");
-    cy.contains("cypress 수정 테스트").click();
-    cy.get('[data-cy="editPage"]').click();
-    cy.get("#title").clear();
-    cy.get("#title").type("cypress 수정 테스트3");
-    cy.contains("수정").click();
-    cy.location("pathname").should("eq", "/");
-    cy.contains("cypress 수정 테스트3").should("exist");
-  });
+  // local에서 진행
+
+  // it("should go to edit gathering title", () => {
+  //   cy.contains("cypress_test").should("exist");
+  //   cy.contains("cypress_test").click();
+  //   cy.get('[data-cy="editPage"]').click();
+  //   cy.get("#title").clear();
+  //   cy.get("#title").type("cypress_test3");
+  //   cy.contains("수정").click();
+  //   cy.location("pathname").should("eq", "/");
+  //   cy.contains("cypress_test3").should("exist");
+  // });
 });

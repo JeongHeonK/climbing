@@ -2,9 +2,9 @@ name: E2E Tests (Cypress)
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   pull_request:
-    branches: [main, develop]
+    branches: [main]
 
 jobs:
   cypress-run:
@@ -17,14 +17,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Build Next.js app
+        run: npm run build
+
       - name: Start the application
-        run: npm run dev
+        run: npm run start &
         env:
           CYPRESS_baseUrl: "http://localhost:3000"
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          start: npx cypress start
+          start: npm run start
           wait-on: "http://localhost:3000"
           browser: chrome

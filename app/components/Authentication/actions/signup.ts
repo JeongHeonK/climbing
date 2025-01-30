@@ -2,7 +2,7 @@
 
 import { AUTH_ERROR_MESSAGES } from "@/app/constant/constant";
 import { checkSignupValidation, SignupUser } from "@/app/util/validation";
-import { connectDB } from "@/app/api/database";
+import { db } from "@/app/api/database";
 import { hashPassword } from "@/app/util/bcrypt";
 import { FormError } from "../type";
 
@@ -26,7 +26,6 @@ export const signup = async (
 
   if (input.email !== undefined && input.password !== undefined) {
     try {
-      const db = (await connectDB).db("climbing");
       const user = await db
         .collection<SignupUser>("member")
         .findOne({ email: input.email });

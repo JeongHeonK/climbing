@@ -1,14 +1,13 @@
 "use server";
 
 import { ObjectId } from "mongodb";
-import { connectDB } from "@/app/api/database";
+import { db } from "@/app/api/database";
 import { IGathering } from "../types/type";
 
 export const getGatherings = async (page = 1) => {
   const skipCount = (page - 1) * 8;
 
   try {
-    const db = (await connectDB).db("climbing");
     const result = await db
       .collection<IGathering>("gathering")
       .find({})
@@ -36,7 +35,6 @@ export const getGathering = async (id: string) => {
       throw new Error("Invalid ObjectId format");
     }
 
-    const db = (await connectDB).db("climbing");
     const result = await db
       .collection("gathering")
       .findOne({ _id: new ObjectId(id) });

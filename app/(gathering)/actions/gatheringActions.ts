@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { ObjectId } from "mongodb";
 import { Auth } from "@/app/api/auth";
-import { connectDB } from "@/app/api/database";
+import { db } from "@/app/api/database";
 import { FormError } from "@/app/components/Authentication/type";
 import { gatheringValidation, Gathering } from "@/app/util/validation";
 import { IGathering } from "@/app/(home)/types/type";
@@ -45,7 +45,6 @@ export const generateGathering = async (
     return { state: "error", message: "빈 값을 입력할 수 없습니다" };
 
   try {
-    const db = (await connectDB).db("climbing");
     await db.collection<Gathering>("gathering").insertOne({
       user: userId,
       title: userInput.title,
@@ -109,7 +108,6 @@ export const editGathering = async (
     return { state: "error", message: "빈 값을 입력할 수 없습니다" };
 
   try {
-    const db = (await connectDB).db("climbing");
     await db.collection<UpdateGathering>("gathering").updateOne(
       { _id: new ObjectId(docId) },
       {
@@ -134,7 +132,6 @@ export const editGathering = async (
 
 export const deleteGathering = async (id: string) => {
   try {
-    const db = (await connectDB).db("climbing");
     await db
       .collection<UpdateGathering>("gathering")
       .deleteOne({ _id: new ObjectId(id) });
@@ -148,7 +145,6 @@ export const getMyGatherings = async (ids: string[]) => {
   try {
     const objectIds = ids.map((id) => new ObjectId(id)) as unknown as string[];
 
-    const db = (await connectDB).db("climbing");
     const result = await db
       .collection<IGathering>("gathering")
       .find({ _id: { $in: objectIds } })

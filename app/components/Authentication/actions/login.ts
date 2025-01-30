@@ -2,7 +2,7 @@
 
 import { checkLoginValidation, LoginUser } from "@/app/util/validation";
 import { AUTH_ERROR_MESSAGES } from "@/app/constant/constant";
-import { connectDB } from "@/app/api/database";
+import { db } from "@/app/api/database";
 import { checkPassword } from "@/app/util/bcrypt";
 import { Auth } from "@/app/api/auth";
 import { FormError } from "../type";
@@ -28,7 +28,6 @@ export const login = async (
     return { state: "error", message: "다시 한번 입력해주세요" };
 
   try {
-    const db = (await connectDB).db("climbing");
     const user = await db
       .collection<LoginUser>("member")
       .findOne({ email: input.email });

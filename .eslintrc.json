@@ -41,7 +41,8 @@
     "consistent-return": "off",
     "prefer-destructuring": "off",
     "react/destructuring-assignment": "off",
-    "@typescript-eslint/naming-convention": "off"
+    "@typescript-eslint/naming-convention": "off",
+    "import/no-extraneous-dependencies": "off"
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

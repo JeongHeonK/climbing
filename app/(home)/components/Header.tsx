@@ -17,11 +17,10 @@ export default async function Header() {
     <header className="bg-white z-50 fixed top-0 left-0 right-0 flex w-full border justify-between items-center px-2">
       <NavigationMenu>
         <NavigationMenuList className="py-1 gap-2">
-          <NavigationMenuItem>
+          <NavigationMenuItem className="size-10">
             <Image
               src="/logo.png"
               alt="logo"
-              priority
               width={35}
               height={35}
               className="w-auto h-auto"

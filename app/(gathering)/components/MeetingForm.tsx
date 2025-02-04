@@ -126,7 +126,7 @@ export default function MeetingForm({
   );
 }
 
-const initialFormError: FormError = {
+const initialFormError: Omit<FormError, "input"> = {
   state: null,
   message: null,
 };

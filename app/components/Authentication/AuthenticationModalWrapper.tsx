@@ -3,7 +3,7 @@ import { stopBubbling } from "@/app/util";
 import { Card } from "@/components/ui/card";
 import { usePopupStore } from "@/app/store/store";
 
-function ModalWrapper({
+function AuthenticationModalWrapper({
   children,
   onReset,
 }: PropsWithChildren<{ onReset: () => void }>) {
@@ -28,4 +28,4 @@ function ModalWrapper({
   );
 }
 
-export default memo(ModalWrapper);
+export default memo(AuthenticationModalWrapper);

@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import Login from "./Login";
 import Signup from "./Signup";
 import { usePopupStore } from "@/app/store/store";
-import ModalWrapper from "./ModalWrapper";
+import AuthenticationModalWrapper from "./AuthenticationModalWrapper";
 import AuthenticationCardHeader from "./AuthenticationCardHeader";
 import AuthenticationButton from "./AuthenticationButton";
 
@@ -22,7 +22,7 @@ export default function Authentication() {
 
   if (isOpen) {
     return (
-      <ModalWrapper onReset={handleReset}>
+      <AuthenticationModalWrapper onReset={handleReset}>
         {isMember ? (
           <Login
             onReset={handleReset}
@@ -40,7 +40,7 @@ export default function Authentication() {
             }
           />
         )}
-      </ModalWrapper>
+      </AuthenticationModalWrapper>
     );
   }
 }

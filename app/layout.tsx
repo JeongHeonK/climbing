@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import Authentication from "./components/Authentication/Authentication";
+import Authentication from "./components/Authentication";
 import Header from "./(home)/components/Header";
 import { SpaceDiv20 } from "./components/common/SpaceDiv";
 

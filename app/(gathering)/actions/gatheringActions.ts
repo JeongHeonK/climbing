@@ -10,9 +10,9 @@ import { gatheringValidation, Gathering } from "@/app/util/validation";
 import { IGathering } from "@/app/(home)/types/type";
 
 export const generateGathering = async (
-  _: FormError | undefined,
+  _: Omit<FormError, "input"> | undefined,
   formData: FormData,
-): Promise<FormError> => {
+): Promise<Omit<FormError, "input">> => {
   const session = (await cookies()).get("session")?.value;
 
   if (!session) return { state: "error", message: "로그인 후 이용해주세요." };
@@ -73,9 +73,9 @@ type UpdateGathering = {
 };
 
 export const editGathering = async (
-  _: FormError | undefined,
+  _: Omit<FormError, "input"> | undefined,
   formData: FormData,
-): Promise<FormError> => {
+): Promise<Omit<FormError, "input">> => {
   const session = (await cookies()).get("session")?.value;
 
   if (!session) return { state: "error", message: "로그인 후 이용해주세요." };

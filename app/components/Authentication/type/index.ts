@@ -4,14 +4,21 @@ export type FormError =
   | {
       state: "error";
       message: string;
+      input: {
+        email?: string;
+        password?: string;
+        passwordCheck?: string;
+      };
     }
   | {
       state: "success";
       message: null;
+      input: null;
     }
   | {
       state: null;
       message: null;
+      input: null;
     };
 
 export interface PropsWithReactNode {

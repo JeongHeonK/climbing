@@ -21,11 +21,15 @@ export const login = async (
   if (!result.success) {
     const [{ message }] = result.error.errors;
 
-    return { state: "error", message };
+    return { state: "error", message, input };
   }
 
   if (input.email === undefined || input.password === undefined)
-    return { state: "error", message: "다시 한번 입력해주세요" };
+    return {
+      state: "error",
+      message: "다시 한번 입력해주세요",
+      input: { email: input.email },
+    };
 
   try {
     const db = (await connectDB).db("climbing");
@@ -33,10 +37,19 @@ export const login = async (
       .collection<LoginUser>("member")
       .findOne({ email: input.email });
 
-    if (!user) return { state: "error", message: AUTH_ERROR_MESSAGES.user };
+    if (!user)
+      return {
+        state: "error",
+        message: AUTH_ERROR_MESSAGES.user,
+        input: { email: input.email },
+      };
 
     if (!(await checkPassword(input.password, user.password))) {
-      return { state: "error", message: AUTH_ERROR_MESSAGES.pw };
+      return {
+        state: "error",
+        message: AUTH_ERROR_MESSAGES.pw,
+        input: { email: input.email },
+      };
     }
   } catch (err) {
     const error = err as Error;
@@ -44,5 +57,5 @@ export const login = async (
   }
 
   await Auth.createSession(input.email);
-  return { state: "success", message: null };
+  return { state: "success", message: null, input: null };
 };

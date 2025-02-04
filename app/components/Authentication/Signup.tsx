@@ -1,4 +1,4 @@
-import { ChangeEvent, useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CardContent } from "@/components/ui/card";
@@ -11,7 +11,6 @@ export default function Signup({
   button,
   onReset,
 }: PropsWithReactNode) {
-  const [userInput, handleInput] = useInput(initialData);
   const [formState, formAction] = useActionState(signup, initialFormError);
   const toggle = usePopupStore((state) => state.toggle);
 
@@ -29,33 +28,30 @@ export default function Signup({
         <form className="grid gap-3" action={formAction}>
           <Label htmlFor="email">Email</Label>
           <Input
-            onChange={handleInput}
-            value={userInput.email}
             type="text"
             id="email"
             name="email"
             placeholder="Enter Your Email"
             className="text-sm"
+            defaultValue={formState.input?.email || ""}
           />
           <Label htmlFor="password">Password</Label>
           <Input
-            onChange={handleInput}
-            value={userInput.password}
             type="password"
             id="password"
             name="password"
             placeholder="Enter Your Password"
             className="text-sm"
+            defaultValue={formState.input?.password || ""}
           />
           <Label htmlFor="passwordCheck">Password Check</Label>
           <Input
-            onChange={handleInput}
-            value={userInput.passwordCheck}
             type="password"
             id="passwordCheck"
             name="passwordCheck"
             placeholder="Enter Your Password Again"
             className="text-sm"
+            defaultValue={formState.input?.passwordCheck || ""}
           />
           <p className="text-sm text-red-600 -mt-1 -mb-4">
             {formState?.message || " "}
@@ -67,27 +63,8 @@ export default function Signup({
   );
 }
 
-const initialData = {
-  email: "",
-  password: "",
-  passwordCheck: "",
-};
-
 const initialFormError: FormError = {
   state: null,
   message: null,
-};
-
-type Initial = typeof initialData;
-
-const useInput = (data: Initial) => {
-  const [userInput, setUserInput] = useState(data);
-
-  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    setUserInput((prev) => ({ ...prev, [name]: value }));
-  };
-
-  return [userInput, handleInput] as const;
+  input: null,
 };

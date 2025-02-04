@@ -7,6 +7,7 @@ export type FormError =
       input: {
         email?: string;
         password?: string;
+        passwordCheck?: string;
       };
     }
   | {

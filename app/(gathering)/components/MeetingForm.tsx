@@ -15,7 +15,7 @@ import { FormError } from "@/app/components/Authentication/type";
 import { useToast } from "@/hooks/use-toast";
 import { generateGathering, editGathering } from "../actions/gatheringActions";
 import SubmitButton from "./SubmitButton";
-import EditButtons from "./EditButttons";
+import ButtonGroup from "./ButtonGroup";
 
 export interface MeetingFormProps {
   _id?: string;
@@ -36,13 +36,13 @@ export default function MeetingForm({
   lng,
   description,
 }: MeetingFormProps) {
-  const {
-    userInput,
-    handleDateChange,
-    handleInputChange,
-    onSubmit,
-    formState,
-  } = useMeeting({ title, date, lat, lng, description }, _id);
+  const isEditPage = _id !== undefined;
+
+  const { userInput, handleDateChange, handleInputChange } = useMeetingContext(
+    { title, date, lat, lng, description },
+    _id,
+  );
+  const { formState, onSubmit } = useMeetingFrom(isEditPage);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -81,6 +81,17 @@ export default function MeetingForm({
           value={userInput.title}
           onChange={handleInputChange}
         />
+        <Label htmlFor="description" className="self-start">
+          내용
+        </Label>
+        <Textarea
+          id="description"
+          name="description"
+          rows={4}
+          placeholder="모임 설명을 입력하세요."
+          value={userInput.description}
+          onChange={handleInputChange}
+        />
         <Input
           id="lng"
           name="lng"
@@ -106,21 +117,10 @@ export default function MeetingForm({
               : new Date().toDateString()
           }
         />
-        {_id && (
+        {isEditPage && (
           <Input id="id" name="id" className="hidden" defaultValue={_id} />
         )}
-        <Label htmlFor="description" className="self-start">
-          내용
-        </Label>
-        <Textarea
-          id="description"
-          name="description"
-          rows={4}
-          placeholder="모임 설명을 입력하세요."
-          value={userInput.description}
-          onChange={handleInputChange}
-        />
-        {_id ? <EditButtons id={_id} /> : <SubmitButton />}
+        {isEditPage ? <ButtonGroup id={_id} /> : <SubmitButton />}
       </form>
     </div>
   );
@@ -131,12 +131,9 @@ const initialFormError: Omit<FormError, "input"> = {
   message: null,
 };
 
-const useMeeting = (initialValue: UseMeetingArgs, id?: string) => {
+const useMeetingContext = (initialValue: UseMeetingArgs, id?: string) => {
   const [userInput, setUserInput] = useState(initialValue);
-
-  const formAction = id ? editGathering : generateGathering;
-
-  const [formState, onSubmit] = useActionState(formAction, initialFormError);
+  const isEditPage = id !== undefined;
 
   const handleDateChange = (value: Date | undefined) => {
     setUserInput((prev) => ({ ...prev, date: value }));
@@ -157,8 +154,8 @@ const useMeeting = (initialValue: UseMeetingArgs, id?: string) => {
         const newId = id ?? null;
         const map = generateMap(
           newId || "inputMap",
-          id ? Number(initialValue.lat) : DEFAULT_LOCATION.lat,
-          id ? Number(initialValue.lng) : DEFAULT_LOCATION.lng,
+          isEditPage ? Number(initialValue.lat) : DEFAULT_LOCATION.lat,
+          isEditPage ? Number(initialValue.lng) : DEFAULT_LOCATION.lng,
         );
         const marker = generateMarker(map);
 
@@ -193,13 +190,19 @@ const useMeeting = (initialValue: UseMeetingArgs, id?: string) => {
     return () => {
       kakaoMapScript.removeEventListener("load", onLoadKakaoAPI);
     };
-  }, [id, initialValue.lat, initialValue.lng]);
+  }, [isEditPage, initialValue.lat, initialValue.lng, id]);
 
   return {
     userInput,
     handleDateChange,
     handleInputChange,
-    onSubmit,
-    formState,
   };
+};
+
+const useMeetingFrom = (isEditPage: boolean) => {
+  const formAction = isEditPage ? editGathering : generateGathering;
+
+  const [formState, onSubmit] = useActionState(formAction, initialFormError);
+
+  return { formState, onSubmit };
 };

@@ -1,9 +1,8 @@
+import { generateArray } from "@/app/util";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function CardsSkeleton({ count }: { count: number }) {
-  const countArray = Array.from({ length: count })
-    .fill(0)
-    .map((_, idx) => idx);
+  const countArray = generateArray(count);
 
   return (
     <div className="max-w-[1100px] mx-auto">

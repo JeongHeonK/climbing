@@ -12,3 +12,9 @@ export const isOverADay = (date: string) => {
 };
 
 export const stopBubbling = (e: MouseEvent) => e.stopPropagation();
+
+export const generateArray = (count: number) => {
+  const countArray = Array.from({ length: count }, (_, idx) => idx + 1);
+
+  return countArray;
+};

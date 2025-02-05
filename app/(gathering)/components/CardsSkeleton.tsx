@@ -1,3 +1,4 @@
+import { generateArray } from "@/app/util";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function CardsSkeleton({ count }: { count: number }) {
@@ -13,9 +14,3 @@ export default function CardsSkeleton({ count }: { count: number }) {
     </div>
   );
 }
-
-const generateArray = (count: number) => {
-  const countArray = Array.from({ length: count }, (_, idx) => idx + 1);
-
-  return countArray;
-};

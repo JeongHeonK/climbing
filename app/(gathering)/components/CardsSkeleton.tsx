@@ -15,9 +15,7 @@ export default function CardsSkeleton({ count }: { count: number }) {
 }
 
 const generateArray = (count: number) => {
-  const countArray = Array.from({ length: count })
-    .fill(0)
-    .map((_, idx) => idx);
+  const countArray = Array.from({ length: count }, (_, idx) => idx + 1);
 
   return countArray;
 };

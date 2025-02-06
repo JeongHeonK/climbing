@@ -10,12 +10,7 @@ import {
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { stopBubbling } from "@/app/util";
-import {
-  generateMap,
-  generateMarker,
-  generateKakaoScript,
-  getDate,
-} from "../util";
+import { loadKakaoAPI, generateKakaoScript, getDate } from "../util";
 import LikeButton from "./LikeButton";
 import { usePopupStore } from "@/app/store/store";
 
@@ -57,20 +52,11 @@ export default function Gathering({
 
   useEffect(() => {
     const kakaoMapScript = generateKakaoScript();
-
-    const onLoadKakaoAPI = () => {
-      window.kakao.maps.load(() => {
-        const map = generateMap(id, lat, lng);
-        const marker = generateMarker(map);
-
-        marker.setMap(map);
-      });
-    };
-
-    kakaoMapScript.addEventListener("load", onLoadKakaoAPI);
+    const onLoad = () => loadKakaoAPI(id, lat, lng);
+    kakaoMapScript.addEventListener("load", onLoad);
 
     return () => {
-      kakaoMapScript.removeEventListener("load", onLoadKakaoAPI);
+      kakaoMapScript.removeEventListener("load", onLoad);
     };
   }, [id, lat, lng]);
 

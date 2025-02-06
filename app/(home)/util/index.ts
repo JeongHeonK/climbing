@@ -36,6 +36,47 @@ export const generateMarker = <T extends { getCenter: () => void }>(map: T) => {
   return marker;
 };
 
+export const loadKakaoAPI = (id: string, lat: number, lng: number) => {
+  window.kakao.maps.load(() => {
+    const map = generateMap(id, lat, lng);
+    const marker = generateMarker(map);
+
+    marker.setMap(map);
+  });
+};
+
+export const loadKakaoAPIWithForm = (
+  id: string,
+  lat: number,
+  lng: number,
+  callback: (lat: string, lng: string) => void,
+) => {
+  window.kakao.maps.load(() => {
+    const map = generateMap(id, lat, lng);
+    const marker = generateMarker(map);
+
+    marker.setMap(map);
+
+    kakao.maps.event.addListener(
+      map,
+      "click",
+      <
+        T extends {
+          latLng: { getLat: () => number; getLng: () => number };
+        },
+      >(
+        mouseEvent: T,
+      ) => {
+        const latlng = mouseEvent.latLng;
+
+        marker.setPosition(latlng);
+
+        callback(latlng.getLat().toString(), latlng.getLng().toString());
+      },
+    );
+  });
+};
+
 export const getDate = (data: Date) => {
   return new Intl.DateTimeFormat("ko-KR", {
     year: "numeric",

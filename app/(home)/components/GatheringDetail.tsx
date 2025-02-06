@@ -11,12 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { stopBubbling } from "@/app/util";
-import {
-  generateKakaoScript,
-  generateMap,
-  generateMarker,
-  getDate,
-} from "../util";
+import { generateKakaoScript, getDate, loadKakaoAPI } from "../util";
 
 export interface GatheringDetailProps {
   _id: string;
@@ -49,21 +44,13 @@ export default function GatheringDetail({
 
   useEffect(() => {
     const kakaoMapScript = generateKakaoScript();
+    const newId = _id.concat("1");
+    const onLoad = () => loadKakaoAPI(newId, lat, lng);
 
-    const onLoadKakaoAPI = () => {
-      window.kakao.maps.load(() => {
-        const id = _id.concat("1");
-        const map = generateMap(id, lat, lng);
-        const marker = generateMarker(map);
-
-        marker.setMap(map);
-      });
-    };
-
-    kakaoMapScript.addEventListener("load", onLoadKakaoAPI);
+    kakaoMapScript.addEventListener("load", onLoad);
 
     return () => {
-      kakaoMapScript.removeEventListener("load", onLoadKakaoAPI);
+      kakaoMapScript.removeEventListener("load", onLoad);
     };
   }, [_id, lat, lng]);
 

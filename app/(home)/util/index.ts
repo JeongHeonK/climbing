@@ -10,7 +10,7 @@ export const generateKakaoScript = () => {
   return kakaoMapScript;
 };
 
-export const generateMap = (
+const generateMap = (
   id: string,
   lat: number,
   lng: number,
@@ -27,7 +27,7 @@ export const generateMap = (
   return map;
 };
 
-export const generateMarker = <T extends { getCenter: () => void }>(map: T) => {
+const generateMarker = <T extends { getCenter: () => void }>(map: T) => {
   const marker = new kakao.maps.Marker({
     map,
     position: map.getCenter(),

@@ -86,7 +86,7 @@ export default function Gathering({
       />
       <CardHeader className="relative p-0 py-2 my-3 cursor-pointer">
         <CardTitle>{title}</CardTitle>
-        <LikeButton id={id} date={date} onDelete={onDelete ?? undefined} />
+        <LikeButton id={id} date={date} onDelete={onDelete} />
         <div className="flex justify-between items-center cursor-pointer">
           <CardDescription>{newDate}</CardDescription>
           <CardDescription>{user}</CardDescription>

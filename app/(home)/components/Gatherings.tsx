@@ -5,6 +5,7 @@ import { WithId } from "mongodb";
 import PageButton from "@/app/(home)/components/PageButton";
 import Gathering from "./Gathering";
 import { IGathering } from "../types/type";
+import GatheringsWrapper from "@/app/components/common/GatheringsWrapper";
 
 export default function Gatherings({
   isLogin,
@@ -22,7 +23,7 @@ export default function Gatherings({
   return (
     <>
       <PageButton onChange={handleChangePages} />
-      <div className="px-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-y-6 py-2 px-12 md:px-3 mx-auto">
+      <GatheringsWrapper>
         {gatherings.map((gathering) => {
           return (
             <Gathering
@@ -37,7 +38,7 @@ export default function Gatherings({
             />
           );
         })}
-      </div>
+      </GatheringsWrapper>
     </>
   );
 }

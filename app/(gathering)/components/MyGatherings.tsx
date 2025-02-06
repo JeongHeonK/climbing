@@ -1,4 +1,5 @@
 import Gathering from "@/app/(home)/components/Gathering";
+import GatheringsWrapper from "@/app/components/common/GatheringsWrapper";
 import { useMyGatheringsStore } from "@/app/store/store";
 
 interface MyGatheringsProps {
@@ -10,7 +11,7 @@ export default function MyGatherings({ isLogin }: MyGatheringsProps) {
   const myGatherings = useMyGatheringsStore((state) => state.myGatherings);
 
   return (
-    <div className="px-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-y-6 py-2 px-12 md:px-3 mx-auto">
+    <GatheringsWrapper>
       {myGatherings?.map((gathering) => {
         return (
           <Gathering
@@ -26,6 +27,6 @@ export default function MyGatherings({ isLogin }: MyGatheringsProps) {
           />
         );
       })}
-    </div>
+    </GatheringsWrapper>
   );
 }

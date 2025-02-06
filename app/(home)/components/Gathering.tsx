@@ -10,12 +10,7 @@ import {
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { stopBubbling } from "@/app/util";
-import {
-  generateMap,
-  generateMarker,
-  generateKakaoScript,
-  getDate,
-} from "../util";
+import { loadKakaoAPI, generateKakaoScript, getDate } from "../util";
 import LikeButton from "./LikeButton";
 import { usePopupStore } from "@/app/store/store";
 
@@ -57,20 +52,11 @@ export default function Gathering({
 
   useEffect(() => {
     const kakaoMapScript = generateKakaoScript();
-
-    const onLoadKakaoAPI = () => {
-      window.kakao.maps.load(() => {
-        const map = generateMap(id, lat, lng);
-        const marker = generateMarker(map);
-
-        marker.setMap(map);
-      });
-    };
-
-    kakaoMapScript.addEventListener("load", onLoadKakaoAPI);
+    const onLoad = () => loadKakaoAPI(id, lat, lng);
+    kakaoMapScript.addEventListener("load", onLoad);
 
     return () => {
-      kakaoMapScript.removeEventListener("load", onLoadKakaoAPI);
+      kakaoMapScript.removeEventListener("load", onLoad);
     };
   }, [id, lat, lng]);
 
@@ -86,7 +72,7 @@ export default function Gathering({
       />
       <CardHeader className="relative p-0 py-2 my-3 cursor-pointer">
         <CardTitle>{title}</CardTitle>
-        <LikeButton id={id} date={date} onDelete={onDelete ?? undefined} />
+        <LikeButton id={id} date={date} onDelete={onDelete} />
         <div className="flex justify-between items-center cursor-pointer">
           <CardDescription>{newDate}</CardDescription>
           <CardDescription>{user}</CardDescription>

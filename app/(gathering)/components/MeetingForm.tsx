@@ -6,11 +6,7 @@ import { Input } from "@/components/ui/input";
 import { ONE_DAY, DEFAULT_LOCATION } from "@/app/constant/constant";
 import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  generateKakaoScript,
-  generateMap,
-  generateMarker,
-} from "@/app/(home)/util";
+import { generateKakaoScript, loadKakaoAPIWithForm } from "@/app/(home)/util";
 import { FormError } from "@/app/components/Authentication/type";
 import { useToast } from "@/hooks/use-toast";
 import { generateGathering, editGathering } from "../actions/gatheringActions";
@@ -146,49 +142,27 @@ const useMeetingContext = (initialValue: UseMeetingArgs, id?: string) => {
     setUserInput((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleLocationChange = (lat: string, lng: string) => {
+    setUserInput((prev) => ({
+      ...prev,
+      lat,
+      lng,
+    }));
+  };
+
   useEffect(() => {
     const kakaoMapScript = generateKakaoScript();
+    const newId = id ?? "inputMap";
+    const newLat = isEditPage ? Number(initialValue.lat) : DEFAULT_LOCATION.lat;
+    const newLng = isEditPage ? Number(initialValue.lng) : DEFAULT_LOCATION.lng;
 
-    const onLoadKakaoAPI = () => {
-      window.kakao.maps.load(() => {
-        const newId = id ?? null;
-        const map = generateMap(
-          newId || "inputMap",
-          isEditPage ? Number(initialValue.lat) : DEFAULT_LOCATION.lat,
-          isEditPage ? Number(initialValue.lng) : DEFAULT_LOCATION.lng,
-        );
-        const marker = generateMarker(map);
+    const onLoad = () =>
+      loadKakaoAPIWithForm(newId, newLat, newLng, handleLocationChange);
 
-        marker.setMap(map);
-
-        kakao.maps.event.addListener(
-          map,
-          "click",
-          <
-            T extends {
-              latLng: { getLat: () => number; getLng: () => number };
-            },
-          >(
-            mouseEvent: T,
-          ) => {
-            const latlng = mouseEvent.latLng;
-
-            marker.setPosition(latlng);
-
-            setUserInput((prev) => ({
-              ...prev,
-              lat: latlng.getLat().toString(),
-              lng: latlng.getLng().toString(),
-            }));
-          },
-        );
-      });
-    };
-
-    kakaoMapScript.addEventListener("load", onLoadKakaoAPI);
+    kakaoMapScript.addEventListener("load", onLoad);
 
     return () => {
-      kakaoMapScript.removeEventListener("load", onLoadKakaoAPI);
+      kakaoMapScript.removeEventListener("load", onLoad);
     };
   }, [isEditPage, initialValue.lat, initialValue.lng, id]);
 

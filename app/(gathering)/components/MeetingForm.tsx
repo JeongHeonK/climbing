@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { generateGathering, editGathering } from "../actions/gatheringActions";
 import SubmitButton from "./SubmitButton";
 import ButtonGroup from "./ButtonGroup";
+import HiddenInputs from "./HiddenInputs";
 
 export interface MeetingFormProps {
   _id?: string;
@@ -88,34 +89,13 @@ export default function MeetingForm({
           value={userInput.description}
           onChange={handleInputChange}
         />
-        <Input
-          id="lng"
-          name="lng"
-          value={userInput.lng}
-          className="hidden"
+        <HiddenInputs
+          id={_id}
+          userInput={userInput}
           onChange={handleInputChange}
+          isEditPage={isEditPage}
         />
-        <Input
-          id="lat"
-          name="lat"
-          value={userInput.lat}
-          className="hidden"
-          onChange={handleInputChange}
-        />
-        <Input
-          id="date"
-          name="date"
-          className="hidden"
-          onChange={handleInputChange}
-          value={
-            userInput.date
-              ? userInput.date.toDateString()
-              : new Date().toDateString()
-          }
-        />
-        {isEditPage && (
-          <Input id="id" name="id" className="hidden" defaultValue={_id} />
-        )}
+
         {isEditPage ? <ButtonGroup id={_id} /> : <SubmitButton />}
       </form>
     </div>

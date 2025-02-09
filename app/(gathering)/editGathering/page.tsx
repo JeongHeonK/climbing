@@ -17,7 +17,7 @@ export default async function EditGatheringPage({
 
   return (
     <MeetingForm
-      _id={gathering?._id.toString()}
+      id={gathering?._id.toString()}
       title={gathering?.title}
       description={gathering?.description}
       lat={gathering?.lat}

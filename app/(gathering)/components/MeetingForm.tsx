@@ -1,6 +1,12 @@
 "use client";
 
-import { ChangeEvent, useActionState, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  useActionState,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { ONE_DAY, DEFAULT_LOCATION } from "@/app/constant/constant";
@@ -12,9 +18,10 @@ import { useToast } from "@/hooks/use-toast";
 import { generateGathering, editGathering } from "../actions/gatheringActions";
 import SubmitButton from "./SubmitButton";
 import ButtonGroup from "./ButtonGroup";
+import HiddenInputs from "./HiddenInputs";
 
 export interface MeetingFormProps {
-  _id?: string;
+  id?: string;
   title: string;
   date: Date | undefined;
   lat: string;
@@ -25,18 +32,18 @@ export interface MeetingFormProps {
 export interface UseMeetingArgs extends Omit<MeetingFormProps, "_id"> {}
 
 export default function MeetingForm({
-  _id,
+  id,
   title,
   date,
   lat,
   lng,
   description,
 }: MeetingFormProps) {
-  const isEditPage = _id !== undefined;
+  const isEditPage = id !== undefined;
 
   const { userInput, handleDateChange, handleInputChange } = useMeetingContext(
     { title, date, lat, lng, description },
-    _id,
+    id,
   );
   const { formState, onSubmit } = useMeetingFrom(isEditPage);
   const { toast } = useToast();
@@ -56,7 +63,7 @@ export default function MeetingForm({
         className="max-w-[400px] mx-auto flex-col flex  gap-2 items-center bg-white px-5 py-5 -mt-3 rounded-md"
       >
         <div
-          id={_id || "inputMap"}
+          id={id || "inputMap"}
           className="size-52 rounded-md"
           data-cy="map"
         />
@@ -88,35 +95,13 @@ export default function MeetingForm({
           value={userInput.description}
           onChange={handleInputChange}
         />
-        <Input
-          id="lng"
-          name="lng"
-          value={userInput.lng}
-          className="hidden"
+        <HiddenInputs
+          id={id}
+          userInput={userInput}
           onChange={handleInputChange}
+          isEditPage={isEditPage}
         />
-        <Input
-          id="lat"
-          name="lat"
-          value={userInput.lat}
-          className="hidden"
-          onChange={handleInputChange}
-        />
-        <Input
-          id="date"
-          name="date"
-          className="hidden"
-          onChange={handleInputChange}
-          value={
-            userInput.date
-              ? userInput.date.toDateString()
-              : new Date().toDateString()
-          }
-        />
-        {isEditPage && (
-          <Input id="id" name="id" className="hidden" defaultValue={_id} />
-        )}
-        {isEditPage ? <ButtonGroup id={_id} /> : <SubmitButton />}
+        {isEditPage ? <ButtonGroup id={id} /> : <SubmitButton />}
       </form>
     </div>
   );
@@ -131,24 +116,25 @@ const useMeetingContext = (initialValue: UseMeetingArgs, id?: string) => {
   const [userInput, setUserInput] = useState(initialValue);
   const isEditPage = id !== undefined;
 
-  const handleDateChange = (value: Date | undefined) => {
+  const handleDateChange = useCallback((value: Date | undefined) => {
     setUserInput((prev) => ({ ...prev, date: value }));
-  };
+  }, []);
 
-  const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setUserInput((prev) => ({ ...prev, [name]: value }));
-  };
+  const handleInputChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name, value } = e.target;
+      setUserInput((prev) => ({ ...prev, [name]: value }));
+    },
+    [],
+  );
 
-  const handleLocationChange = (lat: string, lng: string) => {
+  const handleLocationChange = useCallback((lat: string, lng: string) => {
     setUserInput((prev) => ({
       ...prev,
       lat,
       lng,
     }));
-  };
+  }, []);
 
   useEffect(() => {
     const kakaoMapScript = generateKakaoScript();
@@ -165,7 +151,13 @@ const useMeetingContext = (initialValue: UseMeetingArgs, id?: string) => {
     return () => {
       kakaoMapScript.removeEventListener("load", onLoad);
     };
-  }, [isEditPage, initialValue.lat, initialValue.lng, id]);
+  }, [
+    id,
+    isEditPage,
+    initialValue.lat,
+    initialValue.lng,
+    handleLocationChange,
+  ]);
 
   return {
     userInput,

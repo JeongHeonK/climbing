@@ -15,7 +15,7 @@ import ButtonGroup from "./ButtonGroup";
 import HiddenInputs from "./HiddenInputs";
 
 export interface MeetingFormProps {
-  _id?: string;
+  id?: string;
   title: string;
   date: Date | undefined;
   lat: string;
@@ -26,18 +26,18 @@ export interface MeetingFormProps {
 export interface UseMeetingArgs extends Omit<MeetingFormProps, "_id"> {}
 
 export default function MeetingForm({
-  _id,
+  id,
   title,
   date,
   lat,
   lng,
   description,
 }: MeetingFormProps) {
-  const isEditPage = _id !== undefined;
+  const isEditPage = id !== undefined;
 
   const { userInput, handleDateChange, handleInputChange } = useMeetingContext(
     { title, date, lat, lng, description },
-    _id,
+    id,
   );
   const { formState, onSubmit } = useMeetingFrom(isEditPage);
   const { toast } = useToast();
@@ -57,7 +57,7 @@ export default function MeetingForm({
         className="max-w-[400px] mx-auto flex-col flex  gap-2 items-center bg-white px-5 py-5 -mt-3 rounded-md"
       >
         <div
-          id={_id || "inputMap"}
+          id={id || "inputMap"}
           className="size-52 rounded-md"
           data-cy="map"
         />
@@ -90,13 +90,12 @@ export default function MeetingForm({
           onChange={handleInputChange}
         />
         <HiddenInputs
-          id={_id}
+          id={id}
           userInput={userInput}
           onChange={handleInputChange}
           isEditPage={isEditPage}
         />
-
-        {isEditPage ? <ButtonGroup id={_id} /> : <SubmitButton />}
+        {isEditPage ? <ButtonGroup id={id} /> : <SubmitButton />}
       </form>
     </div>
   );

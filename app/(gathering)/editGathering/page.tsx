@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { getGathering } from "@/app/(home)/actions/homeGatheringAction";
 import MeetingForm from "../components/MeetingForm";
+
+export const metadata: Metadata = {
+  title: "수정페이지",
+  description: "수정페이지 입니다.",
+};
 
 export default async function EditGatheringPage({
   searchParams,

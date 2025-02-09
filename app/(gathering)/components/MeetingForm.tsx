@@ -152,7 +152,8 @@ const useMeetingContext = (initialValue: UseMeetingArgs, id?: string) => {
 
   useEffect(() => {
     const kakaoMapScript = generateKakaoScript();
-    const newId = id ?? "inputMap";
+
+    const newId = id || "inputMap";
     const newLat = isEditPage ? Number(initialValue.lat) : DEFAULT_LOCATION.lat;
     const newLng = isEditPage ? Number(initialValue.lng) : DEFAULT_LOCATION.lng;
 

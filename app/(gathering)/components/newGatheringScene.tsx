@@ -1,16 +1,6 @@
 import MeetingForm from "./MeetingForm";
 
-export type InitialValue = {
-  _id: string;
-  title: string;
-  description: string;
-  lat: string;
-  lng: string;
-  date: Date | undefined;
-};
-
-const initialValue: InitialValue = {
-  _id: "",
+const initialValue = {
   title: "",
   description: "",
   lat: "",
@@ -23,12 +13,11 @@ export default function NewGatheringPageScene() {
 
   return (
     <MeetingForm
-      _id={gathering?._id.toString()}
-      title={gathering?.title}
-      description={gathering?.description}
-      lat={gathering?.lat}
-      lng={gathering?.lng}
-      date={gathering?.date}
+      title={gathering.title}
+      description={gathering.description}
+      lat={gathering.lat}
+      lng={gathering.lng}
+      date={gathering.date}
     />
   );
 }

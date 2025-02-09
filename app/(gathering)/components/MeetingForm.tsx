@@ -1,6 +1,12 @@
 "use client";
 
-import { ChangeEvent, useActionState, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  useActionState,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { ONE_DAY, DEFAULT_LOCATION } from "@/app/constant/constant";
@@ -110,24 +116,25 @@ const useMeetingContext = (initialValue: UseMeetingArgs, id?: string) => {
   const [userInput, setUserInput] = useState(initialValue);
   const isEditPage = id !== undefined;
 
-  const handleDateChange = (value: Date | undefined) => {
+  const handleDateChange = useCallback((value: Date | undefined) => {
     setUserInput((prev) => ({ ...prev, date: value }));
-  };
+  }, []);
 
-  const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setUserInput((prev) => ({ ...prev, [name]: value }));
-  };
+  const handleInputChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name, value } = e.target;
+      setUserInput((prev) => ({ ...prev, [name]: value }));
+    },
+    [],
+  );
 
-  const handleLocationChange = (lat: string, lng: string) => {
+  const handleLocationChange = useCallback((lat: string, lng: string) => {
     setUserInput((prev) => ({
       ...prev,
       lat,
       lng,
     }));
-  };
+  }, []);
 
   useEffect(() => {
     const kakaoMapScript = generateKakaoScript();
@@ -144,7 +151,13 @@ const useMeetingContext = (initialValue: UseMeetingArgs, id?: string) => {
     return () => {
       kakaoMapScript.removeEventListener("load", onLoad);
     };
-  }, [isEditPage, initialValue.lat, initialValue.lng, id]);
+  }, [
+    id,
+    isEditPage,
+    initialValue.lat,
+    initialValue.lng,
+    handleLocationChange,
+  ]);
 
   return {
     userInput,
